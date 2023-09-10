@@ -14,13 +14,13 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/user')]
 class UserController extends AbstractController
 {
-    #[Route('/liste', name: 'app_user_index', methods: ['GET'])]
+    #[Route('/', name: 'app_user_index', methods: ['GET'])]
     public function index(UserRepository $userRepository): Response
     {
-//        $user = new User();
+        $user = new User();
         return $this->render('user/index.html.twig', [
             'users' => $userRepository->findAll(),
-//            'user'=>$user->getUserIdentifier()
+            'user'=>$user->getUserIdentifier()
         ]);
     }
 

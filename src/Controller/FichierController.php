@@ -11,10 +11,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+
 #[Route('/fichier')]
 class FichierController extends AbstractController
 {
-    #[Route('/', name: 'app_fichier_index', methods: ['GET'])]
+    #[Route('', name: 'app_fichier_index', methods: ['GET'])]
     public function index(FichierRepository $fichierRepository): Response
     {
         $user =$this->getUser();

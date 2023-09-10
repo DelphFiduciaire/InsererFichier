@@ -6,6 +6,7 @@ use App\Entity\InfoClient;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 

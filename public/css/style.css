@@ -1,0 +1,20 @@
+a{
+    color: #1a1e21;
+}
+a:hover
+{
+    color: #1a1e21;
+}
+svg
+{
+    width: 1em;
+    height: 1em;
+    vertical-align: middle;
+    fill: currentColor;
+    overflow: hidden;
+}
+nav
+{
+    background-color: #1a1e21;
+    color: #FFFFFF;
+}

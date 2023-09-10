@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Controller;
-
+use App\Entity\Fichier;
 use App\Entity\FichierDemande;
 use App\Form\FichierDemandeType;
 use App\Repository\FichierDemandeRepository;
@@ -12,6 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+
 
 #[Route('/fichier/demande')]
 class FichierDemandeController extends AbstractController
