@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New FichierDemande{% endblock %}
+
+{% block body %}
+    <h1>Create new FichierDemande</h1>
+
+    {{ include('fichier_demande/_form.html.twig') }}
+
+    <a href="{{ path('app_fichier_demande_index') }}">back to list</a>
+{% endblock %}

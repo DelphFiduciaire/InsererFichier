@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit FichierDemande{% endblock %}
+
+{% block body %}
+    <h1>Edit FichierDemande</h1>
+
+    {{ include('fichier_demande/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_fichier_demande_index') }}">back to list</a>
+
+    {{ include('fichier_demande/_delete_form.html.twig') }}
+{% endblock %}

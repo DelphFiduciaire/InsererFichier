@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}FichierDemande index{% endblock %}
+
+{% block body %}
+    <h1>FichierDemande index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom_fichier_demande</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for fichier_demande in fichier_demandes %}
+            <tr>
+                <td>{{ fichier_demande.id }}</td>
+                <td>{{ fichier_demande.nomFichierDemande }}</td>
+                <td>
+                    <a href="{{ path('app_fichier_demande_show', {'id': fichier_demande.id}) }}">show</a>
+                    <a href="{{ path('app_fichier_demande_edit', {'id': fichier_demande.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_fichier_demande_new') }}">Create new</a>
+{% endblock %}

@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}InfoClient{% endblock %}
+
+{% block body %}
+    <h1>InfoClient</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ info_client.id }}</td>
+            </tr>
+            <tr>
+                <th>Nom</th>
+                <td>{{ info_client.nom }}</td>
+            </tr>
+            <tr>
+                <th>Prenom</th>
+                <td>{{ info_client.prenom }}</td>
+            </tr>
+            <tr>
+                <th>Mail_pro</th>
+                <td>{{ info_client.mailPro }}</td>
+            </tr>
+            <tr>
+                <th>Nom_societe</th>
+                <td>{{ info_client.nomSociete }}</td>
+            </tr>
+            <tr>
+                <th>Adresse</th>
+                <td>{{ info_client.adresse }}</td>
+            </tr>
+            <tr>
+                <th>Num_pro</th>
+                <td>{{ info_client.numPro }}</td>
+            </tr>
+            <tr>
+                <th>Num</th>
+                <td>{{ info_client.num }}</td>
+            </tr>
+            <tr>
+                <th>Cp</th>
+                <td>{{ info_client.cp }}</td>
+            </tr>
+            <tr>
+                <th>Ville</th>
+                <td>{{ info_client.ville }}</td>
+            </tr>
+            <tr>
+                <th>Siret</th>
+                <td>{{ info_client.siret }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_info_client_index') }}">back to list</a>
+
+    <a href="{{ path('app_info_client_edit', {'id': info_client.id}) }}">edit</a>
+
+    {{ include('info_client/_delete_form.html.twig') }}
+{% endblock %}
