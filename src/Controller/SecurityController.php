@@ -9,7 +9,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
 {
-    #[Route(path: '/', name: 'app_main')]
+    #[Route(path: '/login', name: 'app_main')]
     public function index(UserInterface $user): Response
     {
         $role_user = $user->getRoles();
