@@ -3,6 +3,8 @@
 namespace App\Form;
 
 use App\Entity\InfoClient;
+use App\Entity\User;
+use App\Repository\UserRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -22,7 +24,18 @@ class InfoClientType extends AbstractType
             ->add('cp')
             ->add('ville')
             ->add('siret')
-            ->add('id_user')
+            ->add('id_user', EntityType::class, [
+                'class' => User::class,
+                'query_builder' => function (UserRepository $userRepository) {
+                    return $userRepository->createQueryBuilder('a')
+                        ->andWhere('a.roles LIKE :role_comptable OR a.roles LIKE :role_admin')
+                        ->setParameter('role_comptable', '%ROLE_COMPTABLE%')
+                        ->setParameter('role_admin', '%ROLE_ADMIN%')
+
+                        ->orderBy('a.email');
+                }
+
+            ])
         ;
     }
 
