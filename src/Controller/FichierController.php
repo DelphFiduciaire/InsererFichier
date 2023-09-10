@@ -17,36 +17,52 @@ class FichierController extends AbstractController
     #[Route('/', name: 'app_fichier_index', methods: ['GET'])]
     public function index(FichierRepository $fichierRepository): Response
     {
+        $user =$this->getUser();
         return $this->render('fichier/index.html.twig', [
             'fichiers' => $fichierRepository->findAll(),
+            'user'=>$user->getUserIdentifier()
+
         ]);
     }
 
-    #[Route('/new', name: 'app_fichier_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    #[Route('/admin/add', name: 'app_fichier_new1', methods: ['GET'])]
+    public function new1( FichierRepository $fichierRepository,EntityManagerInterface $entityManager): Response
     {
+        // jappele la fonction pour ajouter un fichier avec le name en get
+        $test = $fichierRepository->insert2($entityManager,$_GET['test']);
+        return $this->redirectToRoute('app_fichier_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/admin/nouveau_fichier', name: 'app_fichier_new', methods: ['GET'])]
+    public function new(Request $request, FichierRepository $fichierRepository): Response
+    {
+        $user = $this->getUser();
         $fichier = new Fichier();
         $form = $this->createForm(FichierType::class, $fichier);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($fichier);
-            $entityManager->flush();
+            $fichierRepository->save($fichier, true);
 
             return $this->redirectToRoute('app_fichier_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('fichier/new.html.twig', [
+        return $this->renderForm('fichier/new.html.twig', [
             'fichier' => $fichier,
             'form' => $form,
+            'user'=>$user->getUserIdentifier(),
         ]);
     }
+
 
     #[Route('/{id}', name: 'app_fichier_show', methods: ['GET'])]
     public function show(Fichier $fichier): Response
     {
+        $user=$this->getUser();
         return $this->render('fichier/show.html.twig', [
             'fichier' => $fichier,
+            'user'=>$user->getUserIdentifier(),
+
         ]);
     }
 
@@ -55,6 +71,8 @@ class FichierController extends AbstractController
     {
         $form = $this->createForm(FichierType::class, $fichier);
         $form->handleRequest($request);
+        $user=$this->getUser();
+
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
@@ -65,6 +83,8 @@ class FichierController extends AbstractController
         return $this->render('fichier/edit.html.twig', [
             'fichier' => $fichier,
             'form' => $form,
+            'user'=>$user->getUserIdentifier()
+
         ]);
     }
 
@@ -74,6 +94,16 @@ class FichierController extends AbstractController
         if ($this->isCsrfTokenValid('delete'.$fichier->getId(), $request->request->get('_token'))) {
             $entityManager->remove($fichier);
             $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('app_fichier_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/delete/{id}', name: 'app_fichier_delete_file', methods: ['GET'])]
+    public function deleteFile( FichierRepository $fichierRepository,Fichier $fichier,Request $request): Response
+    {
+        if ($this->isCsrfTokenValid('delete' . $fichier->getId(), $request->request->get('_token'))) {
+            $fichierRepository->deleteFile($fichier, true);
         }
 
         return $this->redirectToRoute('app_fichier_index', [], Response::HTTP_SEE_OTHER);
