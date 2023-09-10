@@ -3,24 +3,28 @@
 {% block title %}FichierDemande index{% endblock %}
 
 {% block body %}
-    <h1>FichierDemande index</h1>
+    <h1>Fichier Demande index</h1>
 
     <table class="table">
         <thead>
-            <tr>
-                <th>Id</th>
-                <th>Nom_fichier_demande</th>
-                <th>actions</th>
-            </tr>
+        <tr>
+            <th>Nom Client</th>
+            <th>Mail Client</th>
+            <th>Nom_fichier</th>
+            <th>Voir pdf</th>
+        </tr>
         </thead>
         <tbody>
         {% for fichier_demande in fichier_demandes %}
             <tr>
-                <td>{{ fichier_demande.id }}</td>
-                <td>{{ fichier_demande.nomFichierDemande }}</td>
+                <td>{{ fichier_demande.idClient }}</td>
+
+                <td>{{ fichier_demande.idUser.email }}</td>
+
+                <td>{{ fichier_demande.idFichier.nomFichier }}</td>
                 <td>
-                    <a href="{{ path('app_fichier_demande_show', {'id': fichier_demande.id}) }}">show</a>
-                    <a href="{{ path('app_fichier_demande_edit', {'id': fichier_demande.id}) }}">edit</a>
+                    <a href="{{ path('app_view_pdf', {'name': fichier_demande.getNomFichier()}) }}" target="_blank">Cliquez ici</a>
+
                 </td>
             </tr>
         {% else %}

@@ -1,4 +1,61 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+<div class="p-5" style=" background-color: whitesmoke;">
+
+    <div class="row">
+        <div class="form-group mb-4 col-3">
+            {{ form_label(form.id_user, 'Choisir le comptable', {'label_attr': {'class': 'text-right'}}) }}
+            {{ form_row(form.id_user, {'attr': {'data-role': 'role_comptable'}}) }} <br>
+
+            {{ form_label(form.nom, 'Nom', {'label_attr': {'class': 'text-right'}}) }}
+            {{ form_widget(form.nom, {'attr': {'class': 'form-control mt-2'}}) }}
+
+
+        </div>
+        <div class="form-group mb-4 col-3">
+            {{ form_label(form.prenom, 'Prenom ', {'label_attr': {'class': 'text-right'}}) }}
+            {{ form_widget(form.prenom, {'attr': {'class': 'form-control mt-2'}}) }}
+
+            {{ form_label(form.mail_pro, 'Mail', {'label_attr': {'class': 'text-right'}}) }}
+            {{ form_widget(form.mail_pro, {'attr': {'class': 'form-control mt-2'}}) }}
+
+            {{ form_label(form.nom_societe, 'Nom Societe', {'label_attr': {'class': 'text-right'}}) }}
+            {{ form_widget(form.nom_societe, {'attr': {'class': 'form-control mt-2'}}) }}
+
+
+
+        </div>
+        <div class="form-group mb-4 col-3">
+            {{ form_label(form.adresse, 'Adresse', {'label_attr': {'class': 'text-right'}}) }}
+            {{ form_widget(form.adresse, {'attr': {'class': 'form-control mt-2'}}) }}
+
+            {{ form_label(form.num_pro, 'Numéro professionel', {'label_attr': {'class': 'text-right'}}) }}
+            {{ form_widget(form.num_pro, {'attr': {'class': 'form-control mt-2'}}) }}
+
+            {{ form_label(form.num, 'Numéro de protable', {'label_attr': {'class': 'text-right'}}) }}
+            {{ form_widget(form.num, {'attr': {'class': 'form-control mt-2'}}) }}
+
+
+
+        </div>
+
+        <div class="form-group mb-4 col-3">
+            {{ form_label(form.cp, 'Code Postal', {'label_attr': {'class': 'text-right'}}) }}
+            {{ form_widget(form.cp, {'attr': {'class': 'form-control mt-2'}}) }}
+
+            {{ form_label(form.ville, 'Ville', {'label_attr': {'class': 'text-right'}}) }}
+            {{ form_widget(form.ville, {'attr': {'class': 'form-control mt-2'}}) }}
+
+            {{ form_label(form.siret, 'Numéro de Siret', {'label_attr': {'class': 'text-right'}}) }}
+            {{ form_widget(form.siret, {'attr': {'class': 'form-control mt-2'}}) }}
+
+
+
+
+        </div>
+
+    </div>
+    <button class="btn btn-dark">{{ button_label|default('Enregistrer') }}</button >
+
+</div>
+</div>
 {{ form_end(form) }}

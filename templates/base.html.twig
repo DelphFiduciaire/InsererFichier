@@ -1,19 +1,109 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
-        {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
-        {% block stylesheets %}
-            {{ encore_entry_link_tags('app') }}
-        {% endblock %}
 
-        {% block javascripts %}
-            {{ encore_entry_script_tags('app') }}
-        {% endblock %}
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-    </body>
-</html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Welcome!{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN4zfuZxLkoj1gXtW8ANNCe9d5Y3eG5eD" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+
+</head>
+<body>
+<nav class="navbar navbar-expand-lg bg-body-tertiary" >
+    <div class="container-fluid">
+
+        <a class="navbar-brand" href="#" style="color: #FFFFFF" >{{  user }}</a>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                {% if (is_granted('ROLE_ADMIN'))%}
+                    <li class="nav-item">
+                        <a class="nav-link " style="color: #FFFFFF"  href="{{ path('app_info_client_new') }}">Accueil</a>
+                    </li>
+                {% elseif (is_granted('ROLE_COMPTABLE')) %}
+                    <li class="nav-item">
+                        <a class="nav-link" style="color: #FFFFFF"  href="{{ path('app_info_client_index') }}">Accueil</a>
+                    </li>
+                {% else  %}
+                    <li class="nav-item">
+                        <a class="nav-link" style="color: #FFFFFF"  href="{{ path('app_fichier_index') }}">Accueil</a>
+                    </li>
+                {% endif %}
+                {% if app.user %}
+
+                    {#                    <li><a class="nav-link" style="color: #FFFFFF" href="{{ path('app_info_client_show') }}">Mon espace</a></li>#}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" style="color: #FFFFFF"  role="button" data-bs-toggle="dropdown" aria-expanded="false" href="{{ path('app_fichier_index') }}">
+                            Fichiers
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{{ path('app_fichier_demande_new') }}">Insérer un fichier</a></li>
+                            <li><a class="dropdown-item" href="{{ path('app_fichier_demande_index') }}">Tous les fichiers</a></li>
+
+                            <li><a class="dropdown-item" href="{{ path('app_fichier_index') }}">les noms fichiers</a></li>
+                        </ul>
+                    </li>
+
+                {% endif %}
+
+                {% if (is_granted('ROLE_ADMIN')) or (is_granted('ROLE_COMPTABLE')) %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" style="color: #FFFFFF"  role="button" data-bs-toggle="dropdown" href="{{ path('app_info_client_index') }}" aria-expanded="false">
+                            Clients
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{{ path('mesColab') }}">Mes Clients</a></li>
+                            <li><a class="dropdown-item" href="{{ path('app_info_client_new') }}">Ajouter Les Clients</a></li>
+                            <li><a class="dropdown-item" href="{{ path('app_info_client_index') }}">Tout les Clients</a></li>
+                        </ul>
+                    </li>
+
+
+                {% endif %}
+                {% if (is_granted('ROLE_ADMIN')) %}
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" style="color: #FFFFFF"  role="button" data-bs-toggle="dropdown" href="{{ path('app_user_index') }}" aria-expanded="false">
+                            Utilisateurs
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{{ path('app_register') }}">Ajouter user</a></li>
+                            <li><a class="dropdown-item" href="{{ path('app_user_index') }}">Tout les Utilisateurs</a></li>
+                        </ul>
+                    </li>
+
+
+                {% endif %}
+                {% if app.user %}
+                    <li class="nav-item">
+                        <a class="nav-link" style="color: #FFFFFF" href="{{ path('app_logout') }}"><svg class="svg-icon"  viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M768 106V184c97.2 76 160 194.8 160 328 0 229.6-186.4 416-416 416S96 741.6 96 512c0-133.2 62.8-251.6 160-328V106C121.6 190.8 32 341.2 32 512c0 265.2 214.8 480 480 480s480-214.8 480-480c0-170.8-89.6-321.2-224-406z" fill="" /><path d="M512 32c-17.6 0-32 14.4-32 32v448c0 17.6 14.4 32 32 32s32-14.4 32-32V64c0-17.6-14.4-32-32-32z" fill="" /></svg></a>
+                    </li>
+                {% endif %}
+
+            </ul>
+        </div>
+    </div>
+
+    {% if is_granted('ROLE_ADMIN') %}
+        <form class="d-flex"  name="fichier[nom_fichier]" method="get" action="/fichier/admin/add">
+            <input class="form-control me-sm-2" type="text" name="test" placeholder="Ajouter Nom Fichier">
+            <button class="btn btn-secondary my-2 my-sm-0" type="submit">Ajouter</button>
+        </form>
+        </form>
+    {% endif %}
+</nav>
+
+<br><br>
+
+
+{% block body %}{% endblock %}
+<br><br>
+<div class="container">
+    <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top ">
+        <span class="copyright">&copy;{{ 'now'|date('Y') }} OrelAbk6. Tous droits réservés .</span>
+    </footer>
+</div>
+

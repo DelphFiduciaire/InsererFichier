@@ -21,6 +21,25 @@ class InfoClientRepository extends ServiceEntityRepository
         parent::__construct($registry, InfoClient::class);
     }
 
+
+    public function save(InfoClient $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->persist($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
+    public function remove(InfoClient $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->remove($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
 //    /**
 //     * @return InfoClient[] Returns an array of InfoClient objects
 //     */

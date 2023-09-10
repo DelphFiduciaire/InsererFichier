@@ -21,6 +21,25 @@ class FichierDemandeRepository extends ServiceEntityRepository
         parent::__construct($registry, FichierDemande::class);
     }
 
+
+    public function save(FichierDemande $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->persist($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
+    public function remove(FichierDemande $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->remove($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
 //    /**
 //     * @return FichierDemande[] Returns an array of FichierDemande objects
 //     */

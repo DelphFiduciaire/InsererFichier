@@ -21,6 +21,45 @@ class FichierRepository extends ServiceEntityRepository
         parent::__construct($registry, Fichier::class);
     }
 
+
+    public function save(Fichier $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->persist($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
+    public function remove(Fichier $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->remove($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+    // fonction qui met denregistrer le nom d'un fichier appele dans le controller fichier
+    public function insert2(EntityManagerInterface $em,$d)
+    {
+        $sql = "INSERT INTO `fichier`(`nom_fichier`) VALUES ('$d')";
+
+        $stmt = $em->getConnection()->prepare($sql);
+        $resul = $stmt->executeQuery()->fetchAllAssociative();
+
+        return $resul;
+    }
+
+
+    public function deleteFile(EntityManagerInterface $em, $fichier)
+    {
+        $sql = "DELETE FROM `fichier` WHERE nom_fichier = '".$fichier."'";
+
+        $stmt = $em->getConnection()->prepare($sql);
+        $resul = $stmt->executeQuery()->fetchAllAssociative();
+        return $resul;
+    }
+
 //    /**
 //     * @return Fichier[] Returns an array of Fichier objects
 //     */

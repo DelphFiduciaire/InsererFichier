@@ -3,9 +3,11 @@
 {% block title %}New InfoClient{% endblock %}
 
 {% block body %}
-    <h1>Create new InfoClient</h1>
+    <h1>Créer un nouveau Client</h1> <a href="{{ path('app_info_client_index') }}">Retour</a>
+    <br>
+    <div class="content-form" >
+        {{ include('info_client/_form.html.twig') }}
 
-    {{ include('info_client/_form.html.twig') }}
 
-    <a href="{{ path('app_info_client_index') }}">back to list</a>
+    </div>
 {% endblock %}
