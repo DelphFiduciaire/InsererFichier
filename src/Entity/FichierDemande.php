@@ -4,8 +4,11 @@ namespace App\Entity;
 
 use App\Repository\FichierDemandeRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 #[ORM\Entity(repositoryClass: FichierDemandeRepository::class)]
+#[Vich\Uploadable]
 class FichierDemande
 {
     #[ORM\Id]
@@ -76,5 +79,10 @@ class FichierDemande
         $this->id_info_client = $id_info_client;
 
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->getNomFichierDemande() ?? '';
     }
 }

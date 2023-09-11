@@ -5,9 +5,11 @@ use App\Entity\Fichier;
 use App\Entity\FichierDemande;
 use App\Form\FichierDemandeType;
 use App\Repository\FichierDemandeRepository;
+use App\Repository\InfoClientRepository;
 use App\Repository\FichierRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use phpDocumentor\Reflection\Location;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -36,7 +38,7 @@ class FichierDemandeController extends AbstractController
     }
 
     #[Route('/new', name: 'app_fichier_demande_new', methods: ['GET', 'POST'])]
-    public function new(EntityManagerInterface $entityManager ,Request $request, UserRepository $userrepo, FichierRepository $fichierrepo, FichierDemandeRepository $fichierDemandeRepository): Response
+    public function new(EntityManagerInterface $entityManager ,Request $request, UserRepository $userrepo, InfoClientRepository $infocrepo , FichierRepository $fichierrepo, FichierDemandeRepository $fichierDemandeRepository): Response
     {
         $user = $this->getUser();
         $fichierDemande = new FichierDemande();
@@ -44,34 +46,43 @@ class FichierDemandeController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $uploadedFile = $form->get('nom_fichier')->getData();
+            $uploadedFile = $form->get('nom_fichier_demande')->getData();
+//            dd($uploadedFile);
             // Il s'agit de l'id du client
-            $idUser = $form->get('id_user')->getData()->getId();
-            $idUser = $userrepo->find($idUser);
+            $idClient = $form->get('id_info_client')->getData()->getid();
+            $idClient = $infocrepo->find($idClient);
+//            dd($idClient);
+//            $idClient = $userrepo->find($idClient);
+//            dd($idClient);
 
             //Il s'agit de l'id du fichier demander pour tout les clients
             $idNomFichier= $form->get('id_fichier')->getData()->getId();
-            $idNomFichier = $fichierrepo->find($idNomFichier);
 
-            $nomOriginal = $form->get('nom_fichier')->getData()->getClientOriginalName();
+            $idNomFichier = $fichierrepo->find($idNomFichier);
+//            dd($idNomFichier);
+            $nomOriginal = $form->get('nom_fichier_demande')->getData()->getClientOriginalName();
+//            dd($nomOriginal);
 
             // le chemin ou le fichier est inserer
             $destinationDirectory = 'D:/XAMPP/htdocs/WEB/DELPH/cms_delph/public/'.'fichier';
             $newFilename = $nomOriginal;
             $uploadedFile->move($destinationDirectory, $newFilename);
-            $fichierDemande->setNomFichier($newFilename);
-            $fichierDemande->setIdUser($idUser);
+            $fichierDemande->setIdUser($user);
+            $fichierDemande->setNomFichierDemande($newFilename);
+            $fichierDemande->setIdInfoClient($idClient);
             $fichierDemande->setIdFichier($idNomFichier);
+//            dd($fichierDemande);
             $entityManager->persist($fichierDemande);
             $entityManager->flush();
             $fichierDemandeRepository->save($fichierDemande, true);
+//            return $this->redirectToRoute('app_fichier_demande_index', [], Response::HTTP_SEE_OTHER);
 
-            return $this->redirectToRoute('app_fichier_demande_index', [], Response::HTTP_SEE_OTHER);
-        }
+    }
 
-        return $this->render('fichier_demande/new.html.twig', [
-            'fichier_demande' => $fichierDemande,
+        return $this->renderForm('fichier_demande/new.html.twig', [
+            'nom_fichier_demande' => $fichierDemande,
             'form' => $form,
+            'user'=>$user->getUserIdentifier()
         ]);
     }
 
