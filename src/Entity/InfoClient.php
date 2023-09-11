@@ -225,6 +225,9 @@ class InfoClient
 
     public function __toString(): string
     {
-        return $this->getNom() ?? '';
+        $nom = $this->getNom() ?? '';
+        $prenom = $this->getPrenom() ?? '';
+        return $nom . ' ' . $prenom;
     }
+
 }

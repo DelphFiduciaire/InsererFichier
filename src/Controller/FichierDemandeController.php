@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 use App\Entity\Fichier;
+use App\Entity\InfoClient;
 use App\Entity\FichierDemande;
 use App\Form\FichierDemandeType;
 use App\Repository\FichierDemandeRepository;
@@ -14,6 +15,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\File\File;
+
 
 
 #[Route('/fichier/demande')]
@@ -22,9 +25,12 @@ class FichierDemandeController extends AbstractController
     #[Route('/', name: 'app_fichier_demande_index', methods: ['GET'])]
     public function index(FichierDemandeRepository $fichierDemandeRepository): Response
     {
-        $user = $this->getUser();
-//        $test = $fichierDemandeRepository->findAll();
 
+
+        $user = $this->getUser();
+        $test = $fichierDemandeRepository->findAll();
+
+        // dd($fichierDemandeRepository->findAll());
         return $this->render('fichier_demande/index.html.twig', [
             'fichier_demandes' =>   $fichierDemandeRepository->createQueryBuilder('fd')
                 ->leftJoin('fd.id_user', 'u')
@@ -35,6 +41,7 @@ class FichierDemandeController extends AbstractController
                 ->getResult(),
             'user'=>$user->getUserIdentifier()
         ]);
+
     }
 
     #[Route('/new', name: 'app_fichier_demande_new', methods: ['GET', 'POST'])]
@@ -89,7 +96,7 @@ class FichierDemandeController extends AbstractController
     #[Route('/{id}', name: 'app_fichier_demande_show', methods: ['GET'])]
     public function show(FichierDemande $fichierDemande): Response
     {
-        $pathToFile = 'fichierpdf/' . $fichierDemande->getNomFichier();
+        $pathToFile = 'fichierpdf/' . $fichierDemande->getNomFichierDemande();
         return $this->file($pathToFile);
     }
 
@@ -135,6 +142,8 @@ class FichierDemandeController extends AbstractController
 
         return $this->redirectToRoute('app_fichier_demande_index', [], Response::HTTP_SEE_OTHER);
     }
+
+
 
 
 }
