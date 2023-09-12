@@ -24,48 +24,52 @@ class FichierDemandeController extends AbstractController
     public function index(FichierDemandeRepository $fichierDemandeRepository, EntityManagerInterface $entityManager): Response
     {
 
-
         $user = $this->getUser();
-        $test = $fichierDemandeRepository->findAll();
+//        $userId = $user->getId();
+        $fichiers = $fichierDemandeRepository->findAll();
 
-        // dd($fichierDemandeRepository->findAll());
         return $this->render('fichier_demande/index.html.twig', [
-            'fichier_demandes' =>   $fichierDemandeRepository->createQueryBuilder('fd')
-                ->leftJoin('fd.id_info_client', 'u')
-                ->leftJoin('fd.id_fichier', 'f')
-                ->addSelect('u')
-                ->addSelect('f')
-                ->getQuery()
-                ->getResult(),
-            'user'=>$user->getUserIdentifier()
+            'fichier_demandes' => $fichiers,
+            'user' => $user->getUserIdentifier()
         ]);
+
+//        $user = $this->getUser();
+//        return $this->render('app_fichier_demande_index', [
+//            'info_clients' => $fichierDemandeRepository->findAll(),
+//            'user'=>$user->getUserIdentifier()
+//        ]);
+
+//        $user = $this->getUser();
+//        $test = $fichierDemandeRepository->findAll();
+//
+//        // dd($fichierDemandeRepository->findAll());
+//        return $this->render('fichier_demande/index.html.twig', [
+//            'fichier_demandes' =>   $fichierDemandeRepository->createQueryBuilder('fd')
+//                ->leftJoin('fd.id_info_client', 'u')
+//                ->leftJoin('fd.id_fichier', 'f')
+//                ->addSelect('u')
+//                ->addSelect('f')
+//                ->getQuery()
+//                ->getResult(),
+//            'user'=>$user->getUserIdentifier()
+//        ]);
 
     }
 
 
-    #[Route('/mesFichiers', name:'mesFichiers', methods:['GET'])]
-    public function indexFichier(FichierDemandeRepository $fichierDemandeRepository, EntityManagerInterface $entityManager): Response
+    #[Route('/mesFichiers/{id}', name:'mesFichiers', methods:['GET'])]
+    public function indexFichier($id,FichierDemandeRepository $fichierDemandeRepository, EntityManagerInterface $entityManager, InfoClientRepository $infoClientRepository): Response
     {
 
-
+        $client = $infoClientRepository->find($id);
         $user = $this->getUser();
-        $userId = $user->getId();
-//        $test = $fichierDemandeRepository->findAll();
-
-        $query = $fichierDemandeRepository->createQueryBuilder('fd')
-
-            ->leftJoin('fd.id_info_client', 'u')
-                ->leftJoin('fd.id_fichier', 'f')
-                ->addSelect('u')
-                ->addSelect('f')
-                ->where('u.id = :userId')
-                ->setParameter('userId', $userId)
-                ->getQuery();
-
-        $fichier_demandes = $query->getResult();
+//        $userId = $user->getId();
+        $fichiers = $entityManager->getRepository(FichierDemande::class)->findBy([
+            'id_info_client'=> $client,
+        ]);
 
         return $this->render('fichier_demande/index.html.twig', [
-            'fichier_demandes' => $fichier_demandes,
+            'fichier_demandes' => $fichiers,
             'user' => $user->getUserIdentifier()
         ]);
 
@@ -124,7 +128,7 @@ class FichierDemandeController extends AbstractController
             $entityManager->persist($fichierDemande);
             $entityManager->flush();
             $fichierDemandeRepository->save($fichierDemande, true);
-//            return $this->redirectToRoute('app_fichier_demande_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_fichier_demande_index', [], Response::HTTP_SEE_OTHER);
 
     }
 
