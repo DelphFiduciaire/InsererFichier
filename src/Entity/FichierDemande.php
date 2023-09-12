@@ -28,6 +28,9 @@ class FichierDemande
     #[ORM\ManyToOne(inversedBy: 'fichierDemandes')]
     private ?InfoClient $id_info_client = null;
 
+    #[ORM\Column]
+    private ?bool $verif = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -84,5 +87,17 @@ class FichierDemande
     public function __toString(): string
     {
         return $this->getNomFichierDemande() ?? '';
+    }
+
+    public function isVerif(): ?bool
+    {
+        return $this->verif;
+    }
+
+    public function setVerif(bool $verif): static
+    {
+        $this->verif = $verif;
+
+        return $this;
     }
 }

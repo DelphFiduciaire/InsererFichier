@@ -20,17 +20,30 @@ use Symfony\Component\Routing\Annotation\Route;
 class FichierDemandeController extends AbstractController
 {
 
+
+
     #[Route('/liste', name: 'app_fichier_demande_index', methods: ['GET'])]
-    public function index(FichierDemandeRepository $fichierDemandeRepository, EntityManagerInterface $entityManager): Response
+    public function index(FichierDemande $fichierDemande,FichierDemandeRepository $fichierDemandeRepository, EntityManagerInterface $entityManager): Response
     {
 
         $user = $this->getUser();
 //        $userId = $user->getId();
-        $fichiers = $fichierDemandeRepository->findAll();
+        $fichier_demande = $fichierDemandeRepository->findAll();
+
+        $result = [];
+
+        foreach ($fichier_demande as $fichier) {
+            // Vous pouvez ajouter votre logique de vérification ici.
+            // Supposons que vous ayez une méthode "verif" dans la classe FichierDemande
+            // qui retourne true si le fichier est enregistré et false sinon.
+            $estEnregistre = $fichierDemande->isVerif();
+            $result[] = $estEnregistre ? 1 : 0;
+        }
 
         return $this->render('fichier_demande/index.html.twig', [
-            'fichier_demandes' => $fichiers,
-            'user' => $user->getUserIdentifier()
+            'fichier_demandes' => $fichier_demande,
+            'user' => $user->getUserIdentifier(),
+            'result' => $result,
         ]);
 
     }

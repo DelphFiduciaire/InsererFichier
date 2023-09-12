@@ -51,6 +51,7 @@ class InfoClient
     #[ORM\ManyToOne(inversedBy: 'infoClients')]
     private ?User $id_user = null;
 
+
     public function __construct()
     {
         $this->fichierDemandes = new ArrayCollection();
@@ -229,5 +230,7 @@ class InfoClient
         $prenom = $this->getPrenom() ?? '';
         return $nom . ' ' . $prenom;
     }
+
+
 
 }

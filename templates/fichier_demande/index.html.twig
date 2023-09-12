@@ -22,19 +22,17 @@
                 <td>{{ fichier_demande.IdInfoClient }}</td>
 
                 <td>{{ fichier_demande.idUser }}</td>
-                {% for fichier_demande in fichier_demandes %}
-                    <td>
-                        {% if fichier_demande.IdInfoClient is not null %}
-                            <a href="{{ path('app_view_pdf', {'name': fichier_demande.getNomFichierDemande()}) }}"
-                               target="_blank">{{ fichier_demande.idFichier.nomFichier }}</a>
-                        {% else %}
-                            X
-                        {% endif %}
-                    </td>
-                {% endfor %}
+                <td>
+                    {% if fichier_demande.isVerif() %}
+                        <a href="{{ path('app_view_pdf', {'name': fichier_demande.getNomFichierDemande()}) }}"
+                           target="_blank">{{ fichier_demande.idFichier.nomFichier }}</a>
+                    {% else %}
+                        X
+                    {% endif %}
+                </td>
 
                 <td>
-                    {% if fichier_demande.IdInfoClient is not null %}
+                    {% if fichier_demande.isVerif() %}
                         <a href="{{ path('app_view_pdf', {'name': fichier_demande.getNomFichierDemande()}) }}"
                            target="_blank">Cliquez ici</a>
                     {% else %}
