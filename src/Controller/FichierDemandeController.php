@@ -1,8 +1,6 @@
 <?php
 
 namespace App\Controller;
-use App\Entity\Fichier;
-use App\Entity\InfoClient;
 use App\Entity\FichierDemande;
 use App\Form\FichierDemandeType;
 use App\Repository\FichierDemandeRepository;
@@ -10,20 +8,20 @@ use App\Repository\InfoClientRepository;
 use App\Repository\FichierRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use phpDocumentor\Reflection\Location;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\File\File;
 
 
 
 #[Route('/fichier/demande')]
 class FichierDemandeController extends AbstractController
 {
-    #[Route('/', name: 'app_fichier_demande_index', methods: ['GET'])]
-    public function index(FichierDemandeRepository $fichierDemandeRepository): Response
+
+    #[Route('/liste', name: 'app_fichier_demande_index', methods: ['GET'])]
+    public function index(FichierDemandeRepository $fichierDemandeRepository, EntityManagerInterface $entityManager): Response
     {
 
 
@@ -33,7 +31,7 @@ class FichierDemandeController extends AbstractController
         // dd($fichierDemandeRepository->findAll());
         return $this->render('fichier_demande/index.html.twig', [
             'fichier_demandes' =>   $fichierDemandeRepository->createQueryBuilder('fd')
-                ->leftJoin('fd.id_user', 'u')
+                ->leftJoin('fd.id_info_client', 'u')
                 ->leftJoin('fd.id_fichier', 'f')
                 ->addSelect('u')
                 ->addSelect('f')
@@ -41,6 +39,50 @@ class FichierDemandeController extends AbstractController
                 ->getResult(),
             'user'=>$user->getUserIdentifier()
         ]);
+
+    }
+
+
+    #[Route('/mesFichiers', name:'mesFichiers', methods:['GET'])]
+    public function indexFichier(FichierDemandeRepository $fichierDemandeRepository, EntityManagerInterface $entityManager): Response
+    {
+
+
+        $user = $this->getUser();
+        $userId = $user->getId();
+//        $test = $fichierDemandeRepository->findAll();
+
+        $query = $fichierDemandeRepository->createQueryBuilder('fd')
+
+            ->leftJoin('fd.id_info_client', 'u')
+                ->leftJoin('fd.id_fichier', 'f')
+                ->addSelect('u')
+                ->addSelect('f')
+                ->where('u.id = :userId')
+                ->setParameter('userId', $userId)
+                ->getQuery();
+
+        $fichier_demandes = $query->getResult();
+
+        return $this->render('fichier_demande/index.html.twig', [
+            'fichier_demandes' => $fichier_demandes,
+            'user' => $user->getUserIdentifier()
+        ]);
+
+//        $user = $this->getUser();
+//        $clients = $entityManager->getRepository(FichierDemande::class)->findBy([
+//            'fichier' => $fichierDemandeRepository->find($this->getUser())
+//        ]);
+//
+//        return $this->render('fichier_demande/index.html.twig', [
+//            'info_clients' => $clients,
+//            'fichier' => $fichierDemandeRepository->findAll(),
+//            'user'=>$user->getUserIdentifier()
+
+//        $user = $this->getUser();
+//        return $this->render('fichier_demande/index.html.twig', [
+//            'fichier' => $fichierDemandeRepository->findAll(),
+//            'user'=>$user->getUserIdentifier()
 
     }
 
@@ -71,7 +113,7 @@ class FichierDemandeController extends AbstractController
 //            dd($nomOriginal);
 
             // le chemin ou le fichier est inserer
-            $destinationDirectory = 'D:/XAMPP/htdocs/WEB/DELPH/cms_delph/public/'.'fichier';
+            $destinationDirectory = 'XAMPP\htdocs\WEB\InsererFichier/public/'.'fichier';
             $newFilename = $nomOriginal;
             $uploadedFile->move($destinationDirectory, $newFilename);
             $fichierDemande->setIdUser($user);
@@ -144,23 +186,7 @@ class FichierDemandeController extends AbstractController
     }
 
 
-    #[Route('/mesFichiers', name:'mesFichiers', methods:['GET'])]
-    public function indexFichier(FichierDemandeRepository $fichierDemandeRepository, EntityManagerInterface $entityManager): Response
-    {
 
-        $fichier = $this->getUser();
-
-        $clients = $entityManager->getRepository(FichierDemande::class)->findBy([
-            'id_fichier' =>$fichier,
-        ]);
-
-        return $this->render('info_client/index.html.twig', [
-            'info_clients' => $clients,
-            'fichier'=>$fichier->getUserIdentifier(),
-
-        ]);
-
-    }
 
 
 

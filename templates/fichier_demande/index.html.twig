@@ -17,13 +17,13 @@
         <tbody>
         {% for fichier_demande in fichier_demandes %}
             <tr>
-                <td>{{ fichier_demande.idClient }}</td>
+                <td>{{ fichier_demande.IdInfoClient }}</td>
 
-                <td>{{ fichier_demande.idUser.email }}</td>
+                <td>{{ fichier_demande.idUser }}</td>
 
                 <td>{{ fichier_demande.idFichier.nomFichier }}</td>
                 <td>
-                    <a href="{{ path('app_view_pdf', {'name': fichier_demande.getNomFichier()}) }}" target="_blank">Cliquez ici</a>
+                    <a href="{{ path('app_view_pdf', {'name': fichier_demande.getNomFichierDemande()}) }}" target="_blank">Cliquez ici</a>
 
                 </td>
             </tr>
