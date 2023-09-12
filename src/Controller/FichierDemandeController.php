@@ -33,27 +33,6 @@ class FichierDemandeController extends AbstractController
             'user' => $user->getUserIdentifier()
         ]);
 
-//        $user = $this->getUser();
-//        return $this->render('app_fichier_demande_index', [
-//            'info_clients' => $fichierDemandeRepository->findAll(),
-//            'user'=>$user->getUserIdentifier()
-//        ]);
-
-//        $user = $this->getUser();
-//        $test = $fichierDemandeRepository->findAll();
-//
-//        // dd($fichierDemandeRepository->findAll());
-//        return $this->render('fichier_demande/index.html.twig', [
-//            'fichier_demandes' =>   $fichierDemandeRepository->createQueryBuilder('fd')
-//                ->leftJoin('fd.id_info_client', 'u')
-//                ->leftJoin('fd.id_fichier', 'f')
-//                ->addSelect('u')
-//                ->addSelect('f')
-//                ->getQuery()
-//                ->getResult(),
-//            'user'=>$user->getUserIdentifier()
-//        ]);
-
     }
 
 
@@ -62,31 +41,21 @@ class FichierDemandeController extends AbstractController
     {
 
         $client = $infoClientRepository->find($id);
+        $nomClient = $client->getNom();
+        $prenomClient = $client->getPrenom();
         $user = $this->getUser();
 //        $userId = $user->getId();
         $fichiers = $entityManager->getRepository(FichierDemande::class)->findBy([
             'id_info_client'=> $client,
         ]);
 
-        return $this->render('fichier_demande/index.html.twig', [
+        return $this->render('fichier_demande/unFichier.html.twig', [
             'fichier_demandes' => $fichiers,
-            'user' => $user->getUserIdentifier()
+            'user' => $user->getUserIdentifier(),
+            'nomClient' => $nomClient,
+            'prenomClient'=>$prenomClient
         ]);
 
-//        $user = $this->getUser();
-//        $clients = $entityManager->getRepository(FichierDemande::class)->findBy([
-//            'fichier' => $fichierDemandeRepository->find($this->getUser())
-//        ]);
-//
-//        return $this->render('fichier_demande/index.html.twig', [
-//            'info_clients' => $clients,
-//            'fichier' => $fichierDemandeRepository->findAll(),
-//            'user'=>$user->getUserIdentifier()
-
-//        $user = $this->getUser();
-//        return $this->render('fichier_demande/index.html.twig', [
-//            'fichier' => $fichierDemandeRepository->findAll(),
-//            'user'=>$user->getUserIdentifier()
 
     }
 
@@ -139,12 +108,7 @@ class FichierDemandeController extends AbstractController
         ]);
     }
 
-//    #[Route('/view/{id}', name: 'app_fichier_demande_show', methods: ['GET'])]
-//    public function show(FichierDemande $fichierDemande): Response
-//    {
-//        $pathToFile = 'fichierpdf/' . $fichierDemande->getNomFichierDemande();
-//        return $this->file($pathToFile);
-//    }
+
 
     #[Route('/edit/{id}', name: 'app_fichier_demande_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, FichierDemande $fichierDemande, FichierDemandeRepository $fichierDemandeRepository): Response

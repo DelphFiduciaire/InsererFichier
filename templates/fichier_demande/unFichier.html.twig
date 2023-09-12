@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}FichierDemande index{% endblock %}
+
+{% block body %}
+    <h1>Fichier de {{ nomClient }} {{ prenomClient }}</h1>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Nom Client</th>
+            <th>Mail Client</th>
+            <th>Nom_fichier</th>
+            <th>Voir pdf</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for fichier_demande in fichier_demandes %}
+            <tr>
+                <td>{{ fichier_demande.IdInfoClient }}</td>
+
+                <td>{{ fichier_demande.idUser }}</td>
+
+                <td>{{ fichier_demande.idFichier.nomFichier }}</td>
+                <td>
+                    <a href="{{ path('app_view_pdf', {'name': fichier_demande.getNomFichierDemande()}) }}" target="_blank">Cliquez ici</a>
+
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_fichier_demande_new') }}">Create new</a>
+{% endblock %}
