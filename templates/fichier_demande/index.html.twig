@@ -8,22 +8,43 @@
     <table class="table">
         <thead>
         <tr>
-            <th>Nom Client</th>
-            <th>Mail Client</th>
-            <th>Nom_fichier</th>
-            <th>Voir pdf</th>
+            <th>Nom Prénom</th>
+            <th>Comptable associé</th>
+            {% for fichier_demande in fichier_demandes %}
+                <th>{{ fichier_demande.idFichier.nomFichier }}</th>
+            {% endfor %}
         </tr>
         </thead>
+
         <tbody>
         {% for fichier_demande in fichier_demandes %}
             <tr>
                 <td>{{ fichier_demande.IdInfoClient }}</td>
 
                 <td>{{ fichier_demande.idUser }}</td>
+                {% for fichier_demande in fichier_demandes %}
+                    <td>
+                        {% if fichier_demande.IdInfoClient is not null %}
+                            <a href="{{ path('app_view_pdf', {'name': fichier_demande.getNomFichierDemande()}) }}"
+                               target="_blank">{{ fichier_demande.idFichier.nomFichier }}</a>
+                        {% else %}
+                            X
+                        {% endif %}
+                    </td>
+                {% endfor %}
 
-                <td>{{ fichier_demande.idFichier.nomFichier }}</td>
                 <td>
-                    <a href="{{ path('app_view_pdf', {'name': fichier_demande.getNomFichierDemande()}) }}" target="_blank">Cliquez ici</a>
+                    {% if fichier_demande.IdInfoClient is not null %}
+                        <a href="{{ path('app_view_pdf', {'name': fichier_demande.getNomFichierDemande()}) }}"
+                           target="_blank">Cliquez ici</a>
+                    {% else %}
+                        X
+                    {% endif %}
+                </td>
+
+                {#                <td>{{ fichier_demande.idFichier.nomFichier }}</td> #}
+                <td>
+                    {#                    <a href="{{ path('app_view_pdf', {'name': fichier_demande.getNomFichierDemande()}) }}" target="_blank">Cliquez ici</a> #}
 
                 </td>
             </tr>
