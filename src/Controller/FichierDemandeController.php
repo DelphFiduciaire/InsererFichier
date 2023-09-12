@@ -113,7 +113,7 @@ class FichierDemandeController extends AbstractController
 //            dd($nomOriginal);
 
             // le chemin ou le fichier est inserer
-            $destinationDirectory = 'XAMPP\htdocs\WEB\InsererFichier/public/'.'fichier';
+            $destinationDirectory = 'D:\XAMPP\htdocs\WEB\InsererFichier\public\fichier';
             $newFilename = $nomOriginal;
             $uploadedFile->move($destinationDirectory, $newFilename);
             $fichierDemande->setIdUser($user);
@@ -135,14 +135,14 @@ class FichierDemandeController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_fichier_demande_show', methods: ['GET'])]
-    public function show(FichierDemande $fichierDemande): Response
-    {
-        $pathToFile = 'fichierpdf/' . $fichierDemande->getNomFichierDemande();
-        return $this->file($pathToFile);
-    }
+//    #[Route('/view/{id}', name: 'app_fichier_demande_show', methods: ['GET'])]
+//    public function show(FichierDemande $fichierDemande): Response
+//    {
+//        $pathToFile = 'fichierpdf/' . $fichierDemande->getNomFichierDemande();
+//        return $this->file($pathToFile);
+//    }
 
-    #[Route('/{id}/edit', name: 'app_fichier_demande_edit', methods: ['GET', 'POST'])]
+    #[Route('/edit/{id}', name: 'app_fichier_demande_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, FichierDemande $fichierDemande, FichierDemandeRepository $fichierDemandeRepository): Response
     {
         $user = $this->getUser();
@@ -164,7 +164,7 @@ class FichierDemandeController extends AbstractController
     }
 
 
-    #[Route('/{name}', name: 'app_view_pdf', methods: ['GET'])]
+    #[Route('/view/{name}', name: 'app_view_pdf', methods: ['GET'])]
     public function view_pdf($name)
     {
         $projectRoot = $this->getParameter('kernel.project_dir');
