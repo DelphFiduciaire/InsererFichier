@@ -3,52 +3,32 @@
 {% block title %}FichierDemande index{% endblock %}
 
 {% block body %}
-    <h1>Fichier Demande index</h1>
+    <h1>Liste Fichiers</h1> <br>
 
     <table class="table">
         <thead>
         <tr>
             <th>Nom Prénom</th>
             <th>Comptable associé</th>
-            {% for fichier_demande in fichier_demandes %}
-                <th>{{ fichier_demande.idFichier.nomFichier }}</th>
-            {% endfor %}
+            <th>{% for fichier in fichiers %}
+                    {{ fichier.getNomFichier() }}
+                {% endfor %}</th>
+
+
         </tr>
         </thead>
-
         <tbody>
-        {% for fichier_demande in fichier_demandes %}
+        {% for client in clients %}
             <tr>
-                <td>{{ fichier_demande.IdInfoClient }}</td>
-
-                <td>{{ fichier_demande.idUser }}</td>
-                <td>
-                    {% if fichier_demande.isVerif() %}
-                        <a href="{{ path('app_view_pdf', {'name': fichier_demande.getNomFichierDemande()}) }}"
-                           target="_blank">{{ fichier_demande.idFichier.nomFichier }}</a>
-                    {% else %}
-                        X
-                    {% endif %}
-                </td>
-
-                <td>
-                    {% if fichier_demande.isVerif() %}
-                        <a href="{{ path('app_view_pdf', {'name': fichier_demande.getNomFichierDemande()}) }}"
-                           target="_blank">Cliquez ici</a>
-                    {% else %}
-                        X
-                    {% endif %}
-                </td>
-
-                {#                <td>{{ fichier_demande.idFichier.nomFichier }}</td> #}
-                <td>
-                    {#                    <a href="{{ path('app_view_pdf', {'name': fichier_demande.getNomFichierDemande()}) }}" target="_blank">Cliquez ici</a> #}
-
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="3">no records found</td>
+                <td>{{ client.nom }} {{ client.prenom }}</td>
+                <td>{{ client.idUser }}</td>
+{#                <td>#}
+{#                    {% if fichier_demande.verif is null %}#}
+{#                        V#}
+{#                    {% else %}#}
+{#                        X#}
+{#                    {% endif %}#}
+{#                </td>#}
             </tr>
         {% endfor %}
         </tbody>

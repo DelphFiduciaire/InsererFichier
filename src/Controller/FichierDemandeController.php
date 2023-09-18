@@ -1,7 +1,9 @@
 <?php
 
 namespace App\Controller;
+use App\Entity\Fichier;
 use App\Entity\FichierDemande;
+use App\Entity\InfoClient;
 use App\Form\FichierDemandeType;
 use App\Repository\FichierDemandeRepository;
 use App\Repository\InfoClientRepository;
@@ -23,27 +25,19 @@ class FichierDemandeController extends AbstractController
 
 
     #[Route('/liste', name: 'app_fichier_demande_index', methods: ['GET'])]
-    public function index(FichierDemande $fichierDemande,FichierDemandeRepository $fichierDemandeRepository, EntityManagerInterface $entityManager): Response
+    public function index(FichierDemandeRepository $fichierDemandeRepository, EntityManagerInterface $entityManager): Response
     {
 
         $user = $this->getUser();
-//        $userId = $user->getId();
         $fichier_demande = $fichierDemandeRepository->findAll();
-
-        $result = [];
-
-        foreach ($fichier_demande as $fichier) {
-            // Vous pouvez ajouter votre logique de vérification ici.
-            // Supposons que vous ayez une méthode "verif" dans la classe FichierDemande
-            // qui retourne true si le fichier est enregistré et false sinon.
-            $estEnregistre = $fichierDemande->isVerif();
-            $result[] = $estEnregistre ? 1 : 0;
-        }
+        $client = $entityManager->getRepository(InfoClient::class)->findAll();
+        $fichier = $entityManager->getRepository(Fichier::class)->findAll();
 
         return $this->render('fichier_demande/index.html.twig', [
             'fichier_demandes' => $fichier_demande,
-            'user' => $user->getUserIdentifier(),
-            'result' => $result,
+            'clients' => $client,
+            'fichiers' => $fichier,
+            'user' => $user,
         ]);
 
     }
@@ -82,22 +76,15 @@ class FichierDemandeController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $uploadedFile = $form->get('nom_fichier_demande')->getData();
-//            dd($uploadedFile);
             // Il s'agit de l'id du client
             $idClient = $form->get('id_info_client')->getData()->getid();
             $idClient = $infocrepo->find($idClient);
-//            dd($idClient);
-//            $idClient = $userrepo->find($idClient);
-//            dd($idClient);
 
             //Il s'agit de l'id du fichier demander pour tout les clients
             $idNomFichier= $form->get('id_fichier')->getData()->getId();
 
             $idNomFichier = $fichierrepo->find($idNomFichier);
-//            dd($idNomFichier);
             $nomOriginal = $form->get('nom_fichier_demande')->getData()->getClientOriginalName();
-//            dd($nomOriginal);
-
             // le chemin ou le fichier est inserer
             $destinationDirectory = 'D:\XAMPP\htdocs\WEB\InsererFichier\public\fichier';
             $newFilename = $nomOriginal;
@@ -106,7 +93,6 @@ class FichierDemandeController extends AbstractController
             $fichierDemande->setNomFichierDemande($newFilename);
             $fichierDemande->setIdInfoClient($idClient);
             $fichierDemande->setIdFichier($idNomFichier);
-//            dd($fichierDemande);
             $entityManager->persist($fichierDemande);
             $entityManager->flush();
             $fichierDemandeRepository->save($fichierDemande, true);
@@ -156,7 +142,7 @@ class FichierDemandeController extends AbstractController
         return $this->file($filePath, null, ResponseHeaderBag::DISPOSITION_INLINE);
     }
 
-    #[Route('/{id}', name: 'app_fichier_demande_delete', methods: ['POST'])]
+    #[Route('/{id}', name: 'app_fichier_demande_delete', methods: ['GET'])]
     public function delete(Request $request, FichierDemande $fichierDemande, FichierDemandeRepository $fichierDemandeRepository): Response
     {
         if ($this->isCsrfTokenValid('delete'.$fichierDemande->getId(), $request->request->get('_token'))) {

@@ -31,7 +31,7 @@
             {{ form_label(form.num_pro, 'Numéro professionel', {'label_attr': {'class': 'text-right'}}) }}
             {{ form_widget(form.num_pro, {'attr': {'class': 'form-control mt-2'}}) }}
 
-            {{ form_label(form.num, 'Numéro de protable', {'label_attr': {'class': 'text-right'}}) }}
+            {{ form_label(form.num, 'Numéro de portable', {'label_attr': {'class': 'text-right'}}) }}
             {{ form_widget(form.num, {'attr': {'class': 'form-control mt-2'}}) }}
 
 
@@ -54,6 +54,8 @@
         </div>
 
     </div>
+    <a href="{{ path('app_info_client_index') }}" class="btn btn-dark">Retour</a>
+
     <button class="btn btn-dark">{{ button_label|default('Enregistrer') }}</button >
 
 </div>

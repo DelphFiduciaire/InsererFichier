@@ -4,7 +4,6 @@
 
     <div>
         <div class="form-group mb-4">
-            {# {{ dump(form.id_fichier) }}  #}
             {{ form_label(form.id_info_client, 'Choisir un client', {'label_attr': {'class': 'text-right'}}) }}
             {{ form_row(form.id_info_client, {'attr': {'class': 'form-control mt-2'}}) }}
 
@@ -18,8 +17,10 @@
                 {{ form_row(form.nom_fichier_demande, {'attr': {'class': 'form-control mt-2', 'type': 'type'}}) }}
 
             </div>
-
+            <br>
             <button class="btn btn-dark" type="submit">{{ button_label|default('Enregistrer') }}</button>
+            <a href="{{ path('app_fichier_demande_index') }}" class="btn btn-dark">Retour </a>
+
 
 
         </div>

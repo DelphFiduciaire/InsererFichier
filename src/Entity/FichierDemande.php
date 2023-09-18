@@ -28,8 +28,10 @@ class FichierDemande
     #[ORM\ManyToOne(inversedBy: 'fichierDemandes')]
     private ?InfoClient $id_info_client = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?bool $verif = null;
+
+
 
     public function getId(): ?int
     {
@@ -94,10 +96,12 @@ class FichierDemande
         return $this->verif;
     }
 
-    public function setVerif(bool $verif): static
+    public function setVerif(?bool $verif): static
     {
         $this->verif = $verif;
 
         return $this;
     }
+
+
 }

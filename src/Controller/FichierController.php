@@ -26,33 +26,12 @@ class FichierController extends AbstractController
         ]);
     }
 
-    #[Route('/admin/add', name: 'app_fichier_new1', methods: ['GET'])]
+    #[Route('/admin/add', name: 'app_fichier_new', methods: ['GET'])]
     public function new1( FichierRepository $fichierRepository,EntityManagerInterface $entityManager): Response
     {
         // jappele la fonction pour ajouter un fichier avec le name en get
         $test = $fichierRepository->insert2($entityManager,$_GET['test']);
         return $this->redirectToRoute('app_fichier_index', [], Response::HTTP_SEE_OTHER);
-    }
-
-    #[Route('/admin/nouveau_fichier', name: 'app_fichier_new', methods: ['GET'])]
-    public function new(Request $request, FichierRepository $fichierRepository): Response
-    {
-        $user = $this->getUser();
-        $fichier = new Fichier();
-        $form = $this->createForm(FichierType::class, $fichier);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $fichierRepository->save($fichier, true);
-
-            return $this->redirectToRoute('app_fichier_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->renderForm('fichier/new.html.twig', [
-            'fichier' => $fichier,
-            'form' => $form,
-            'user'=>$user->getUserIdentifier(),
-        ]);
     }
 
 
