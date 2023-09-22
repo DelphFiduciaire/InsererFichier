@@ -50,9 +50,9 @@
                             Fichiers Bilan
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="{{ path('app_fichier_demande_new') }}">Insérer un fichier</a></li>
-                            <li><a class="dropdown-item" href="{{ path('app_fichier_demande_index') }}">Tous les fichiers</a></li>
-                            <li><a class="dropdown-item" href="{{ path('app_fichier_index') }}">les noms fichiers</a></li>
+                            <li><a class="dropdown-item" href="{{ path('app_fichier_bilan_new') }}">Insérer un fichier</a></li>
+                            <li><a class="dropdown-item" href="{{ path('app_fichier_bilan_index') }}">Tous les fichiers</a></li>
+                            <li><a class="dropdown-item" href="{{ path('app_fichier_nom_bilan_index') }}">les noms fichiers</a></li>
                         </ul>
                     </li>
 
@@ -99,6 +99,12 @@
     {% if is_granted('ROLE_ADMIN') %}
         <form class="d-flex"  name="fichier[nom_fichier]" method="get" action="/fichier/admin/add">
             <input class="form-control me-sm-2" type="text" name="test" placeholder="Ajouter Nom Fichier">
+            <button class="btn btn-secondary my-2 my-sm-0" type="submit">Ajouter</button>
+        </form>
+
+        </form>
+        <form class="d-flex"  name="fichier[nom_fichier]" method="get" action="/fichier/nom/bilan/admin/addBilan">
+            <input class="form-control me-sm-2" type="text" name="bilan" placeholder="Ajouter Nom Bilan">
             <button class="btn btn-secondary my-2 my-sm-0" type="submit">Ajouter</button>
         </form>
         </form>

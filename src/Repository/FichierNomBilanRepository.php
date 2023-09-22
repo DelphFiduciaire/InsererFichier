@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\FichierNomBilan;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -19,6 +20,17 @@ class FichierNomBilanRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, FichierNomBilan::class);
+    }
+
+
+    public function insertFichier(EntityManagerInterface $em,$d)
+    {
+        $sql = "INSERT INTO `fichier_nom_bilan`(`fichier_bilan`) VALUES ('$d')";
+
+        $stmt = $em->getConnection()->prepare($sql);
+        $resul = $stmt->executeQuery()->fetchAllAssociative();
+
+        return $resul;
     }
 
 //    /**

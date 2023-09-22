@@ -1,4 +1,34 @@
+{#{{ form_start(form) }}#}
+{#    {{ form_widget(form) }}#}
+{#    <button class="btn">{{ button_label|default('Save') }}</button>#}
+{#{{ form_end(form) }}#}
+
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
-{{ form_end(form) }}
+
+<div class="p-5" style="width: 800px; background-color: whitesmoke">
+
+    <div>
+        <div class="form-group mb-4">
+            {{ form_label(form.id_info_client, 'Choisir un client', {'label_attr': {'class': 'text-right'}}) }}
+            {{ form_row(form.id_info_client, {'attr': {'class': 'form-control mt-2'}}) }}
+
+            {{ form_label(form.id_fichier_bilan, 'Nom du fichier', {'label_attr': {'class': 'text-right'}}) }}
+            {{ form_row(form.id_fichier_bilan, {'attr': {'class': 'form-control mt-2'}}) }}
+
+
+            <br><br>
+            <div class="form-group">
+                {{ form_label(form.nom_fichier_bilan, 'Insérer un fichier', {'label_attr': {'class': 'text-right'}}) }}
+                {{ form_row(form.nom_fichier_bilan, {'attr': {'class': 'form-control mt-2', 'type': 'type'}}) }}
+
+            </div>
+            <br>
+            <button class="btn btn-dark" type="submit">{{ button_label|default('Enregistrer') }}</button>
+            <a href="{{ path('app_fichier_bilan_index') }}" class="btn btn-dark">Retour </a>
+
+
+
+        </div>
+        <br><br>
+
+        {{ form_end(form) }}

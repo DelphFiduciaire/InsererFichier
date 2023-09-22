@@ -12,7 +12,7 @@ class FichierBilanType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('nom_fihcier_bilan')
+            ->add('nom_fichier_bilan')
             ->add('verif_bilan')
             ->add('id_user')
             ->add('id_info_client')

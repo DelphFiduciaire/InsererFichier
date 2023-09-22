@@ -17,14 +17,17 @@ class FichierBilanController extends AbstractController
     #[Route('/', name: 'app_fichier_bilan_index', methods: ['GET'])]
     public function index(FichierBilanRepository $fichierBilanRepository): Response
     {
+        $user=$this->getUser();
         return $this->render('fichier_bilan/index.html.twig', [
             'fichier_bilans' => $fichierBilanRepository->findAll(),
+            'user'=>$user->getUserIdentifier()
         ]);
     }
 
     #[Route('/new', name: 'app_fichier_bilan_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
+        $user = $this->getUser();
         $fichierBilan = new FichierBilan();
         $form = $this->createForm(FichierBilanType::class, $fichierBilan);
         $form->handleRequest($request);
@@ -39,14 +42,17 @@ class FichierBilanController extends AbstractController
         return $this->render('fichier_bilan/new.html.twig', [
             'fichier_bilan' => $fichierBilan,
             'form' => $form,
+            'user'=>$user->getUserIdentifier()
         ]);
     }
 
     #[Route('/{id}', name: 'app_fichier_bilan_show', methods: ['GET'])]
     public function show(FichierBilan $fichierBilan): Response
     {
+        $user=$this->getUser();
         return $this->render('fichier_bilan/show.html.twig', [
             'fichier_bilan' => $fichierBilan,
+            'user'=>$user->getUserIdentifier()
         ]);
     }
 

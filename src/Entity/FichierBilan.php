@@ -14,7 +14,7 @@ class FichierBilan
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $nom_fihcier_bilan = null;
+    private ?string $nom_fichier_bilan = null;
 
     #[ORM\ManyToOne(inversedBy: 'fichierBilans')]
     private ?User $id_user = null;
@@ -33,14 +33,14 @@ class FichierBilan
         return $this->id;
     }
 
-    public function getNomFihcierBilan(): ?string
+    public function getNomFichierBilan(): ?string
     {
-        return $this->nom_fihcier_bilan;
+        return $this->nom_fichier_bilan;
     }
 
-    public function setNomFihcierBilan(string $nom_fihcier_bilan): static
+    public function setNomFichierBilan(string $nom_fihcier_bilan): static
     {
-        $this->nom_fihcier_bilan = $nom_fihcier_bilan;
+        $this->nom_fichier_bilan = $nom_fihcier_bilan;
 
         return $this;
     }
