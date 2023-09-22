@@ -51,10 +51,14 @@ class InfoClient
     #[ORM\ManyToOne(inversedBy: 'infoClients')]
     private ?User $id_user = null;
 
+    #[ORM\OneToMany(mappedBy: 'id_info_client', targetEntity: FichierBilan::class)]
+    private Collection $fichierBilans;
+
 
     public function __construct()
     {
         $this->fichierDemandes = new ArrayCollection();
+        $this->fichierBilans = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -229,6 +233,36 @@ class InfoClient
         $nom = $this->getNom() ?? '';
         $prenom = $this->getPrenom() ?? '';
         return $nom . ' ' . $prenom;
+    }
+
+    /**
+     * @return Collection<int, FichierBilan>
+     */
+    public function getFichierBilans(): Collection
+    {
+        return $this->fichierBilans;
+    }
+
+    public function addFichierBilan(FichierBilan $fichierBilan): static
+    {
+        if (!$this->fichierBilans->contains($fichierBilan)) {
+            $this->fichierBilans->add($fichierBilan);
+            $fichierBilan->setIdInfoClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFichierBilan(FichierBilan $fichierBilan): static
+    {
+        if ($this->fichierBilans->removeElement($fichierBilan)) {
+            // set the owning side to null (unless already changed)
+            if ($fichierBilan->getIdInfoClient() === $this) {
+                $fichierBilan->setIdInfoClient(null);
+            }
+        }
+
+        return $this;
     }
 
 

@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}FichierNomBilan{% endblock %}
+
+{% block body %}
+    <h1>FichierNomBilan</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ fichier_nom_bilan.id }}</td>
+            </tr>
+            <tr>
+                <th>Fichier_bilan</th>
+                <td>{{ fichier_nom_bilan.fichierBilan }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_fichier_nom_bilan_index') }}">back to list</a>
+
+    <a href="{{ path('app_fichier_nom_bilan_edit', {'id': fichier_nom_bilan.id}) }}">edit</a>
+
+    {{ include('fichier_nom_bilan/_delete_form.html.twig') }}
+{% endblock %}

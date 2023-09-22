@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}FichierBilan{% endblock %}
+
+{% block body %}
+    <h1>FichierBilan</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ fichier_bilan.id }}</td>
+            </tr>
+            <tr>
+                <th>Nom_fihcier_bilan</th>
+                <td>{{ fichier_bilan.nomFihcierBilan }}</td>
+            </tr>
+            <tr>
+                <th>Verif_bilan</th>
+                <td>{{ fichier_bilan.verifBilan ? 'Yes' : 'No' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_fichier_bilan_index') }}">back to list</a>
+
+    <a href="{{ path('app_fichier_bilan_edit', {'id': fichier_bilan.id}) }}">edit</a>
+
+    {{ include('fichier_bilan/_delete_form.html.twig') }}
+{% endblock %}

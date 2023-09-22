@@ -37,10 +37,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'id_user', targetEntity: InfoClient::class)]
     private Collection $infoClients;
 
+    #[ORM\OneToMany(mappedBy: 'id_user', targetEntity: FichierBilan::class)]
+    private Collection $fichierBilans;
+
     public function __construct()
     {
         $this->fichierDemandes = new ArrayCollection();
         $this->infoClients = new ArrayCollection();
+        $this->fichierBilans = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -176,6 +180,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __toString() : string {
 
         return $this->getEmail();
+    }
+
+    /**
+     * @return Collection<int, FichierBilan>
+     */
+    public function getFichierBilans(): Collection
+    {
+        return $this->fichierBilans;
+    }
+
+    public function addFichierBilan(FichierBilan $fichierBilan): static
+    {
+        if (!$this->fichierBilans->contains($fichierBilan)) {
+            $this->fichierBilans->add($fichierBilan);
+            $fichierBilan->setIdUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFichierBilan(FichierBilan $fichierBilan): static
+    {
+        if ($this->fichierBilans->removeElement($fichierBilan)) {
+            // set the owning side to null (unless already changed)
+            if ($fichierBilan->getIdUser() === $this) {
+                $fichierBilan->setIdUser(null);
+            }
+        }
+
+        return $this;
     }
 
 

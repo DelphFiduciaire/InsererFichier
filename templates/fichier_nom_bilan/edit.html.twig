@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit FichierNomBilan{% endblock %}
+
+{% block body %}
+    <h1>Edit FichierNomBilan</h1>
+
+    {{ include('fichier_nom_bilan/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_fichier_nom_bilan_index') }}">back to list</a>
+
+    {{ include('fichier_nom_bilan/_delete_form.html.twig') }}
+{% endblock %}

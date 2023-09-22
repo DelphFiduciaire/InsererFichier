@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New FichierBilan{% endblock %}
+
+{% block body %}
+    <h1>Create new FichierBilan</h1>
+
+    {{ include('fichier_bilan/_form.html.twig') }}
+
+    <a href="{{ path('app_fichier_bilan_index') }}">back to list</a>
+{% endblock %}

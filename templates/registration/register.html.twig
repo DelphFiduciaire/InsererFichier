@@ -1,50 +1,30 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Register{% endblock %}
+{% block title %}
+    Register
+{% endblock %}
 
 {% block body %}
-
-
-
-    <h1 >Inscription</h1>
+    <h1>Inscription</h1>
     <br>
     {{ form_start(registrationForm) }}
-    <div class="content-form" >
-        <div class="p-5" style=" background-color: whitesmoke;">
-
+    <div class="content-form">
+        <div class="p-5" style="background-color: whitesmoke;">
             <div class="row">
-
-
                 <div class="form-group mb-4 col-3">
-                    {{ form_label(registrationForm.email, 'Mail', {'label_attr': {'class': 'text-right'}}) }}
-                    {{ form_widget(registrationForm.email, {'attr': {'class': 'form-control mt-2'} }) }}
+                    {{ form_row(registrationForm.email, {'label': 'Mail','label_attr': {'class': 'text-right'},'attr': {'class': 'form-control mt-2'}}) }}
 
-                    {{ form_label(registrationForm.plainPassword, 'Mot de Passe', {'label_attr': {'class': 'text-right'}}) }}
-                    {{ form_widget(registrationForm.plainPassword,{'attr': {'class': 'form-control mt-2'} }) }}
+                    {{ form_row(registrationForm.plainPassword, {'label': 'Mot de Passe', 'label_attr': {'class': 'text-right'},'attr': {'class': 'form-control mt-2'}}) }}
 
-                    {{ form_label(registrationForm.roles, 'Choisir un rôle', {'label_attr': {'class': 'text-right'}}) }}
-                    {{ form_row(registrationForm.roles) }}
+                    <br>
+                    {{ form_row(registrationForm.roles, {'label': 'Choisir un rôle','label_attr': {'class': 'text-right'}}) }}
                 </div>
-
-
-
-
             </div>
             <br>
-            {{ form_row(registrationForm.agreeTerms) }}
-            <button type="submit" class="btn btn-dark">Enregitrer</button>
+{#            {{ form_row(registrationForm.agreeTerms) }}#}
+            <button type="submit" class="btn btn-dark">Enregistrer</button>
         </div>
     </div>
     <br><br>
-
     {{ form_end(registrationForm) }}
-
-
-
-
-
 {% endblock %}
-
-
-
->

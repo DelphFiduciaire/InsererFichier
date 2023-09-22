@@ -67,7 +67,7 @@ class FichierDemandeController extends AbstractController
     }
 
     #[Route('/new', name: 'app_fichier_demande_new', methods: ['GET', 'POST'])]
-    public function new(EntityManagerInterface $entityManager ,Request $request, UserRepository $userrepo, InfoClientRepository $infocrepo , FichierRepository $fichierrepo, FichierDemandeRepository $fichierDemandeRepository): Response
+    public function new(EntityManagerInterface $entityManager ,Request $request, InfoClientRepository $infoClientRepository , FichierRepository $fichierRepository, FichierDemandeRepository $fichierDemandeRepository): Response
     {
         $user = $this->getUser();
         $fichierDemande = new FichierDemande();
@@ -78,12 +78,12 @@ class FichierDemandeController extends AbstractController
             $uploadedFile = $form->get('nom_fichier_demande')->getData();
             // Il s'agit de l'id du client
             $idClient = $form->get('id_info_client')->getData()->getid();
-            $idClient = $infocrepo->find($idClient);
+            $idClient = $infoClientRepository->find($idClient);
 
             //Il s'agit de l'id du fichier demander pour tout les clients
             $idNomFichier= $form->get('id_fichier')->getData()->getId();
 
-            $idNomFichier = $fichierrepo->find($idNomFichier);
+            $idNomFichier = $fichierRepository->find($idNomFichier);
             $nomOriginal = $form->get('nom_fichier_demande')->getData()->getClientOriginalName();
             // le chemin ou le fichier est inserer
             $destinationDirectory = 'D:\XAMPP\htdocs\WEB\InsererFichier\public\fichier';
