@@ -37,7 +37,7 @@ class FichierDemandeController extends AbstractController
             'fichier_demandes' => $fichier_demande,
             'clients' => $client,
             'fichiers' => $fichier,
-            'user' => $user,
+            'user' => $user->getUserIdentifier(),
         ]);
 
     }

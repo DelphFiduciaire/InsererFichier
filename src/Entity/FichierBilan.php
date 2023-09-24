@@ -38,9 +38,9 @@ class FichierBilan
         return $this->nom_fichier_bilan;
     }
 
-    public function setNomFichierBilan(string $nom_fihcier_bilan): static
+    public function setNomFichierBilan(string $nom_fichier_bilan): static
     {
-        $this->nom_fichier_bilan = $nom_fihcier_bilan;
+        $this->nom_fichier_bilan = $nom_fichier_bilan;
 
         return $this;
     }
@@ -91,5 +91,10 @@ class FichierBilan
         $this->id_fichier_bilan = $id_fichier_bilan;
 
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->getNomFichierBilan() ?? '';
     }
 }

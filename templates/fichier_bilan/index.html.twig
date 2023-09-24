@@ -3,35 +3,46 @@
 {% block title %}FichierBilan index{% endblock %}
 
 {% block body %}
-    <h1>FichierBilan index</h1>
+    <h1>Fichier Bilan index</h1>
 
     <table class="table">
         <thead>
-            <tr>
-                <th>Id</th>
-                <th>Nom_fihcier_bilan</th>
-                <th>Verif_bilan</th>
-                <th>actions</th>
-            </tr>
+        <tr class="table-dark">
+            <th>Nom Prénom</th>
+            <th>Comptable associé</th>
+            <th>
+                {% for fichierNomBilan in fichiers %}
+            <td>{{  fichierNomBilan.getFichierBilan() }}</td>
+            {% endfor %}
+            </th>
+        </tr>
         </thead>
         <tbody>
-        {% for fichier_bilan in fichier_bilans %}
+        {% for client in clients %}
             <tr>
-                <td>{{ fichier_bilan.id }}</td>
-                <td>{{ fichier_bilan.nomFihcierBilan }}</td>
-                <td>{{ fichier_bilan.verifBilan ? 'Yes' : 'No' }}</td>
+                <td>{{ client.nom }} {{ client.prenom }}</td>
+                <td>{{ client.idUser }}</td>
                 <td>
-                    <a href="{{ path('app_fichier_bilan_show', {'id': fichier_bilan.id}) }}">show</a>
-                    <a href="{{ path('app_fichier_bilan_edit', {'id': fichier_bilan.id}) }}">edit</a>
+                    {% for fichier_bilan in fichier_bilans %}
+                        <td>
+                    {% if fichier_bilan.verifBilan == 1 %}
+                        ✅
+                    {% else %}
+                        ❌
+                    {% endif %}
+                    </td>
+                    {% endfor %}
+
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="4">no records found</td>
+                <td colspan="3">No records found</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
+
 
     <a href="{{ path('app_fichier_bilan_new') }}">Create new</a>
 {% endblock %}
