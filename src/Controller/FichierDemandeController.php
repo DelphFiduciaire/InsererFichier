@@ -82,10 +82,10 @@ class FichierDemandeController extends AbstractController
 
             //Il s'agit de l'id du fichier demander pour tout les clients
             $idNomFichier= $form->get('id_fichier')->getData()->getId();
-
             $idNomFichier = $fichierRepository->find($idNomFichier);
             $nomOriginal = $form->get('nom_fichier_demande')->getData()->getClientOriginalName();
             // le chemin ou le fichier est inserer
+            $nomOriginal = $uploadedFile->getClientOriginalName();
             $destinationDirectory = 'D:\XAMPP\htdocs\WEB\InsererFichier\public\fichier';
             $newFilename = $nomOriginal;
             $uploadedFile->move($destinationDirectory, $newFilename);
@@ -95,6 +95,7 @@ class FichierDemandeController extends AbstractController
             $fichierDemande->setIdFichier($idNomFichier);
             $entityManager->persist($fichierDemande);
             $entityManager->flush();
+
             $fichierDemandeRepository->save($fichierDemande, true);
             return $this->redirectToRoute('app_fichier_demande_index', [], Response::HTTP_SEE_OTHER);
 

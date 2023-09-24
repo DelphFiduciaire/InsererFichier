@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\FichierBilan;
+use App\Entity\FichierDemande;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -19,6 +20,16 @@ class FichierBilanRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, FichierBilan::class);
+    }
+
+
+    public function save(FichierBilan $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->persist($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
     }
 
 //    /**

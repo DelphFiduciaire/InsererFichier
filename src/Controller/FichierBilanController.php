@@ -50,19 +50,19 @@ class FichierBilanController extends AbstractController
 
             $idNomFichierBilan = $form->get('id_fichier_bilan')->getData()->getId();
             $idNomFichierBilan = $fichierNomBilanRepository->find($idNomFichierBilan);
+            $nomOriginal = $form->get('nom_fichier_bilan')->getData()->getClientOriginalName();
 
             $nomOriginal = $uploadedFile->getClientOriginalName();
             $destinationDirectory = 'D:\XAMPP\htdocs\WEB\InsererFichier\public\fichier';
             $newFilename = $nomOriginal;
             $uploadedFile->move($destinationDirectory, $newFilename);
-
             $fichierBilan->setIdUser($user);
             $fichierBilan->setNomFichierBilan($newFilename);
             $fichierBilan->setIdInfoClient($idClient);
             $fichierBilan->setIdFichierBilan($idNomFichierBilan);
-
             $entityManager->persist($fichierBilan);
             $entityManager->flush();
+            $fichierBilanRepository->save($fichierBilan, true);
 
             return $this->redirectToRoute('app_fichier_bilan_index', [], Response::HTTP_SEE_OTHER);
         }
