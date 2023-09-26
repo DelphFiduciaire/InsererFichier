@@ -24,13 +24,14 @@
                 <td>{{ client.idUser }}</td>
                 <td>
                     {% for fichier_bilan in fichier_bilans %}
-                        <td>
-                    {% if fichier_bilan.verifBilan == 1 %}
+                <td>
+                    {#                    {{ dump(fichier_demande.idInfoClient) }}#}
+                    {% if fichier_bilan.idInfoClient.id== client.id  %}
                         ✅
                     {% else %}
                         ❌
                     {% endif %}
-                    </td>
+                </td>
                     {% endfor %}
 
                 </td>

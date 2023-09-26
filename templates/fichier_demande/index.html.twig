@@ -33,7 +33,8 @@
                 <td>
                     {% for fichier_demande in fichiers_demandes %}
                 <td>
-                    {% if fichier_demande.verif == 1 %}
+{#                    {{ dump(fichier_demande.idInfoClient) }}#}
+                    {% if fichier_demande.idInfoClient.id== client.id  %}
                         ✅
                     {% else %}
                         ❌

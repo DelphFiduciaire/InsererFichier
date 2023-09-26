@@ -31,7 +31,7 @@ class FichierDemandeController extends AbstractController
 
         $client = $entityManager->getRepository(InfoClient::class)->findAll();
         $fichier = $entityManager->getRepository(Fichier::class)->findAll();
-
+//        dd($fichierDemandeRepository->findAll());
         return $this->render('fichier_demande/index.html.twig', [
             'fichiers_demandes' => $fichierDemandeRepository->findAll(),
             'clients' => $client,

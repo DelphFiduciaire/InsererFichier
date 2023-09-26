@@ -48,7 +48,7 @@ class FichierNomBilanController extends AbstractController
         ]);
     }
 
-    #[Route('/admin/addBilan', name: 'app_fichier_new', methods: ['GET'])]
+    #[Route('/admin/addBilan', name: 'app_fichierNomBilan_new', methods: ['GET'])]
     public function newBilan( FichierNomBilanRepository $fichierNomBilanRepository,EntityManagerInterface $entityManager): Response
     {
         // jappele la fonction pour ajouter un fichier avec le name en get
