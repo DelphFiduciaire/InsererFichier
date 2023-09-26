@@ -33,7 +33,7 @@ class FichierDemandeType extends AbstractType
                 ],
             ])
 
-
+            ->add('verif')
             ->add('id_info_client' , EntityType::class, [
                 'class' => InfoClient::class,
             ])

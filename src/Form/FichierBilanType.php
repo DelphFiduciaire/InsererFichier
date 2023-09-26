@@ -27,7 +27,7 @@ class FichierBilanType extends AbstractType
             ],
         ])
         ->add('verif_bilan')
-        ->add('id_user')
+//        ->add('id_user')
         ->add('id_info_client')
         ->add('id_fichier_bilan');
     }

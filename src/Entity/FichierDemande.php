@@ -96,7 +96,7 @@ class FichierDemande
         return $this->verif;
     }
 
-    public function setVerif(?bool $verif): static
+    public function setVerif(?bool $verif): self
     {
         $this->verif = $verif;
 

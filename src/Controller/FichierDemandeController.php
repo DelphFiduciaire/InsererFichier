@@ -27,14 +27,13 @@ class FichierDemandeController extends AbstractController
     #[Route('/liste', name: 'app_fichier_demande_index', methods: ['GET'])]
     public function index(FichierDemandeRepository $fichierDemandeRepository, EntityManagerInterface $entityManager): Response
     {
-
         $user = $this->getUser();
-        $fichier_demande = $fichierDemandeRepository->findAll();
+
         $client = $entityManager->getRepository(InfoClient::class)->findAll();
         $fichier = $entityManager->getRepository(Fichier::class)->findAll();
 
         return $this->render('fichier_demande/index.html.twig', [
-            'fichier_demandes' => $fichier_demande,
+            'fichiers_demandes' => $fichierDemandeRepository->findAll(),
             'clients' => $client,
             'fichiers' => $fichier,
             'user' => $user->getUserIdentifier(),

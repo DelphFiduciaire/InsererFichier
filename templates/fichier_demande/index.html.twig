@@ -10,11 +10,19 @@
         <tr class="table-dark">
             <th>Nom Prénom</th>
             <th>Comptable associé</th>
-            <th>{% for fichier in fichiers %}
-                    {{ fichier.getNomFichier() }}
-                {% endfor %}</th>
 
+            <th>
+                {% for fichier in fichiers %}
+            <td>{{  fichier.getNomFichier() }}</td>
+            {% endfor %}
+            </th>
 
+{#            <th>#}
+{#                <td> {% for fichier in fichiers %}#}
+{#                    {{ fichier.getNomFichier() }}#}
+{#                    {% endfor %}#}
+{#                    </td>#}
+{#            </th>#}
         </tr>
         </thead>
         <tbody>
@@ -22,6 +30,18 @@
             <tr>
                 <td>{{ client.nom }} {{ client.prenom }}</td>
                 <td>{{ client.idUser }}</td>
+                <td>
+                    {% for fichier_demande in fichiers_demandes %}
+                <td>
+                    {% if fichier_demande.verif == 1 %}
+                        ✅
+                    {% else %}
+                        ❌
+                    {% endif %}
+                </td>
+                {% endfor %}
+
+                </td>
             </tr>
         {% endfor %}
         </tbody>
@@ -29,3 +49,6 @@
 
     <a href="{{ path('app_fichier_demande_new') }}">Create new</a>
 {% endblock %}
+
+
+

@@ -9,6 +9,10 @@
 
     <div>
         <div class="form-group mb-4">
+{#            {{ form_label(form.id_fichier_bilan, 'Choisir un client', {'label_attr': {'class': 'text-right'}}) }}#}
+
+
+
             {{ form_label(form.id_info_client, 'Choisir un client', {'label_attr': {'class': 'text-right'}}) }}
             {{ form_row(form.id_info_client, {'attr': {'class': 'form-control mt-2'}}) }}
 
@@ -20,7 +24,8 @@
             <div class="form-group">
                 {{ form_label(form.nom_fichier_bilan, 'Insérer un fichier', {'label_attr': {'class': 'text-right'}}) }}
                 {{ form_row(form.nom_fichier_bilan, {'attr': {'class': 'form-control mt-2', 'type': 'type'}}) }}
-
+                <br>
+                {{ form_row(form.verif_bilan) }}
             </div>
             <br>
             <button class="btn btn-dark" type="submit">{{ button_label|default('Enregistrer') }}</button>
