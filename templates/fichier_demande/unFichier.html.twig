@@ -7,29 +7,37 @@
 {% block body %}
     <h1>Fichier de {{ nomClient }} {{ prenomClient }}</h1>
 
+{#    {{ form_label(form.bilan.anneeBilan, 'Choisir une année', {'label_attr': {'class': 'text-right'}}) }}#}
+{#    {{ form_row(form.bilan.anneeBilan, {'attr': {'class': 'form-control mt-2'}}) }} <br>#}
+
+    <form action="{{ path('app_fichier_bilan_annee')}}" method="get">
+        <label for="anneeSelect">Sélectionnez une année :</label>
+        <select id="anneeSelect" name="annee">
+            {% for bilan in bilans %}
+                <option value="{{ bilan.anneeBilan }}">Année {{ bilan.anneeBilan }}</option>
+            {% endfor %}
+        </select>
+        <a href="{{ path('app_fichier_bilan_annee') }}" class="btn btn-dark">Voir</a>
+    </form>
+
+
     {{ form_start(form) }}
     <div class="p-5" style="width: 800px; background-color: whitesmoke">
         <table>
             <form method="POST" action="{{ path('app_fichier_demande_index') }}">
-
                 <tbody>
                 {% for fichier_demande in fichiers %}
                     <tr>
-                        {% for fichiers_nom_demandes in fichiers_nom_demande %}
-                            <td>{{ fichier_demande.nomFichier }}</td>
-                            <td>
-                                <div class="form-group mb-4">
-                                    <div class="form-group">
-                                        {{ form_row(form.fichiers_nom_demandes.nom_fichier_demande, {'attr': {'class': 'form-control mt-2', 'type': 'text'}}) }}
-                                        {{ form_row(form.verif) }}
-                                    </div>
-                                </div>
-                            </td>
-                        {% endfor %}
+                        <td>{{ fichier_demande.nomFichier }}</td>
+                        <td>
+                            {# Ajoutez le code du formulaire ici s'il est nécessaire #}
+                            <!-- Exemple de champ de formulaire : -->
+                            {{ form_row(form.fichiers_nom_demandes[fichier_demande.id].nom_fichier_demande, {'attr': {'class': 'form-control mt-2', 'type': 'text'}}) }}
+                            {{ form_row(form.verif) }}
+                        </td>
                     </tr>
                 {% endfor %}
                 </tbody>
-
             </form>
         </table>
     </div>
@@ -48,8 +56,7 @@
             <tr>
                 <td>{{ fichier_demande.idFichier.nomFichier }}</td>
                 <td>
-                    <a href="{{ path('app_view_pdf', {'name': fichier_demande.getNomFichierDemande()}) }}"
-                       target="_blank">
+                    <a href="{{ path('app_view_pdf', {'name': fichier_demande.getNomFichierDemande()}) }}" target="_blank">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
                             <!-- Insert your SVG code here -->
                         </svg>

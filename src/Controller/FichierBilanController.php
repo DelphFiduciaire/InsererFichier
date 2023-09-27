@@ -15,6 +15,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Form\FormView;
 
 #[Route('/fichier/bilan')]
 class FichierBilanController extends AbstractController
@@ -31,6 +32,24 @@ class FichierBilanController extends AbstractController
             'user'=>$user->getUserIdentifier(),
             'clients' => $client,
             'fichiers' => $fichier
+
+        ]);
+    }
+
+    #[Route('/fichierAnnee', name: 'app_fichier_bilan_annee', methods: ['GET'])]
+    public function fichierAnnee(EntityManagerInterface $entityManager,FichierBilanRepository $fichierBilanRepository): Response
+    {
+        $user=$this->getUser();
+        $client = $entityManager->getRepository(InfoClient::class)->findAll();
+        $fichier = $entityManager->getRepository(FichierNomBilan::class)->findAll();
+        $fichierBilan = $entityManager->getRepository(FichierBilan::class)->findAll();
+
+        return $this->render('app_fichier_bilan_annee.html.twig', [
+            'fichier_bilans' => $fichierBilanRepository->findAll(),
+            'user'=>$user->getUserIdentifier(),
+            'clients' => $client,
+            'fichiers' => $fichier,
+            'fichierBilans'=>$fichierBilan
 
         ]);
     }

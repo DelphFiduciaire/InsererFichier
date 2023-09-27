@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 use App\Entity\Fichier;
+use App\Entity\FichierBilan;
 use App\Entity\FichierDemande;
 use App\Entity\InfoClient;
 use App\Form\FichierDemandeType;
@@ -49,6 +50,7 @@ class FichierDemandeController extends AbstractController
 
         // Créez le formulaire avec la classe FichierDemandeType et assurez-vous de passer la requête ($request) en paramètre.
         $fichierDemande = new FichierDemande();
+        $bilan = $entityManager->getRepository(FichierBilan::class)->findAll();
         $form = $this->createForm(FichierDemandeType::class, $fichierDemande);
         $form->handleRequest($request);
         $fichier_nom = $entityManager->getRepository(Fichier::class)->findAll();
@@ -99,7 +101,8 @@ class FichierDemandeController extends AbstractController
             'prenomClient' => $prenomClient,
             'form' => $form,
             'fichiers' => $fichier_nom,
-            'fichiers_nom_demande'=>$fichierDemande
+            'fichiers_nom_demande'=>$fichierDemande,
+            'bilans'=>$bilan
         ]);
     }
 

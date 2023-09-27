@@ -28,6 +28,9 @@ class FichierBilan
     #[ORM\ManyToOne(inversedBy: 'fichierBilans')]
     private ?FichierNomBilan $id_fichier_bilan = null;
 
+    #[ORM\Column]
+    private ?int $annee_bilan = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -96,5 +99,17 @@ class FichierBilan
     public function __toString(): string
     {
         return $this->getNomFichierBilan() ?? '';
+    }
+
+    public function getAnneeBilan(): ?int
+    {
+        return $this->annee_bilan;
+    }
+
+    public function setAnneeBilan(int $annee_bilan): static
+    {
+        $this->annee_bilan = $annee_bilan;
+
+        return $this;
     }
 }

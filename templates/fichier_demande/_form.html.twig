@@ -10,13 +10,18 @@
             {{ form_label(form.id_fichier, 'Nom du fichier', {'label_attr': {'class': 'text-right'}}) }}
             {{ form_row(form.id_fichier, {'attr': {'class': 'form-control mt-2'}}) }}
 
+            {{ form_label(form.annee_bilan, 'Année', {'label_attr': {'class': 'text-right'}}) }}
+
 
             <br>
+
             <div class="form-group">
                 {{ form_label(form.nom_fichier_demande, 'Insérer un fichier', {'label_attr': {'class': 'text-right'}}) }}
-                {{ form_row(form.nom_fichier_demande, {'attr': {'class': 'form-control mt-2', 'type': 'type'}}) }}
+                {{ form_row(form.nom_fichier_demande, {'attr': {'class': 'form-control mt-2', 'type': 'file'}}) }}
                 <br>
                 {{ form_row(form.verif) }}
+            </div>
+
 
             </div>
             <br>
