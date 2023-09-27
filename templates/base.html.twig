@@ -97,14 +97,14 @@
     </div>
 
     {% if is_granted('ROLE_ADMIN') %}
-        <form class="d-flex"  name="fichier[nom_fichier]" method="get" action="/fichier/admin/add">
-            <input class="form-control me-sm-2" type="text" name="test" placeholder="Ajouter Nom Fichier">
+        <form style="margin-left: 30px" class="d-flex"  name="fichier[nom_fichier]" method="get" action="/fichier/admin/add">
+            <input class="form-control me-sm-2" type="text" name="test" placeholder="Nom Fichier">
             <button class="btn btn-secondary my-2 my-sm-0" type="submit">Ajouter</button>
         </form>
 
         </form>
-        <form class="d-flex"  name="fichier[nom_fichier]" method="get" action="/fichier/nom/bilan/admin/addBilan">
-            <input class="form-control me-sm-2" type="text" name="bilan" placeholder="Ajouter Nom Bilan">
+        <form style="margin-left: 30px" class="d-flex"  name="fichier[nom_fichier]" method="get" action="/fichier/nom/bilan/admin/addBilan">
+            <input class="form-control me-sm-2" type="text" name="bilan" placeholder="Nom Bilan">
             <button class="btn btn-secondary my-2 my-sm-0" type="submit">Ajouter</button>
         </form>
         </form>

@@ -3,8 +3,8 @@
 
     <div class="row">
         <div class="form-group mb-4 col-3">
-            {{ form_label(form.id_user, 'Choisir le comptable', {'label_attr': {'class': 'text-right'}}) }}
-            {{ form_row(form.id_user, {'attr': {'data-role': 'role_comptable'}}) }} <br>
+            {{ form_label(form.id_user, 'Choisir un comptable', {'label_attr': {'class': 'text-right'}}) }}
+            {{ form_row(form.id_user, {'attr': {'class': 'form-control mt-2'}}) }}
 
             {{ form_label(form.nom, 'Nom', {'label_attr': {'class': 'text-right'}}) }}
             {{ form_widget(form.nom, {'attr': {'class': 'form-control mt-2'}}) }}

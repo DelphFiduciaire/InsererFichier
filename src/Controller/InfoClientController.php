@@ -82,7 +82,7 @@ class InfoClientController extends AbstractController
         ]);
     }
 
-    #[Route('/delete/{id}', name: 'app_info_client_delete', methods: ['POST'])]
+    #[Route('/delete/{id}', name: 'app_info_client_delete', methods:['POST'])]
     public function delete(Request $request, InfoClient $infoClient, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$infoClient->getId(), $request->request->get('_token'))) {

@@ -3,8 +3,9 @@
 {% block title %}Fichier index{% endblock %}
 
 {% block body %}
-    <h1>tous les fichiers</h1>
-    <br>
+    <h1>Les noms des fichiers</h1><br>
+{#    <a href="{{ path('app_fichier_new') }}" class="btn btn-dark" style="position: relative; left: 70%">Insérer Fichier</a>#}
+
     <table class="table">
         <thead>
         <tr>
@@ -35,5 +36,4 @@
         </tbody>
     </table>
 
-{#    <a  href="{{ path('app_fichier_new') }}" class="btn btn-dark">Créer un nouveau</a>#}
 {% endblock %}

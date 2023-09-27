@@ -8,6 +8,8 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class FichierBilanType extends AbstractType
 {
@@ -22,11 +24,21 @@ class FichierBilanType extends AbstractType
                         'application/pdf',
                         'application/x-pdf',
                     ],
-                    'mimeTypesMessage' => 'Please upload a valid PDF document',
+                    'mimeTypesMessage' => 'Merci de mettre un fichier PDF',
                 ])
             ],
         ])
-        ->add('verif_bilan')
+            ->add('verif_bilan', CheckboxType::class, [
+                'label' => 'Check',
+                'required' => true,
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Ce champ est obligatoire.',
+                    ]),
+                ],
+            ])
+
+//            ->add('verif_bilan')
 //        ->add('id_user')
         ->add('id_info_client')
         ->add('id_fichier_bilan');
