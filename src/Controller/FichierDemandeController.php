@@ -42,28 +42,67 @@ class FichierDemandeController extends AbstractController
     }
 
 
-    #[Route('/mesFichiers/{id}', name:'mesFichiers', methods:['GET'])]
-    public function indexFichier($id,FichierDemandeRepository $fichierDemandeRepository, EntityManagerInterface $entityManager, InfoClientRepository $infoClientRepository): Response
+    #[Route('/mesFichiers/{id}', name: 'mesFichiers', methods: ['GET'])]
+    public function indexFichier($id, FichierDemandeRepository $fichierDemandeRepository, EntityManagerInterface $entityManager, InfoClientRepository $infoClientRepository, Request $request): Response
     {
+        $user = $this->getUser();
 
+        // Créez le formulaire avec la classe FichierDemandeType et assurez-vous de passer la requête ($request) en paramètre.
+        $fichierDemande = new FichierDemande();
+        $form = $this->createForm(FichierDemandeType::class, $fichierDemande);
+        $form->handleRequest($request);
+        $fichier_nom = $entityManager->getRepository(Fichier::class)->findAll();
+
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $uploadedFile = $form->get('nom_fichier_demande')->getData();
+
+            // Il n'est pas nécessaire de rechercher l'ID du client ici, car vous l'avez déjà dans la variable $id.
+            $idClient = $infoClientRepository->find($id);
+
+            $idNomFichier = $form->get('id_fichier')->getData()->getId();
+            $idNomFichier = $fichierDemandeRepository->find($idNomFichier);
+
+
+            // Vous avez déjà défini $nomOriginal deux fois, vous pouvez supprimer la première occurrence.
+            $nomOriginal = $uploadedFile->getClientOriginalName();
+
+            $destinationDirectory = 'D:\XAMPP\htdocs\WEB\InsererFichier\public\fichier';
+            $newFilename = $nomOriginal;
+            $uploadedFile->move($destinationDirectory, $newFilename);
+
+            $fichierDemande->setIdUser($user);
+            $fichierDemande->setNomFichierDemande($newFilename);
+            $fichierDemande->setIdInfoClient($idClient);
+            $fichierDemande->setIdFichier($idNomFichier);
+
+            $entityManager->persist($fichierDemande);
+            $entityManager->flush();
+
+            // Si vous utilisez déjà la méthode save de votre repository, inutile d'appeler persist et flush ici.
+            // $fichierDemandeRepository->save($fichierDemande, true);
+
+            return $this->redirectToRoute('app_fichier_demande_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        // Vous devez déplacer cette partie de code avant le "return" précédent, sinon elle ne sera jamais exécutée.
         $client = $infoClientRepository->find($id);
         $nomClient = $client->getNom();
         $prenomClient = $client->getPrenom();
-        $user = $this->getUser();
-//        $userId = $user->getId();
-        $fichiers = $entityManager->getRepository(FichierDemande::class)->findBy([
-            'id_info_client'=> $client,
-        ]);
+
+        $fichiers = $fichierDemandeRepository->findBy(['id_info_client' => $client]);
 
         return $this->render('fichier_demande/unFichier.html.twig', [
             'fichier_demandes' => $fichiers,
             'user' => $user->getUserIdentifier(),
             'nomClient' => $nomClient,
-            'prenomClient'=>$prenomClient
+            'prenomClient' => $prenomClient,
+            'form' => $form,
+            'fichiers' => $fichier_nom,
+            'fichiers_nom_demande'=>$fichierDemande
         ]);
-
-
     }
+
 
     #[Route('/new', name: 'app_fichier_demande_new', methods: ['GET', 'POST'])]
     public function new(EntityManagerInterface $entityManager ,Request $request, InfoClientRepository $infoClientRepository , FichierRepository $fichierRepository, FichierDemandeRepository $fichierDemandeRepository): Response
