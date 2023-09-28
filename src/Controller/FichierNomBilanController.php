@@ -56,6 +56,15 @@ class FichierNomBilanController extends AbstractController
         return $this->redirectToRoute('app_fichier_nom_bilan_index', [], Response::HTTP_SEE_OTHER);
     }
 
+
+    #[Route('/admin/addAnnee', name: 'app_fichierAnneeBilan_new', methods: ['GET'])]
+    public function newAnnee( FichierNomBilanRepository $fichierNomBilanRepository,EntityManagerInterface $entityManager): Response
+    {
+        // jappele la fonction pour ajouter un fichier avec le name en get
+        $annee = $fichierNomBilanRepository->insertAnnee($entityManager, $_GET['annee']);
+        return $this->redirectToRoute('app_fichier_nom_bilan_index', [], Response::HTTP_SEE_OTHER);
+    }
+
     #[Route('/{id}', name: 'app_fichier_nom_bilan_show', methods: ['GET'])]
     public function show(FichierNomBilan $fichierNomBilan): Response
     {

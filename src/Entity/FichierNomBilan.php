@@ -21,6 +21,9 @@ class FichierNomBilan
     #[ORM\OneToMany(mappedBy: 'id_fichier_bilan', targetEntity: FichierBilan::class)]
     private Collection $fichierBilans;
 
+    #[ORM\Column]
+    private ?int $annee_bilan = null;
+
     public function __construct()
     {
         $this->fichierBilans = new ArrayCollection();
@@ -76,5 +79,17 @@ class FichierNomBilan
     public function __toString(): string
     {
         return $this->getFichierBilan() ?? '';
+    }
+
+    public function getAnneeBilan(): ?int
+    {
+        return $this->annee_bilan;
+    }
+
+    public function setAnneeBilan(int $annee_bilan): static
+    {
+        $this->annee_bilan = $annee_bilan;
+
+        return $this;
     }
 }

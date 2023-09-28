@@ -44,8 +44,8 @@ class FichierBilanController extends AbstractController
         $fichier = $entityManager->getRepository(FichierNomBilan::class)->findAll();
         $fichierBilan = $entityManager->getRepository(FichierBilan::class)->findAll();
 
-        return $this->render('app_fichier_bilan_annee.html.twig', [
-            'fichier_bilans' => $fichierBilanRepository->findAll(),
+        return $this->render('fichier_demande/unFichier.html.twig', [
+            'fichier_nom_bilans' => $fichierBilanRepository->findAll(),
             'user'=>$user->getUserIdentifier(),
             'clients' => $client,
             'fichiers' => $fichier,

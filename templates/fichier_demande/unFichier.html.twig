@@ -21,27 +21,28 @@
     </form>
 
 
-    {{ form_start(form) }}
+{#    {{ form_start(form) }}#}
     <div class="p-5" style="width: 800px; background-color: whitesmoke">
         <table>
-            <form method="POST" action="{{ path('app_fichier_demande_index') }}">
+            <form method="POST" action="{{ path('app_fichier_bilan_index') }}">
                 <tbody>
-                {% for fichier_demande in fichiers %}
+                {% for fichier_bilan in bilans %}
                     <tr>
-                        <td>{{ fichier_demande.nomFichier }}</td>
+                        <td>{{ fichier_bilan.nomFichier }}</td>
                         <td>
                             {# Ajoutez le code du formulaire ici s'il est nécessaire #}
                             <!-- Exemple de champ de formulaire : -->
-                            {{ form_row(form.fichiers_nom_demandes[fichier_demande.id].nom_fichier_demande, {'attr': {'class': 'form-control mt-2', 'type': 'text'}}) }}
+                            {{ form_row(form.fichiers_nom_demandes[fichier_bilan.id].nom_fichier_demande, {'attr': {'class': 'form-control mt-2', 'type': 'text'}}) }}
                             {{ form_row(form.verif) }}
                         </td>
                     </tr>
                 {% endfor %}
                 </tbody>
             </form>
+
         </table>
     </div>
-    {{ form_end(form) }}
+{#    {{ form_end(form) }}#}
     <br><br>
 
     <table class="table">
