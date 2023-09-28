@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Controller;
+use App\Entity\Annee;
 use App\Entity\Fichier;
 use App\Entity\FichierBilan;
 use App\Entity\FichierDemande;
@@ -51,6 +52,7 @@ class FichierDemandeController extends AbstractController
         $nomClient = $client->getNom();
         $prenomClient = $client->getPrenom();
         $user = $this->getUser();
+        $annee = $entityManager->getRepository(Annee::class)->findAll();
         $bilan = $entityManager->getRepository(FichierNomBilan::class)->findAll();
         $fichiers = $entityManager->getRepository(FichierDemande::class)->findBy([
             'id_info_client'=> $client,
@@ -60,7 +62,8 @@ class FichierDemandeController extends AbstractController
             'user' => $user->getUserIdentifier(),
             'nomClient' => $nomClient,
             'prenomClient'=>$prenomClient,
-            'bilans'=>$bilan
+            'bilans'=>$bilan,
+            'annees'=>$annee
         ]);
     }
 

@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Annee index{% endblock %}
+
+{% block body %}
+    <h1>Annee index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Annee_bilan</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for annee in annees %}
+            <tr>
+                <td>{{ annee.id }}</td>
+                <td>{{ annee.anneeBilan }}</td>
+                <td>
+                    <a href="{{ path('app_annee_show', {'id': annee.id}) }}">show</a>
+                    <a href="{{ path('app_annee_edit', {'id': annee.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_annee_new') }}">Create new</a>
+{% endblock %}

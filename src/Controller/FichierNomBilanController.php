@@ -26,6 +26,7 @@ class FichierNomBilanController extends AbstractController
         ]);
     }
 
+
     #[Route('/new', name: 'app_fichier_nom_bilan_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -53,17 +54,11 @@ class FichierNomBilanController extends AbstractController
     {
         // jappele la fonction pour ajouter un fichier avec le name en get
         $bilan = $fichierNomBilanRepository->insertFichier($entityManager,$_GET['bilan']);
-        return $this->redirectToRoute('app_fichier_nom_bilan_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_fichier_annee_index', [], Response::HTTP_SEE_OTHER);
     }
 
 
-    #[Route('/admin/addAnnee', name: 'app_fichierAnneeBilan_new', methods: ['GET'])]
-    public function newAnnee( FichierNomBilanRepository $fichierNomBilanRepository,EntityManagerInterface $entityManager): Response
-    {
-        // jappele la fonction pour ajouter un fichier avec le name en get
-        $annee = $fichierNomBilanRepository->insertAnnee($entityManager, $_GET['annee']);
-        return $this->redirectToRoute('app_fichier_nom_bilan_index', [], Response::HTTP_SEE_OTHER);
-    }
+
 
     #[Route('/{id}', name: 'app_fichier_nom_bilan_show', methods: ['GET'])]
     public function show(FichierNomBilan $fichierNomBilan): Response

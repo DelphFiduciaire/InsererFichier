@@ -12,14 +12,14 @@
     {#    {{ form_row(form.bilan.anneeBilan, {'attr': {'class': 'form-control mt-2'}}) }} <br> #}
     <br><br><br>
     <h2>Liste des fichiers par bilans </h2>
-    <form action="{{ path('app_fichier_bilan_annee') }}" method="get">
+    <form action="{{ path('app_AnneeBilan_new') }}" method="get">
         <label for="anneeSelect">Sélectionnez une année :</label>
         <select id="anneeSelect" name="annee">
-            {% for bilan in bilans %}
-                <option value="{{ bilan.anneeBilan }}">Année {{ bilan.anneeBilan }}</option>
+            {% for annee in annees %}
+                <option value="{{ annee.anneeBilan }}">Année {{ annee.anneeBilan }}</option>
             {% endfor %}
         </select>
-        <a href="{{ path('app_fichier_bilan_annee') }}" class="btn btn-dark">Voir</a>
+{#        <a href="{{ path('mesFichiers', {'id': id}) }}" class="btn btn-dark">Voir</a>#}
     </form>
     <br><br><br>
     <h2>Inserer les fichiers bilans </h2>

@@ -33,15 +33,7 @@ class FichierNomBilanRepository extends ServiceEntityRepository
         return $resul;
     }
 
-    public function insertAnnee(EntityManagerInterface $em,$d)
-    {
-        $sql = "INSERT INTO `fichier_nom_bilan`(`annee_bilan`) VALUES ('$d')";
 
-        $stmt = $em->getConnection()->prepare($sql);
-        $resul = $stmt->executeQuery()->fetchAllAssociative();
-
-        return $resul;
-    }
 
 //    /**
 //     * @return FichierNomBilan[] Returns an array of FichierNomBilan objects
