@@ -9,18 +9,14 @@
     <h1>Fichier de {{ nomClient }} {{ prenomClient }}</h1>
 
     <br><br><br>
-    <h2>Liste des fichiers par bilans </h2>
-    <form action="{{ path('app_AnneeBilan_new') }}" method="get">
-        <label for="anneeSelect">Sélectionnez une année :</label>
-        <select name="annee">
-            {% for annee in annees %}
-                <option href="{{ path('mesFichiers', {'id': annee.id}) }}" value="{{ annee.anneeBilan }}">Année {{ annee.anneeBilan }} </option>
+    <h2>Liste des fichiers par bilans </h2> <br>
+{#    <form action="{{ path('app_AnneeBilan_new') }}" method="get">#}
+{#    <label >Sélectionnez une année :</label>#}
+    {% for annee in annees %}
+        <a class="btn btn-dark"  href="{{ path('mesFichiersBilan', {'id': annee.id, 'anneeBilan': annee.anneeBilan}) }}">Année {{ annee.anneeBilan }}</a>
+    {% endfor %}
 
 
-            {% endfor %}
-        </select>
-
-    </form>
     <br><br><br>
     <h2>Inserer les fichiers bilans </h2>
 

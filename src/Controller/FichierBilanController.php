@@ -2,11 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\Annee;
 use App\Entity\Fichier;
 use App\Entity\FichierBilan;
 use App\Entity\FichierNomBilan;
 use App\Entity\InfoClient;
 use App\Form\FichierBilanType;
+use App\Repository\AnneeRepository;
 use App\Repository\FichierBilanRepository;
 use App\Repository\FichierNomBilanRepository;
 use App\Repository\InfoClientRepository;
@@ -51,6 +53,29 @@ class FichierBilanController extends AbstractController
             'fichiers' => $fichier,
             'fichierBilans'=>$fichierBilan
 
+        ]);
+    }
+
+    #[Route('/mesFichiersBilan/{id}', name:'mesFichiersBilan', methods:['GET'])]
+    public function indexFichier($id,FichierBilanRepository $fichierBilanRepository,AnneeRepository $anneeRepository, EntityManagerInterface $entityManager, InfoClientRepository $infoClientRepository): Response
+    {
+        $client = $infoClientRepository->find($id);
+        $anneBilan = $anneeRepository->find($id);
+        $nomClient = $client->getNom();
+        $prenomClient = $client->getPrenom();
+        $user = $this->getUser();
+//        $annee = $entityManager->getRepository(Annee::class)->findAll();
+        $bilan = $entityManager->getRepository(FichierNomBilan::class)->findAll();
+        $annee = $entityManager->getRepository(Annee::class)->findBy([
+            'annee_bilan'=> $anneBilan,
+        ]);
+        return $this->render('fichier_bilan/fichierAnnee.html.twig', [
+//            'fichier_demandes' => $fichiers,
+            'user' => $user->getUserIdentifier(),
+            'nomClient' => $nomClient,
+            'prenomClient'=>$prenomClient,
+            'bilans'=>$bilan,
+            'annees'=>$annee
         ]);
     }
 
