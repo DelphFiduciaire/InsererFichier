@@ -5,12 +5,14 @@
 {% endblock %}
 
 {% block body %}
+
     <h1>Fichier de {{ nomClient }} {{ prenomClient }}</h1>
 
-{#    {{ form_label(form.bilan.anneeBilan, 'Choisir une année', {'label_attr': {'class': 'text-right'}}) }}#}
-{#    {{ form_row(form.bilan.anneeBilan, {'attr': {'class': 'form-control mt-2'}}) }} <br>#}
-
-    <form action="{{ path('app_fichier_bilan_annee')}}" method="get">
+    {#    {{ form_label(form.bilan.anneeBilan, 'Choisir une année', {'label_attr': {'class': 'text-right'}}) }} #}
+    {#    {{ form_row(form.bilan.anneeBilan, {'attr': {'class': 'form-control mt-2'}}) }} <br> #}
+    <br><br><br>
+    <h2>Liste des fichiers par bilans </h2>
+    <form action="{{ path('app_fichier_bilan_annee') }}" method="get">
         <label for="anneeSelect">Sélectionnez une année :</label>
         <select id="anneeSelect" name="annee">
             {% for bilan in bilans %}
@@ -19,37 +21,34 @@
         </select>
         <a href="{{ path('app_fichier_bilan_annee') }}" class="btn btn-dark">Voir</a>
     </form>
+    <br><br><br>
+    <h2>Inserer les fichiers bilans </h2>
 
-
-{#    {{ form_start(form) }}#}
     <div class="p-5" style="width: 800px; background-color: whitesmoke">
         <table>
-            <form method="POST" action="{{ path('app_fichier_bilan_index') }}">
-                <tbody>
-                {% for fichier_bilan in bilans %}
-                    <tr>
-                        <td>{{ fichier_bilan.nomFichier }}</td>
-                        <td>
-                            {# Ajoutez le code du formulaire ici s'il est nécessaire #}
-                            <!-- Exemple de champ de formulaire : -->
-                            {{ form_row(form.fichiers_nom_demandes[fichier_bilan.id].nom_fichier_demande, {'attr': {'class': 'form-control mt-2', 'type': 'text'}}) }}
-                            {{ form_row(form.verif) }}
-                        </td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </form>
-
+            <tbody>
+            {% for fichier in bilans %}
+                <tr>
+                    <td>{{ fichier.fichierBilan }}</td>
+                    <td>
+                        <input type="file" name="nom_fichier_bilan" id="fichier_bilan" class="form-control mt-2"/>
+                        <br>
+                        <input type="checkbox" name="verif" class="form-check-input"/>
+                        <button class="btn btn-dark" type="submit">Enregistrer</button>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
         </table>
     </div>
-{#    {{ form_end(form) }}#}
-    <br><br>
+    <br><br><br>
+    <h2>Liste des fichiers </h2>
 
     <table class="table">
         <thead>
         <tr class="table-dark">
             <th>Nom_fichier</th>
-            <th>Voir pdf</th>
+            <th>Voir PDF</th>
         </tr>
         </thead>
         <tbody>
@@ -57,15 +56,12 @@
             <tr>
                 <td>{{ fichier_demande.idFichier.nomFichier }}</td>
                 <td>
-                    <a href="{{ path('app_view_pdf', {'name': fichier_demande.getNomFichierDemande()}) }}" target="_blank">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
-                            <!-- Insert your SVG code here -->
-                        </svg>
+                    <a href="{{ path('app_view_pdf', {'name': fichier_demande.getNomFichierDemande()}) }}"
+                       target="_blank">
+                        Voir le PDF
                     </a>
                     <a href="{{ path('app_fichier_demande_delete', {'id': fichier_demande.id}) }}">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
-                            <!-- Insert your SVG code here -->
-                        </svg>
+                        Supprimer
                     </a>
                 </td>
             </tr>
@@ -76,4 +72,5 @@
         {% endfor %}
         </tbody>
     </table>
+
 {% endblock %}
