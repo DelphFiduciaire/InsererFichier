@@ -54,7 +54,7 @@ class FichierNomBilanController extends AbstractController
     {
         // jappele la fonction pour ajouter un fichier avec le name en get
         $bilan = $fichierNomBilanRepository->insertFichier($entityManager,$_GET['bilan']);
-        return $this->redirectToRoute('app_fichier_annee_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_fichier_nom_bilan_index', [], Response::HTTP_SEE_OTHER);
     }
 
 

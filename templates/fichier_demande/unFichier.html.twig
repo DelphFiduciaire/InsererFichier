@@ -8,37 +8,44 @@
 
     <h1>Fichier de {{ nomClient }} {{ prenomClient }}</h1>
 
-    {#    {{ form_label(form.bilan.anneeBilan, 'Choisir une année', {'label_attr': {'class': 'text-right'}}) }} #}
-    {#    {{ form_row(form.bilan.anneeBilan, {'attr': {'class': 'form-control mt-2'}}) }} <br> #}
     <br><br><br>
     <h2>Liste des fichiers par bilans </h2>
     <form action="{{ path('app_AnneeBilan_new') }}" method="get">
         <label for="anneeSelect">Sélectionnez une année :</label>
-        <select id="anneeSelect" name="annee">
+        <select name="annee">
             {% for annee in annees %}
-                <option value="{{ annee.anneeBilan }}">Année {{ annee.anneeBilan }}</option>
+                <option href="{{ path('mesFichiers', {'id': annee.id}) }}" value="{{ annee.anneeBilan }}">Année {{ annee.anneeBilan }} </option>
+
+
             {% endfor %}
         </select>
-{#        <a href="{{ path('mesFichiers', {'id': id}) }}" class="btn btn-dark">Voir</a>#}
+
     </form>
     <br><br><br>
     <h2>Inserer les fichiers bilans </h2>
 
     <div class="p-5" style="width: 800px; background-color: whitesmoke">
         <table>
-            <tbody>
-            {% for fichier in bilans %}
-                <tr>
-                    <td>{{ fichier.fichierBilan }}</td>
-                    <td>
-                        <input type="file" name="nom_fichier_bilan" id="fichier_bilan" class="form-control mt-2"/>
-                        <br>
-                        <input type="checkbox" name="verif" class="form-check-input"/>
-                        <button class="btn btn-dark" type="submit">Enregistrer</button>
-                    </td>
-                </tr>
-            {% endfor %}
-            </tbody>
+            <form action="" method="get" enctype="multipart/form-data">
+                <table>
+                    <tbody>
+                    {% for fichier in bilans %}
+                        <tr>
+                            <td>{{ fichier.fichierBilan }}</td>
+                            <td>
+                                <input type="file" name="fichier_bilan" class="form-control mt-2"/>
+                                <br>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <input type="checkbox" name="verif" class="form-check-input"/>
+
+                <button class="btn btn-dark" type="submit">Enregistrer</button>
+            </form>
+
+
         </table>
     </div>
     <br><br><br>
