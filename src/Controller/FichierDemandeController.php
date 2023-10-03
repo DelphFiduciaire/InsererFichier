@@ -63,6 +63,7 @@ class FichierDemandeController extends AbstractController
             'user' => $user->getUserIdentifier(),
 //            'nomClient' => $nomClient,
 //            'prenomClient'=>$prenomClient,
+            'clients'=>$client,
             'societe' =>$societeClient,
             'bilans'=>$bilan,
             'annees'=>$annee
@@ -105,7 +106,7 @@ class FichierDemandeController extends AbstractController
 
     }
 
-        return $this->renderForm('fichier_demande/unFichier.html.twig', [
+        return $this->renderForm('fichier_demande/new.html.twig', [
             'nom_fichier_demande' => $fichierDemande,
             'form' => $form,
             'user'=>$user->getUserIdentifier()
