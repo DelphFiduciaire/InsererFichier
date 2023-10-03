@@ -14,6 +14,12 @@
 
     <div class="p-5" style="width: 800px; background-color: whitesmoke">
         <table>
+            <label for="id_annee" class="text-right">Choisir une année</label>
+            <select id="id_annee" name="id_annee" class="form-control mt-2">
+                {% for annee in annees %}
+                    <option value="{{ annee.getAnneeBilan() }}">{{ annee.getAnneeBilan() }}</option>
+                {% endfor %}
+            </select>
             <form action="" method="get" enctype="multipart/form-data">
                 <table>
                     <tbody>
@@ -25,12 +31,7 @@
                                 <br>
                             </td>
                             <td>
-                                <label for="id_annee" class="text-right">Choisir une année</label>
-                                <select id="id_annee" name="id_annee" class="form-control mt-2">
-                                    {% for annee in annees %}
-                                        <option value="{{ annee.getAnneeBilan() }}">{{ annee.getAnneeBilan() }}</option>
-                                    {% endfor %}
-                                </select>
+
                             </td>
                         </tr>
                     {% endfor %}
