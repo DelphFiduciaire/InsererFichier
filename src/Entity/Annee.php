@@ -43,33 +43,38 @@ class Annee
         return $this;
     }
 
-    /**
-     * @return Collection<int, FichierBilan>
-     */
-    public function getFichierBilans(): Collection
+    public function __toString(): string
     {
-        return $this->fichierBilans;
+        return $this->getAnneeBilan() ?? '';
     }
+//
+//    /**
+//     * @return Collection<int, FichierBilan>
+//     */
+//    public function getFichierBilans(): Collection
+//    {
+//        return $this->fichierBilans;
+//    }
+//
+//    public function addFichierBilan(FichierBilan $fichierBilan): static
+//    {
+//        if (!$this->fichierBilans->contains($fichierBilan)) {
+//            $this->fichierBilans->add($fichierBilan);
+//            $fichierBilan->setIdAnnee($this);
+//        }
+//
+//        return $this;
+//    }
+//
+//    public function removeFichierBilan(FichierBilan $fichierBilan): static
+//    {
+//        if ($this->fichierBilans->removeElement($fichierBilan)) {
+//            // set the owning side to null (unless already changed)
+//            if ($fichierBilan->getIdAnnee() === $this) {
+//                $fichierBilan->setIdAnnee(null);
+//            }
+//        }
+//
+//        return $this;
 
-    public function addFichierBilan(FichierBilan $fichierBilan): static
-    {
-        if (!$this->fichierBilans->contains($fichierBilan)) {
-            $this->fichierBilans->add($fichierBilan);
-            $fichierBilan->setIdAnnee($this);
-        }
-
-        return $this;
-    }
-
-    public function removeFichierBilan(FichierBilan $fichierBilan): static
-    {
-        if ($this->fichierBilans->removeElement($fichierBilan)) {
-            // set the owning side to null (unless already changed)
-            if ($fichierBilan->getIdAnnee() === $this) {
-                $fichierBilan->setIdAnnee(null);
-            }
-        }
-
-        return $this;
-    }
 }

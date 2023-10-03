@@ -49,8 +49,9 @@ class FichierDemandeController extends AbstractController
     public function indexFichier($id,FichierDemandeRepository $fichierDemandeRepository, EntityManagerInterface $entityManager, InfoClientRepository $infoClientRepository): Response
     {
         $client = $infoClientRepository->find($id);
-        $nomClient = $client->getNom();
-        $prenomClient = $client->getPrenom();
+//        $nomClient = $client->getNom();
+//        $prenomClient = $client->getPrenom();
+        $societeClient = $client->getNomSociete();
         $user = $this->getUser();
         $annee = $entityManager->getRepository(Annee::class)->findAll();
         $bilan = $entityManager->getRepository(FichierNomBilan::class)->findAll();
@@ -60,8 +61,9 @@ class FichierDemandeController extends AbstractController
         return $this->render('fichier_demande/unFichier.html.twig', [
             'fichier_demandes' => $fichiers,
             'user' => $user->getUserIdentifier(),
-            'nomClient' => $nomClient,
-            'prenomClient'=>$prenomClient,
+//            'nomClient' => $nomClient,
+//            'prenomClient'=>$prenomClient,
+            'societe' =>$societeClient,
             'bilans'=>$bilan,
             'annees'=>$annee
         ]);

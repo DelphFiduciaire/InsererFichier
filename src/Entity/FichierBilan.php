@@ -98,10 +98,7 @@ class FichierBilan
         return $this;
     }
 
-    public function __toString(): string
-    {
-        return $this->getNomFichierBilan() ?? '';
-    }
+
 
     public function getIdAnnee(): ?Annee
     {
@@ -112,7 +109,13 @@ class FichierBilan
     {
         $this->id_annee = $id_annee;
 
+
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->getNomFichierBilan() ?? '';
     }
 
 

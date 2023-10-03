@@ -6,7 +6,7 @@
 
 {% block body %}
 
-    <h1>Fichier de {{ nomClient }} {{ prenomClient }}</h1>
+    <h1>Fichier de {{ societe }}</h1>
 
     <br><br><br>
     <h2>Liste des fichiers par bilans </h2> <br>
@@ -29,15 +29,22 @@
                         <tr>
                             <td>{{ fichier.fichierBilan }}</td>
                             <td>
-                                <input type="file" name="fichier_bilan" class="form-control mt-2"/>
+                                <input type="file" name="nom_fichier_bilan" class="form-control mt-2"/>
                                 <br>
+                            </td>
+                            <td>
+                                <label for="id_annee" class="text-right">Choisir une année</label>
+                                <select id="id_annee" name="id_annee" class="form-control mt-2">
+                                    {% for annee in annees %}
+                                        <option value="{{ annee.getAnneeBilan() }}">{{ annee.getAnneeBilan() }}</option>
+                                    {% endfor %}
+                                </select>
                             </td>
                         </tr>
                     {% endfor %}
                     </tbody>
                 </table>
                 <input type="checkbox" name="verif" class="form-check-input"/>
-
                 <button class="btn btn-dark" type="submit">Enregistrer</button>
             </form>
 
