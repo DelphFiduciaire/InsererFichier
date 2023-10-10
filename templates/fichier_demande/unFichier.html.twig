@@ -9,41 +9,25 @@
     <h1>Fichier de {{ societe }}</h1>
 
     <br>
-
+<i>coucou</i>
     <h2>Inserer les fichiers bilans </h2>
 
     <div class="p-5" style="width: 800px; background-color: whitesmoke">
-        <table>
-            <label for="id_annee" class="text-right">Choisir une année</label>
-            <select id="id_annee" name="id_annee" class="form-control mt-2">
-                {% for annee in annees %}
-                    <option value="{{ annee.getAnneeBilan() }}">{{ annee.getAnneeBilan() }}</option>
-                {% endfor %}
-            </select>
-            <form action="" method="get" enctype="multipart/form-data">
-                <table>
-                    <tbody>
-                    {% for fichier in bilans %}
-                        <tr>
-                            <td>{{ fichier.fichierBilan }}</td>
-                            <td>
-                                <input type="file" name="nom_fichier_bilan" class="form-control mt-2"/>
-                                <br>
-                            </td>
-                            <td>
-
-                            </td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-                <input type="checkbox" name="verif" class="form-check-input"/>
-                <button class="btn btn-dark" type="submit">Enregistrer</button>
-            </form>
-
-
-        </table>
+        <form action="" method="post" enctype="multipart/form-data">
+            {% for fichiers in fichier %}
+                <h3>{{ fichier.fichierBilan }}</h3>
+                <div class="form-group">
+                    {{ form_label(form.fichierBilan, 'Insérer un fichier', {'label_attr': {'class': 'text-right'}}) }}
+                    {{ form_widget(form.fichierBilan, {'attr': {'class': 'form-control mt-2', 'type': 'file'}}) }}
+                </div>
+            {% endfor %}
+            <input type="checkbox" name="verif" class="form-check-input"/>
+            <button class="btn btn-dark" type="submit">Enregistrer</button>
+        </form>
     </div>
+
+
+
     <br><br>
     <h2>Liste des fichiers par bilans </h2> <br>
     {% for annee in annees %}

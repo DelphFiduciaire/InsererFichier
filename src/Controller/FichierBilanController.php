@@ -1,16 +1,19 @@
 <?php
 
 namespace App\Controller;
-
 use App\Entity\Annee;
 use App\Entity\Fichier;
 use App\Entity\FichierBilan;
+use App\Entity\FichierDemande;
 use App\Entity\FichierNomBilan;
 use App\Entity\InfoClient;
 use App\Form\FichierBilanType;
+use App\Form\FichierDemandeType;
 use App\Repository\AnneeRepository;
 use App\Repository\FichierBilanRepository;
+use App\Repository\FichierDemandeRepository;
 use App\Repository\FichierNomBilanRepository;
+use App\Repository\FichierRepository;
 use App\Repository\InfoClientRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -37,24 +40,60 @@ class FichierBilanController extends AbstractController
 
         ]);
     }
+    #[Route('/mesFichiers/{id}', name:'mesFichiers', methods:['GET', 'POST'])]
+    public function indexFichierBilan($id,FichierBilanRepository $fichierBilanRepository, FichierNomBilanRepository $fichierNomBilanRepository, Request $request, EntityManagerInterface $entityManager, InfoClientRepository $infoClientRepository): Response
+    {
 
-//    #[Route('/fichierAnnee', name: 'app_fichier_bilan_annee', methods: ['GET'])]
-//    public function fichierAnnee(EntityManagerInterface $entityManager,FichierBilanRepository $fichierBilanRepository): Response
-//    {
-//        $user=$this->getUser();
-//        $client = $entityManager->getRepository(InfoClient::class)->findAll();
-//        $fichier = $entityManager->getRepository(FichierNomBilan::class)->findAll();
-//        $fichierBilan = $entityManager->getRepository(FichierBilan::class)->findAll();
-//
-//        return $this->render('fichier_demande/unFichier.html.twig', [
-//            'fichier_nom_bilans' => $fichierBilanRepository->findAll(),
-//            'user'=>$user->getUserIdentifier(),
-//            'clients' => $client,
-//            'fichiers' => $fichier,
-//            'fichierBilans'=>$fichierBilan
-//
-//        ]);
-//    }
+        $client = $infoClientRepository->find($id);
+        $societeClient = $client->getNomSociete();
+        $user = $this->getUser();
+        $annee = $entityManager->getRepository(Annee::class)->findAll();
+        $fichier = $entityManager->getRepository(FichierNomBilan::class)->findAll();
+        $bilan = $entityManager->getRepository(FichierBilanRepository::class)->findBy([
+            'id_info_client' => $client,
+        ]);
+
+        $fichierBilan = new FichierBilan();
+        $form = $this->createForm(FichierBilanType::class, $fichierBilan);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            dd("ok");
+            $uploadedFile = $form->get('nom_fichier_bilan')->getData();
+            // Il s'agit de l'id du client
+            $idClient = $form->get('id_info_client')->getData()->getid();
+            $idClient = $infoClientRepository->find($idClient);
+
+            //Il s'agit de l'id du fichier demander pour tout les clients
+            $idNomFichier= $form->get('id_fichier_bilan')->getData()->getId();
+            $idNomFichier = $fichierRepository->find($idNomFichier);
+            $nomOriginal = $form->get('nom_fichier_bilan')->getData()->getClientOriginalName();
+            // le chemin ou le fichier est inserer
+            $nomOriginal = $uploadedFile->getClientOriginalName();
+            $destinationDirectory = 'D:\XAMPP\htdocs\WEB\InsererFichier\public\fichier';
+            $newFilename = $nomOriginal;
+            $uploadedFile->move($destinationDirectory, $newFilename);
+            $fichierBilan->setIdUser($user);
+            $fichierBilan->setNomFichierBilan($newFilename);
+            $fichierBilan->setIdInfoClient($idClient);
+            $fichierBilan->setIdFichierBilan($idNomFichier);
+            $entityManager->persist($fichierBilan);
+            $entityManager->flush();
+
+            $fichierBilanRepository->save($fichierBilan, true);
+            return $this->redirectToRoute('mesFichiers', [], Response::HTTP_SEE_OTHER);
+
+        }
+        return $this->render('fichier_bilan/unFichier.html.twig', [
+            'bilans' => $bilan,
+            'user' => $user->getUserIdentifier(),
+            'clients' => $client,
+            'societe' => $societeClient,
+            'fichiers' => $fichier,
+            'annees' => $annee,
+            'form' => $form
+        ]);
+    }
 
     #[Route('/mesFichiersBilan/{id}/{id_client}', name:'mesFichiersBilan', methods:['GET'])]
     public function indexFichier($id,$id_client,FichierBilanRepository $fichierBilanRepository,AnneeRepository $anneeRepository, EntityManagerInterface $entityManager, InfoClientRepository $infoClientRepository): Response

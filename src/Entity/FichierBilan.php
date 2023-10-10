@@ -4,8 +4,13 @@ namespace App\Entity;
 
 use App\Repository\FichierBilanRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\HttpFoundation\File\File;
+
+
 
 #[ORM\Entity(repositoryClass: FichierBilanRepository::class)]
+#[Vich\Uploadable]
 class FichierBilan
 {
     #[ORM\Id]
@@ -117,6 +122,8 @@ class FichierBilan
     {
         return $this->getNomFichierBilan() ?? '';
     }
+
+
 
 
 }

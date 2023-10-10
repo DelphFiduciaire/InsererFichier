@@ -3,7 +3,6 @@
 namespace App\Repository;
 
 use App\Entity\FichierBilan;
-use App\Entity\FichierDemande;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
