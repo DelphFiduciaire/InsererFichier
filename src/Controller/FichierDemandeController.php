@@ -45,64 +45,64 @@ class FichierDemandeController extends AbstractController
     }
 
 
-//    #[Route('/mesFichiers/{id}', name:'mesFichiers', methods:['GET', 'POST'])]
-//    public function indexFichier($id,FichierDemandeRepository $fichierDemandeRepository, FichierRepository $fichierRepository, Request $request, EntityManagerInterface $entityManager, InfoClientRepository $infoClientRepository): Response
-//    {
-//
-//            $client = $infoClientRepository->find($id);
-////        $nomClient = $client->getNom();
-////        $prenomClient = $client->getPrenom();
-//            $societeClient = $client->getNomSociete();
-//            $user = $this->getUser();
-//            $annee = $entityManager->getRepository(Annee::class)->findAll();
-//            $bilan = $entityManager->getRepository(FichierNomBilan::class)->findAll();
-//            $fichiers = $entityManager->getRepository(FichierDemande::class)->findBy([
-//                'id_info_client' => $client,
-//            ]);
-//
-//            $fichierDemande = new FichierDemande();
-//            $form = $this->createForm(FichierDemandeType::class, $fichierDemande);
-//            $form->handleRequest($request);
-//
-//            if ($form->isSubmitted() && $form->isValid()) {
-//                dd("ok");
-//                $uploadedFile = $form->get('nom_fichier_demande')->getData();
-//                // Il s'agit de l'id du client
-//                $idClient = $form->get('id_info_client')->getData()->getid();
-//                $idClient = $infoClientRepository->find($idClient);
-//
-//                //Il s'agit de l'id du fichier demander pour tout les clients
-//                $idNomFichier= $form->get('id_fichier')->getData()->getId();
-//                $idNomFichier = $fichierRepository->find($idNomFichier);
-//                $nomOriginal = $form->get('nom_fichier_demande')->getData()->getClientOriginalName();
-//                // le chemin ou le fichier est inserer
-//                $nomOriginal = $uploadedFile->getClientOriginalName();
-//                $destinationDirectory = 'D:\XAMPP\htdocs\WEB\InsererFichier\public\fichier';
-//                $newFilename = $nomOriginal;
-//                $uploadedFile->move($destinationDirectory, $newFilename);
-//                $fichierDemande->setIdUser($user);
-//                $fichierDemande->setNomFichierDemande($newFilename);
-//                $fichierDemande->setIdInfoClient($idClient);
-//                $fichierDemande->setIdFichier($idNomFichier);
-//                $entityManager->persist($fichierDemande);
-//                $entityManager->flush();
-//
-//                $fichierDemandeRepository->save($fichierDemande, true);
-//                return $this->redirectToRoute('mesFichiers', [], Response::HTTP_SEE_OTHER);
-//
-//            }
-//            return $this->render('fichier_demande/unFichier.html.twig', [
-//                'fichier_demandes' => $fichiers,
-//                'user' => $user->getUserIdentifier(),
-////            'nomClient' => $nomClient,
-////            'prenomClient'=>$prenomClient,
-//                'clients' => $client,
-//                'societe' => $societeClient,
-//                'bilans' => $bilan,
-//                'annees' => $annee,
-//                'form' => $form
-//            ]);
-//    }
+    #[Route('/mesFichiers/{id}', name:'mesFichiers', methods:['GET', 'POST'])]
+    public function indexFichier($id,FichierDemandeRepository $fichierDemandeRepository, FichierRepository $fichierRepository, Request $request, EntityManagerInterface $entityManager, InfoClientRepository $infoClientRepository): Response
+    {
+
+            $client = $infoClientRepository->find($id);
+//        $nomClient = $client->getNom();
+//        $prenomClient = $client->getPrenom();
+            $societeClient = $client->getNomSociete();
+            $user = $this->getUser();
+            $annee = $entityManager->getRepository(Annee::class)->findAll();
+            $bilan = $entityManager->getRepository(FichierNomBilan::class)->findAll();
+            $fichiers = $entityManager->getRepository(FichierDemande::class)->findBy([
+                'id_info_client' => $client,
+            ]);
+
+            $fichierDemande = new FichierDemande();
+            $form = $this->createForm(FichierDemandeType::class, $fichierDemande);
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                dd("ok");
+                $uploadedFile = $form->get('nom_fichier_demande')->getData();
+                // Il s'agit de l'id du client
+                $idClient = $form->get('id_info_client')->getData()->getid();
+                $idClient = $infoClientRepository->find($idClient);
+
+                //Il s'agit de l'id du fichier demander pour tout les clients
+                $idNomFichier= $form->get('id_fichier')->getData()->getId();
+                $idNomFichier = $fichierRepository->find($idNomFichier);
+                $nomOriginal = $form->get('nom_fichier_demande')->getData()->getClientOriginalName();
+                // le chemin ou le fichier est inserer
+                $nomOriginal = $uploadedFile->getClientOriginalName();
+                $destinationDirectory = 'D:\XAMPP\htdocs\WEB\InsererFichier\public\fichier';
+                $newFilename = $nomOriginal;
+                $uploadedFile->move($destinationDirectory, $newFilename);
+                $fichierDemande->setIdUser($user);
+                $fichierDemande->setNomFichierDemande($newFilename);
+                $fichierDemande->setIdInfoClient($idClient);
+                $fichierDemande->setIdFichier($idNomFichier);
+                $entityManager->persist($fichierDemande);
+                $entityManager->flush();
+
+                $fichierDemandeRepository->save($fichierDemande, true);
+                return $this->redirectToRoute('mesFichiers', [], Response::HTTP_SEE_OTHER);
+
+            }
+            return $this->render('fichier_demande/unFichier.html.twig', [
+                'fichier_demandes' => $fichiers,
+                'user' => $user->getUserIdentifier(),
+//            'nomClient' => $nomClient,
+//            'prenomClient'=>$prenomClient,
+                'clients' => $client,
+                'societe' => $societeClient,
+                'bilans' => $bilan,
+                'annees' => $annee,
+                'form' => $form
+            ]);
+    }
 
 
     #[Route('/new', name: 'app_fichier_demande_new', methods: ['GET', 'POST'])]

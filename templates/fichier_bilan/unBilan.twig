@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}FichierBilan index{% endblock %}
+
+{% block body %}
+    <table class="table">
+        <thead>
+        <tr class="table-dark">
+            <th>Nom Prénom</th>
+            <th>Comptable associé</th>
+            {% for fichierNomBilan in fichiers %}
+                <th>{{ fichierNomBilan.getFichierBilan() }}</th>
+            {% endfor %}
+        </tr>
+        </thead>
+        <tbody>
+        {% for client in clients %}
+            <tr>
+                <td>{{ client.nom }} {{ client.prenom }}</td>
+                <td>{{ client.idUser }}</td>
+                {% for fichier_bilan in fichier_bilans %}
+                    <td>
+                        {% if fichier_bilan.idInfoClient.id == client.id %}
+                            <a href="{{ path('app_view_pdf', {'name': fichier_bilan.getNomFichierBilan()}) }}" target="_blank">
+                                <svg style="width: 1em; height: 1em; vertical-align: middle; fill: currentColor; overflow: hidden;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+                                    <!-- Votre contenu SVG ici -->
+                                </svg>
+                            </a>
+                            ✅
+                        {% else %}
+                            ❌
+                        {% endif %}
+                    </td>
+                {% endfor %}
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="{{ fichiers|length + 2 }}">No records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <a href="{{ path('app_fichier_bilan_new') }}">Create new</a>
+{% endblock %}
