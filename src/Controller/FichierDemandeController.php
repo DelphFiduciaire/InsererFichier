@@ -56,8 +56,11 @@ class FichierDemandeController extends AbstractController
             $user = $this->getUser();
             $annee = $entityManager->getRepository(Annee::class)->findAll();
             $bilan = $entityManager->getRepository(FichierNomBilan::class)->findAll();
+
+            //vire tous ceux qui ne pas le status 1
             $fichiers = $entityManager->getRepository(FichierDemande::class)->findBy([
                 'id_info_client' => $client,
+                'status' => 1
             ]);
 
             $fichierDemande = new FichierDemande();
@@ -65,7 +68,6 @@ class FichierDemandeController extends AbstractController
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
-                dd("ok");
                 $uploadedFile = $form->get('nom_fichier_demande')->getData();
                 // Il s'agit de l'id du client
                 $idClient = $form->get('id_info_client')->getData()->getid();
@@ -77,7 +79,7 @@ class FichierDemandeController extends AbstractController
                 $nomOriginal = $form->get('nom_fichier_demande')->getData()->getClientOriginalName();
                 // le chemin ou le fichier est inserer
                 $nomOriginal = $uploadedFile->getClientOriginalName();
-                $destinationDirectory = 'D:\XAMPP\htdocs\WEB\InsererFichier\public\fichier';
+                $destinationDirectory = 'D:\XAMPP\htdocs\WEB\InsererFichier\public\fichier';//C:\Users\benja\projects\php\InsererFichier\public\fichier
                 $newFilename = $nomOriginal;
                 $uploadedFile->move($destinationDirectory, $newFilename);
                 $fichierDemande->setIdUser($user);
@@ -125,7 +127,7 @@ class FichierDemandeController extends AbstractController
             $nomOriginal = $form->get('nom_fichier_demande')->getData()->getClientOriginalName();
             // le chemin ou le fichier est inserer
             $nomOriginal = $uploadedFile->getClientOriginalName();
-            $destinationDirectory = 'D:\XAMPP\htdocs\WEB\InsererFichier\public\fichier';
+            $destinationDirectory = 'D:\XAMPP\htdocs\WEB\InsererFichier\public\fichier';//C:\Users\benja\projects\php\InsererFichier\public\fichier
             $newFilename = $nomOriginal;
             $uploadedFile->move($destinationDirectory, $newFilename);
             $fichierDemande->setIdUser($user);

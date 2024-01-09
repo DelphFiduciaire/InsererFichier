@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\InfoClient;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use phpDocumentor\Reflection\Types\Void_;
 
 /**
  * @extends ServiceEntityRepository<InfoClient>
@@ -38,6 +39,26 @@ class InfoClientRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+    public function findAllClient(): array
+   {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.id != 2')
+            ->orderBy('c.nom', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+    public function findClientByUser(int $idUser): array
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.id != 2')
+            ->andWhere('c.id_user = :idUser')
+            ->setParameter('idUser', $idUser)
+            ->orderBy('c.nom', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
     }
 
 //    /**
