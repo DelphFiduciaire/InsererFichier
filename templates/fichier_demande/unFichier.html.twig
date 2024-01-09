@@ -65,9 +65,7 @@
                        target="_blank">
                         Voir le PDF
                     </a>
-                    <a href="{{ path('app_fichier_demande_delete', {'id': fichier_demande.id}) }}">
-                        Supprimer
-                    </a>
+                    {{ include('fichier_demande/_delete_form.html.twig') }}
                 </td>
             </tr>
         {% else %}

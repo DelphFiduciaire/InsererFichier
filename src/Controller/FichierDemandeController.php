@@ -187,7 +187,7 @@ class FichierDemandeController extends AbstractController
     public function delete(Request $request, FichierDemande $fichierDemande, FichierDemandeRepository $fichierDemandeRepository): Response
     {
         if ($this->isCsrfTokenValid('delete'.$fichierDemande->getId(), $request->request->get('_token'))) {
-            $fichierDemandeRepository->remove($fichierDemande, true);
+            $fichierDemandeRepository->save($fichierDemande->setStatus(0), true);
         }
 
         return $this->redirectToRoute('app_fichier_demande_index', [], Response::HTTP_SEE_OTHER);
