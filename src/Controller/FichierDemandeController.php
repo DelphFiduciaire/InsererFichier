@@ -132,6 +132,7 @@ class FichierDemandeController extends AbstractController
             $fichierDemande->setNomFichierDemande($newFilename);
             $fichierDemande->setIdInfoClient($idClient);
             $fichierDemande->setIdFichier($idNomFichier);
+            $fichierDemande->setStatus(1);
             $entityManager->persist($fichierDemande);
             $entityManager->flush();
 
@@ -182,7 +183,7 @@ class FichierDemandeController extends AbstractController
         return $this->file($filePath, null, ResponseHeaderBag::DISPOSITION_INLINE);
     }
 
-    #[Route('/{id}', name: 'app_fichier_demande_delete', methods: ['GET'])]
+    #[Route('/{id}', name: 'app_fichier_demande_delete', methods: ['POST'])]
     public function delete(Request $request, FichierDemande $fichierDemande, FichierDemandeRepository $fichierDemandeRepository): Response
     {
         if ($this->isCsrfTokenValid('delete'.$fichierDemande->getId(), $request->request->get('_token'))) {

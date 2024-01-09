@@ -92,22 +92,22 @@ class InfoClientController extends AbstractController
 
             //permet de récupéré les fichiers de bilan d'un client et les changé sur le par défaut
             $fichierDemandeRepository = $entityManager->getRepository(FichierDemande::class);
-            $lesFichiers  = $fichierDemandeRepository->findAll();
+            $fichierDemande = new FichierDemande();
+            $lesFichiers  = $fichierDemandeRepository->findBy(['id_info_client' => $infoClient->getId()]);
             $idClienByDefault = $infoClientRepository->find(2);
             foreach ($lesFichiers as $unFichier)
             {
-                $fichierDemander = new FichierDemande();
                 $fichierDemander = $unFichier;
                 $fichierDemander->setIdInfoClient($idClienByDefault);
                 $entityManager->persist($fichierDemander);
                 $entityManager->flush();
             }
+
             //permet de récupéré les fichiers de bilan d'un client et les changé sur le par défaut
             $fichierBilanRepository = $entityManager->getRepository(FichierBilan::class);
-            $lesFichiersBilan  = $fichierBilanRepository->findAll();
+            $lesFichiersBilan  = $fichierBilanRepository->findBy(['id_info_client' => $infoClient->getId()]);
             foreach ($lesFichiersBilan as $unFichier)
             {
-                $fichierBilan = new FichierBilan();
                 $fichierBilan = $unFichier;
                 $fichierBilan->setIdInfoClient($idClienByDefault);
                 $entityManager->persist($fichierBilan);

@@ -31,6 +31,9 @@ class FichierDemande
     #[ORM\Column(nullable: true)]
     private ?bool $verif = null;
 
+    #[ORM\Column]
+    private ?int $status = null;
+
 
 
     public function getId(): ?int
@@ -99,6 +102,18 @@ class FichierDemande
     public function setVerif(?bool $verif): self
     {
         $this->verif = $verif;
+
+        return $this;
+    }
+
+    public function getStatus(): ?int
+    {
+        return $this->status;
+    }
+
+    public function setStatus(int $status): static
+    {
+        $this->status = $status;
 
         return $this;
     }
