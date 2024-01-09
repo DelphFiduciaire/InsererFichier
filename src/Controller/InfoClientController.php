@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\FichierBilan;
+use App\Entity\FichierDemande;
 use App\Entity\InfoClient;
 use App\Form\InfoClientType;
 use App\Repository\InfoClientRepository;
@@ -83,9 +85,35 @@ class InfoClientController extends AbstractController
     }
 
     #[Route('/delete/{id}', name: 'app_info_client_delete', methods:['POST'])]
-    public function delete(Request $request, InfoClient $infoClient, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request, InfoClient $infoClient, EntityManagerInterface $entityManager,InfoClientRepository $infoClientRepository): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$infoClient->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete'.$infoClient->getId(), $request->request->get('_token'))) { //|| $this->isCsrfTokenValid('delete',$request->request->get('_token'))
+
+
+            //permet de récupéré les fichiers de bilan d'un client et les changé sur le par défaut
+            $fichierDemandeRepository = $entityManager->getRepository(FichierDemande::class);
+            $lesFichiers  = $fichierDemandeRepository->findAll();
+            $idClienByDefault = $infoClientRepository->find(2);
+            foreach ($lesFichiers as $unFichier)
+            {
+                $fichierDemander = new FichierDemande();
+                $fichierDemander = $unFichier;
+                $fichierDemander->setIdInfoClient($idClienByDefault);
+                $entityManager->persist($fichierDemander);
+                $entityManager->flush();
+            }
+            //permet de récupéré les fichiers de bilan d'un client et les changé sur le par défaut
+            $fichierBilanRepository = $entityManager->getRepository(FichierBilan::class);
+            $lesFichiersBilan  = $fichierBilanRepository->findAll();
+            foreach ($lesFichiersBilan as $unFichier)
+            {
+                $fichierBilan = new FichierBilan();
+                $fichierBilan = $unFichier;
+                $fichierBilan->setIdInfoClient($idClienByDefault);
+                $entityManager->persist($fichierBilan);
+                $entityManager->flush();
+            }
+            //maintenant on peut le supprimé car il n'a plus de clés étrangères
             $entityManager->remove($infoClient);
             $entityManager->flush();
         }
