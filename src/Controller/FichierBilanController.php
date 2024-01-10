@@ -43,25 +43,27 @@ class FichierBilanController extends AbstractController
         ]);
     }
 
-    #[Route('/mesFichiersBilan/{id}', name:'mesFichiersBilan', methods:['GET'])]
-    public function indexFichier($id, FichierBilanRepository $fichierBilanRepository, AnneeRepository $anneeRepository, EntityManagerInterface $entityManager, InfoClientRepository $infoClientRepository): Response
+    #[Route('/mesFichiersBilan/{idClient}/{id}', name:'mesFichiersBilan', methods:['GET'])]
+    public function indexFichier(string $idClient,$id, FichierBilanRepository $fichierBilanRepository, AnneeRepository $anneeRepository, EntityManagerInterface $entityManager, InfoClientRepository $infoClientRepository): Response
     {
         $client = $infoClientRepository->find($id);
 //        $nomClient = $client->getNom();
 //
         // Vous pouvez utiliser $client->getNomSociete() si nécessaire
-
         $user = $this->getUser();
-        $bilan = $fichierBilanRepository->findAll(); // Utilisez le repository directement
-        $annee = $anneeRepository->findBy([
-            'client' => $client, // Remplacez par la relation appropriée entre Annee et Client
+        $bilan = $fichierBilanRepository->findBy([
+            'id_info_client' => $idClient,
+            'id_annee' =>$id
         ]);
+        // Utilisez le repository directement
+        /*$annee = $anneeRepository->findBy([
+            'client' => $client, // Remplacez par la relation appropriée entre Annee et Client
+        ]);*/
 
-        return $this->render('fichier_bilan/fichierAnnee.html.twig', [
+        return $this->render('fichier_bilan/listBilanParAnnee.html.twig', [
             'user' => $user->getUserIdentifier(),
 //            'nomClient' => $nomClient,
             'bilans' => $bilan,
-            'annees' => $annee,
             'clients'=> $client
         ]);
     }

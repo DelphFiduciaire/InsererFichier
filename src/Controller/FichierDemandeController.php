@@ -13,6 +13,8 @@ use App\Repository\InfoClientRepository;
 use App\Repository\FichierRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use phpDocumentor\Reflection\PseudoTypes\IntegerValue;
+use phpDocumentor\Reflection\Types\Integer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,11 +30,12 @@ class FichierDemandeController extends AbstractController
 
 
     #[Route('/liste', name: 'app_fichier_demande_index', methods: ['GET'])]
-    public function index(FichierDemandeRepository $fichierDemandeRepository, EntityManagerInterface $entityManager): Response
+    public function index(InfoClientRepository $infoClientRepository,FichierDemandeRepository $fichierDemandeRepository, EntityManagerInterface $entityManager): Response
     {
+
         $user = $this->getUser();
 
-        $client = $entityManager->getRepository(InfoClient::class)->findAll();
+        $client = $infoClientRepository->findAllClient();
         $fichier = $entityManager->getRepository(Fichier::class)->findAll();
 //        dd($fichierDemandeRepository->findAll());
         return $this->render('fichier_demande/index.html.twig', [
@@ -79,7 +82,7 @@ class FichierDemandeController extends AbstractController
                 $nomOriginal = $form->get('nom_fichier_demande')->getData()->getClientOriginalName();
                 // le chemin ou le fichier est inserer
                 $nomOriginal = $uploadedFile->getClientOriginalName();
-                $destinationDirectory = 'D:\XAMPP\htdocs\WEB\InsererFichier\public\fichier';//C:\Users\benja\projects\php\InsererFichier\public\fichier
+                $destinationDirectory = 'C:\Users\benja\projects\php\InsererFichier\public\fichier';//D:\XAMPP\htdocs\WEB\InsererFichier\public\fichier
                 $newFilename = $nomOriginal;
                 $uploadedFile->move($destinationDirectory, $newFilename);
                 $fichierDemande->setIdUser($user);
@@ -98,6 +101,7 @@ class FichierDemandeController extends AbstractController
                 'user' => $user->getUserIdentifier(),
 //            'nomClient' => $nomClient,
 //            'prenomClient'=>$prenomClient,
+                'idClient'=>$id,
                 'clients' => $client,
                 'societe' => $societeClient,
                 'bilans' => $bilan,
@@ -127,7 +131,7 @@ class FichierDemandeController extends AbstractController
             $nomOriginal = $form->get('nom_fichier_demande')->getData()->getClientOriginalName();
             // le chemin ou le fichier est inserer
             $nomOriginal = $uploadedFile->getClientOriginalName();
-            $destinationDirectory = 'D:\XAMPP\htdocs\WEB\InsererFichier\public\fichier';//C:\Users\benja\projects\php\InsererFichier\public\fichier
+            $destinationDirectory = 'C:\Users\benja\projects\php\InsererFichier\public\fichier';//D:\XAMPP\htdocs\WEB\InsererFichier\public\fichier
             $newFilename = $nomOriginal;
             $uploadedFile->move($destinationDirectory, $newFilename);
             $fichierDemande->setIdUser($user);

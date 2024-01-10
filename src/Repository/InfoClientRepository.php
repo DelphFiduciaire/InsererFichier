@@ -44,7 +44,7 @@ class InfoClientRepository extends ServiceEntityRepository
    {
         return $this->createQueryBuilder('c')
             ->andWhere('c.id != 2')
-            ->orderBy('c.nom', 'ASC')
+            ->orderBy('c.id', 'ASC')
             ->getQuery()
             ->getResult()
         ;
@@ -55,7 +55,7 @@ class InfoClientRepository extends ServiceEntityRepository
             ->andWhere('c.id != 2')
             ->andWhere('c.id_user = :idUser')
             ->setParameter('idUser', $idUser)
-            ->orderBy('c.nom', 'ASC')
+            ->orderBy('c.id', 'ASC')
             ->getQuery()
             ->getResult()
             ;

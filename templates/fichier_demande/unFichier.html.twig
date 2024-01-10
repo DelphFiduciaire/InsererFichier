@@ -14,39 +14,11 @@
 {#        <label >Sélectionnez une année :</label>#}
     {% for annee in annees %}
 {#        {% for client in clients %}#}
-        <a class="btn btn-dark"  href="{{ path('mesFichiersBilan', { 'id': annee.id, 'anneeBilan': annee.anneeBilan }) }}">Année {{ annee.anneeBilan }}</a>
+        <a class="btn btn-dark"  href="{{ path('mesFichiersBilan',{ 'idClient': idClient,'id': annee.id }) }}">Année {{ annee.anneeBilan }}</a>
 {#        {% endfor %}#}
     {% endfor %}
 
 
-    <br><br><br>
-    <h2>Inserer les fichiers bilans </h2>
-
-    <div class="p-5" style="width: 800px; background-color: whitesmoke">
-        <table>
-            <form action="" method="get" enctype="multipart/form-data">
-                <table>
-                    <tbody>
-                    {% for fichier in bilans %}
-                        <tr>
-                            <td>{{ fichier.fichierBilan }}</td>
-                            <td>
-                                <input type="file" name="fichier_bilan" class="form-control mt-2"/>
-                                <br>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-                <input type="checkbox" name="verif" class="form-check-input"/>
-
-                <button class="btn btn-dark" type="submit">Enregistrer</button>
-            </form>
-
-
-        </table>
-    </div>
-    <br><br><br>
     <h2>Liste des fichiers </h2>
 
     <table class="table">
