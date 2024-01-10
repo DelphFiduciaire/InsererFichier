@@ -52,8 +52,9 @@ class FichierBilanController extends AbstractController
         // Vous pouvez utiliser $client->getNomSociete() si nécessaire
         $user = $this->getUser();
         $bilan = $fichierBilanRepository->findBy([
-            'id_info_client' => $idClient,
-            'id_annee' =>$id
+            'id_info_client'=>$idClient,
+            'id_annee'=>$id,
+            'status'=>1
         ]);
         // Utilisez le repository directement
         /*$annee = $anneeRepository->findBy([
@@ -206,7 +207,8 @@ class FichierBilanController extends AbstractController
     public function delete(Request $request, FichierBilan $fichierBilan, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$fichierBilan->getId(), $request->request->get('_token'))) {
-            $entityManager->remove($fichierBilan);
+            $fichierBilan->setStatus(0);
+            $entityManager->persist($fichierBilan);
             $entityManager->flush();
         }
 
