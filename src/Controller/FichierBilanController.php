@@ -28,7 +28,7 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 class FichierBilanController extends AbstractController
 {
     #[Route('/', name: 'app_fichier_bilan_index', methods: ['GET'])]
-    public function index(EntityManagerInterface $entityManager,FichierBilanRepository $fichierBilanRepository): Response
+    public function index(InfoClientRepository $infoClientRepository,EntityManagerInterface $entityManager,FichierBilanRepository $fichierBilanRepository): Response
     {
         $user=$this->getUser();
         $client = $entityManager->getRepository(InfoClient::class)->findAll();
@@ -160,7 +160,7 @@ class FichierBilanController extends AbstractController
             $nomOriginal = $form->get('nom_fichier_bilan')->getData()->getClientOriginalName();
 
             $nomOriginal = $uploadedFile->getClientOriginalName();
-            $destinationDirectory = 'D:\XAMPP\htdocs\WEB\InsererFichier\public\fichier';
+            $destinationDirectory = 'C:/Users/benja/projects/php/InsererFichier/public/fichier/';
             $newFilename = $nomOriginal;
             $uploadedFile->move($destinationDirectory, $newFilename);
             $fichierBilan->setIdUser($user);

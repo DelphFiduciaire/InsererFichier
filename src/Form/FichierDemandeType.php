@@ -6,6 +6,7 @@ use App\Entity\Fichier;
 use App\Entity\FichierDemande;
 use App\Entity\InfoClient;
 use App\Entity\User;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -45,6 +46,11 @@ class FichierDemandeType extends AbstractType
             ])
             ->add('id_info_client' , EntityType::class, [
                 'class' => InfoClient::class,
+                //j'appelle une requete sql dans le form pour le filtrer sans l'id 2 qui est le par défaut
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('ic')
+                        ->where('ic.id != 2');
+                },
             ])
             ->add('id_fichier' , EntityType::class, [
                 'class' => Fichier::class,

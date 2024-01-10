@@ -3,6 +3,9 @@
 namespace App\Form;
 
 use App\Entity\FichierBilan;
+use App\Entity\InfoClient;
+use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -40,9 +43,16 @@ class FichierBilanType extends AbstractType
 
 //            ->add('verif_bilan')
 //        ->add('id_user')
-        ->add('id_info_client')
-        ->add('id_fichier_bilan')
-        ->add('id_annee');
+            ->add('id_info_client' , EntityType::class, [
+                'class' => InfoClient::class,
+                //j'appelle une requete sql dans le form pour le filtrer sans l'id 2 qui est le par défaut
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('ic')
+                        ->where('ic.id != 2');
+                },
+            ])
+            ->add('id_fichier_bilan')
+            ->add('id_annee');
 
     }
 
