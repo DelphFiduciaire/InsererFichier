@@ -170,6 +170,7 @@ class FichierBilanController extends AbstractController
             $fichierBilan->setNomFichierBilan($newFilename);
             $fichierBilan->setIdInfoClient($idClient);
             $fichierBilan->setIdFichierBilan($idNomFichierBilan);
+            $fichierBilan->setStatus(1);
             $entityManager->persist($fichierBilan);
             $entityManager->flush();
             $fichierBilanRepository->save($fichierBilan, true);

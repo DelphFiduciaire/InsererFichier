@@ -7,8 +7,12 @@ use App\Entity\FichierBilan;
 use App\Entity\FichierDemande;
 use App\Entity\FichierNomBilan;
 use App\Entity\InfoClient;
+use App\Form\AddFichierBilanType;
+use App\Form\FichierBilanType;
 use App\Form\FichierDemandeType;
+use App\Repository\FichierBilanRepository;
 use App\Repository\FichierDemandeRepository;
+use App\Repository\FichierNomBilanRepository;
 use App\Repository\InfoClientRepository;
 use App\Repository\FichierRepository;
 use App\Repository\UserRepository;
@@ -49,7 +53,7 @@ class FichierDemandeController extends AbstractController
 
 
     #[Route('/mesFichiers/{id}', name:'mesFichiers', methods:['GET', 'POST'])]
-    public function indexFichier($id,FichierDemandeRepository $fichierDemandeRepository, FichierRepository $fichierRepository, Request $request, EntityManagerInterface $entityManager, InfoClientRepository $infoClientRepository): Response
+    public function indexFichier($id,FichierBilanRepository $fichierBilanRepository,FichierNomBilanRepository $fichierNomBilanRepository, Request $request, EntityManagerInterface $entityManager, InfoClientRepository $infoClientRepository): Response
     {
 
             $client = $infoClientRepository->find($id);
@@ -89,36 +93,34 @@ class FichierDemandeController extends AbstractController
             ]);
         }
 
-            $fichierDemande = new FichierDemande();
-            $form = $this->createForm(FichierDemandeType::class, $fichierDemande);
+            $fichierBilan = new FichierBilan();
+            $form = $this->createForm(AddFichierBilanType::class, $fichierBilan);
             $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $uploadedFile = $form->get('nom_fichier_bilan')->getData();
+            $idClient = $id;
+            $idClient = $infoClientRepository->find($idClient);
 
-            if ($form->isSubmitted() && $form->isValid()) {
-                $uploadedFile = $form->get('nom_fichier_demande')->getData();
-                // Il s'agit de l'id du client
-                $idClient = $form->get('id_info_client')->getData()->getid();
-                $idClient = $infoClientRepository->find($idClient);
+            $idNomFichierBilan = $form->get('id_fichier_bilan')->getData()->getId();
+            $idNomFichierBilan = $fichierNomBilanRepository->find($idNomFichierBilan);
+            $nomOriginal = $form->get('nom_fichier_bilan')->getData()->getClientOriginalName();
 
-                //Il s'agit de l'id du fichier demander pour tout les clients
-                $idNomFichier= $form->get('id_fichier')->getData()->getId();
-                $idNomFichier = $fichierRepository->find($idNomFichier);
-                $nomOriginal = $form->get('nom_fichier_demande')->getData()->getClientOriginalName();
-                // le chemin ou le fichier est inserer
-                $nomOriginal = $uploadedFile->getClientOriginalName();
-                $destinationDirectory = 'C:\Users\benja\projects\php\InsererFichier\public\fichier';//D:\XAMPP\htdocs\WEB\InsererFichier\public\fichier
-                $newFilename = $nomOriginal;
-                $uploadedFile->move($destinationDirectory, $newFilename);
-                $fichierDemande->setIdUser($user);
-                $fichierDemande->setNomFichierDemande($newFilename);
-                $fichierDemande->setIdInfoClient($idClient);
-                $fichierDemande->setIdFichier($idNomFichier);
-                $entityManager->persist($fichierDemande);
-                $entityManager->flush();
+            $nomOriginal = $uploadedFile->getClientOriginalName();
+            $destinationDirectory = 'C:/Users/benja/projects/php/InsererFichier/public/fichier/';
+            $newFilename = $nomOriginal;
+            $uploadedFile->move($destinationDirectory, $newFilename);
+            $fichierBilan->setIdUser($user);
+            $fichierBilan->setNomFichierBilan($newFilename);
+            $fichierBilan->setIdInfoClient($idClient);
+            $fichierBilan->setIdFichierBilan($idNomFichierBilan);
+            $fichierBilan->setStatus(1);
+            $entityManager->persist($fichierBilan);
+            $entityManager->flush();
+            $fichierBilanRepository->save($fichierBilan, true);
 
-                $fichierDemandeRepository->save($fichierDemande, true);
-                return $this->redirectToRoute('mesFichiers', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('mesFichiers', ['id'=>$id], Response::HTTP_SEE_OTHER);
+        }
 
-            }
             return $this->render('fichier_demande/unFichier.html.twig', [
                 'fichier_demandes' => $fichiers,
                 'fichier_bilans' => $fichiersBilans,
