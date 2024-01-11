@@ -6,7 +6,7 @@
 
 {% block body %}
 
-    <h1>Fichier de {{ societe }}</h1>
+    <h1>Fichier de l'entreprise {{ societe }}</h1>
 
     <br><br><br>
     <h2>Liste des fichiers par bilans </h2> <br>
@@ -17,7 +17,34 @@
         <a class="btn btn-dark"  href="{{ path('mesFichiersBilan',{ 'idClient': idClient,'id': annee.id }) }}">Année {{ annee.anneeBilan }}</a>
 {#        {% endfor %}#}
     {% endfor %}
+    <br><br><br>
+    <h2>Inserer les fichiers bilans </h2>
 
+    <div class="p-5" style="width: 800px; background-color: whitesmoke">
+        <table>
+            <form action="" method="get" enctype="multipart/form-data">
+                <table>
+                    <tbody>
+                    {% for fichier in bilans %}
+                        <tr>
+                            <td>{{ fichier.fichierBilan }}</td>
+                            <td>
+                                <input type="file" name="fichier_bilan" class="form-control mt-2"/>
+                                <br>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <input type="checkbox" name="verif" class="form-check-input"/>
+
+                <button class="btn btn-dark" type="submit">Enregistrer</button>
+            </form>
+
+
+        </table>
+    </div>
+    <br><br><br>
 
     <h2>Liste des fichiers </h2>
 
@@ -38,6 +65,38 @@
                         Voir le PDF
                     </a>
                     {{ include('fichier_demande/_delete_form.html.twig') }}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="2">Aucun enregistrement trouvé</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <br><br><br>
+
+    <h2>Liste des fichiers bilans </h2>
+
+    <table class="table">
+        <thead>
+        <tr class="table-dark">
+            <th>Nom_fichier</th>
+            <th>année</th>
+            <th>Voir PDF</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for fichier_bilan in fichier_bilans %}
+            <tr>
+                <td>{{ fichier_bilan.idFichierBilan.getFichierBilan }}</td>
+                <td>{{ fichier_bilan.getidannee }}</td>
+                <td>
+                    <a href="{{ path('app_view_pdf', {'name': fichier_bilan.getNomFichierBilan()}) }}"
+                       target="_blank">
+                        Voir le PDF
+                    </a>
+                    {{ include('fichier_bilan/_delete_form.html.twig') }}
                 </td>
             </tr>
         {% else %}

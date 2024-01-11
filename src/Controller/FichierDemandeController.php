@@ -60,11 +60,34 @@ class FichierDemandeController extends AbstractController
             $annee = $entityManager->getRepository(Annee::class)->findAll();
             $bilan = $entityManager->getRepository(FichierNomBilan::class)->findAll();
 
-            //vire tous ceux qui ne pas le status 1
+         //les admins peuvent voir tous les fichiers
+        if ($user->getRoles()[0]=="ROLE_ADMIN")
+        {
+            $fichiers = $entityManager->getRepository(FichierDemande::class)->findBy([
+                'id_info_client' => $client,
+            ]);
+        }
+        //vire tous ceux qui ne pas le status 1
+        else
+        {
             $fichiers = $entityManager->getRepository(FichierDemande::class)->findBy([
                 'id_info_client' => $client,
                 'status' => 1
             ]);
+        }
+        if ($user->getRoles()[0]=="ROLE_ADMIN")
+        {
+            $fichiersBilans = $entityManager->getRepository(FichierBilan::class)->findBy([
+                'id_info_client' => $client,
+            ]);
+        }
+        else
+        {
+            $fichiersBilans = $entityManager->getRepository(FichierBilan::class)->findBy([
+                'id_info_client' => $client,
+                'status' => 1
+            ]);
+        }
 
             $fichierDemande = new FichierDemande();
             $form = $this->createForm(FichierDemandeType::class, $fichierDemande);
@@ -98,9 +121,8 @@ class FichierDemandeController extends AbstractController
             }
             return $this->render('fichier_demande/unFichier.html.twig', [
                 'fichier_demandes' => $fichiers,
+                'fichier_bilans' => $fichiersBilans,
                 'user' => $user->getUserIdentifier(),
-//            'nomClient' => $nomClient,
-//            'prenomClient'=>$prenomClient,
                 'idClient'=>$id,
                 'clients' => $client,
                 'societe' => $societeClient,

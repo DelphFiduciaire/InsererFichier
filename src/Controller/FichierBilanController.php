@@ -56,14 +56,14 @@ class FichierBilanController extends AbstractController
             'id_annee'=>$id,
             'status'=>1
         ]);
-        // Utilisez le repository directement
-        /*$annee = $anneeRepository->findBy([
-            'client' => $client, // Remplacez par la relation appropriée entre Annee et Client
-        ]);*/
+        $annee = $anneeRepository->findOneBy([
+            'id'=>$id
+        ]);
+
 
         return $this->render('fichier_bilan/listBilanParAnnee.html.twig', [
             'user' => $user->getUserIdentifier(),
-//            'nomClient' => $nomClient,
+            'annee'=>$annee,
             'bilans' => $bilan,
             'clients'=> $client
         ]);
