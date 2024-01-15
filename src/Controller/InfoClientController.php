@@ -69,10 +69,10 @@ class InfoClientController extends AbstractController
     #[Route('/show/{id}', name: 'app_info_client_show', methods: ['GET'])]
     public function show(InfoClientRepository $infoClient, $id): Response
     {
-        $client = $infoClient->find($id);
+        $clients = $infoClient->findBy(['id_user' => $id]);
         $user = $this->getUser($id);
         return $this->render('info_client/show.html.twig', [
-            'info_client' => $client,
+            'clients' => $clients,
             'user'=>$user->getUserIdentifier(),
 
         ]);
@@ -114,6 +114,7 @@ class InfoClientController extends AbstractController
             {
                 $fichierDemander = $unFichier;
                 $fichierDemander->setIdInfoClient($idClienByDefault);
+                $fichierDemander->setStatus(0);
                 $entityManager->persist($fichierDemander);
                 $entityManager->flush();
             }

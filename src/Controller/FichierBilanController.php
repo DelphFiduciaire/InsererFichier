@@ -51,11 +51,22 @@ class FichierBilanController extends AbstractController
 //
         // Vous pouvez utiliser $client->getNomSociete() si nécessaire
         $user = $this->getUser();
-        $bilan = $fichierBilanRepository->findBy([
-            'id_info_client'=>$idClient,
-            'id_annee'=>$id,
-            'status'=>1
-        ]);
+        if ($user->getRoles()[0]=="ROLE_ADMIN")
+        {
+            $bilan = $fichierBilanRepository->findBy([
+                'id_info_client'=>$idClient,
+                'id_annee'=>$id,
+            ]);
+        }
+        else
+        {
+            $bilan = $fichierBilanRepository->findBy([
+                'id_info_client'=>$idClient,
+                'id_annee'=>$id,
+                'status'=>1
+            ]);
+        }
+
         $annee = $anneeRepository->findOneBy([
             'id'=>$id
         ]);
