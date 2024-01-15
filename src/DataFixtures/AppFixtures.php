@@ -38,10 +38,10 @@ class AppFixtures extends Fixture
         $infoClient->setMailPro('pardefaut@email.com');
         $infoClient->setVille('par defaut');
         $infoClient->setIdUser($user);
-        $infoClient->setCp(1);
-        $infoClient->setNum(1);
-        $infoClient->setNumPro(1);
-        $infoClient->setSiret(1);
+        $infoClient->setCp(2);
+        $infoClient->setNum(2);
+        $infoClient->setNumPro(2);
+        $infoClient->setSiret(2);
         $manager->persist($infoClient);
         $manager->flush();
 
