@@ -48,7 +48,8 @@ class FichierBilanType extends AbstractType
                 //j'appelle une requete sql dans le form pour le filtrer sans l'id 2 qui est le par défaut
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('ic')
-                        ->where('ic.id != 2');
+                        ->where('ic.mail_pro != :mailpro')
+                        ->setParameter('mailpro','pardefaut@email.com');
                 },
             ])
             ->add('id_fichier_bilan')
