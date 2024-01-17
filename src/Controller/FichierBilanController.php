@@ -31,7 +31,7 @@ class FichierBilanController extends AbstractController
     public function index(InfoClientRepository $infoClientRepository,EntityManagerInterface $entityManager,FichierBilanRepository $fichierBilanRepository): Response
     {
         $user=$this->getUser();
-        $client = $entityManager->getRepository(InfoClient::class)->findAll();
+        $client = $infoClientRepository->findAllClient();
         $fichier = $entityManager->getRepository(FichierNomBilan::class)->findAll();
 
         return $this->render('fichier_bilan/index.html.twig', [

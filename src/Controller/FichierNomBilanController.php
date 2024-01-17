@@ -71,6 +71,7 @@ class FichierNomBilanController extends AbstractController
     #[Route('/{id}/edit', name: 'app_fichier_nom_bilan_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, FichierNomBilan $fichierNomBilan, EntityManagerInterface $entityManager): Response
     {
+        $user = $this->getUser();
         $form = $this->createForm(FichierNomBilanType::class, $fichierNomBilan);
         $form->handleRequest($request);
 
@@ -83,6 +84,7 @@ class FichierNomBilanController extends AbstractController
         return $this->render('fichier_nom_bilan/edit.html.twig', [
             'fichier_nom_bilan' => $fichierNomBilan,
             'form' => $form,
+            'user'=>$user,
         ]);
     }
 
