@@ -54,6 +54,9 @@ class InfoClient
     #[ORM\OneToMany(mappedBy: 'id_info_client', targetEntity: FichierBilan::class)]
     private Collection $fichierBilans;
 
+    #[ORM\Column]
+    private ?int $status = null;
+
 
     public function __construct()
     {
@@ -261,6 +264,18 @@ class InfoClient
                 $fichierBilan->setIdInfoClient(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getStatus(): ?int
+    {
+        return $this->status;
+    }
+
+    public function setStatus(int $status): static
+    {
+        $this->status = $status;
 
         return $this;
     }
