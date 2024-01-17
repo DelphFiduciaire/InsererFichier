@@ -58,18 +58,29 @@
 
                 {% endif %}
 
-                {% if (is_granted('ROLE_ADMIN')) or (is_granted('ROLE_COMPTABLE')) %}
+                {% if (is_granted('ROLE_ADMIN')) %}
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" style="color: #FFFFFF"  role="button" data-bs-toggle="dropdown" href="{{ path('app_info_client_index') }}" aria-expanded="false">
                             Clients
                         </a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="{{ path('mesColab') }}">Mes Clients</a></li>
+                            <li><a class="dropdown-item" href="{{ path('app_info_client_index_supprimer') }}">Clients supprimé</a></li>
                             <li><a class="dropdown-item" href="{{ path('app_info_client_new') }}">Ajouter Les Clients</a></li>
                             <li><a class="dropdown-item" href="{{ path('app_info_client_index') }}">Tout les Clients</a></li>
                         </ul>
                     </li>
-
+                    {% elseif (is_granted('ROLE_COMPTABLE')) %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" style="color: #FFFFFF"  role="button" data-bs-toggle="dropdown" href="{{ path('app_info_client_index') }}" aria-expanded="false">
+                                Clients
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="{{ path('mesColab') }}">Mes Clients</a></li>
+                                <li><a class="dropdown-item" href="{{ path('app_info_client_new') }}">Ajouter Les Clients</a></li>
+                                <li><a class="dropdown-item" href="{{ path('app_info_client_index') }}">Tout les Clients</a></li>
+                            </ul>
+                        </li>
 
                 {% endif %}
                 {% if (is_granted('ROLE_ADMIN')) %}

@@ -43,8 +43,8 @@ class InfoClientRepository extends ServiceEntityRepository
     public function findAllClient(): array
    {
         return $this->createQueryBuilder('c')
-            ->andWhere('c.mail_pro != :mailpro')
-            ->setParameter('mailpro','pardefaut@email.com')
+            ->andWhere('c.status != :id')
+            ->setParameter('id',0)
             ->orderBy('c.id', 'ASC')
             ->getQuery()
             ->getResult()
@@ -53,9 +53,9 @@ class InfoClientRepository extends ServiceEntityRepository
     public function findClientByUser(int $idUser): array
     {
         return $this->createQueryBuilder('c')
-            ->andWhere('c.mail_pro != :mailpro ')
+            ->andWhere('c.status != :id ')
             ->andWhere('c.id_user = :idUser')
-            ->setParameter('mailpro','pardefaut@email.com')
+            ->setParameter('id',0)
             ->setParameter('idUser', $idUser)
             ->orderBy('c.id', 'ASC')
             ->getQuery()

@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}FichierBilan index sur l'années{% endblock %}
+
+{% block body %}
+    <h2>Liste des fichiers bilans de l'année {{ annee }}</h2>
+
+    <table class="table">
+        <thead>
+        <tr class="table-dark">
+            <th>Nom_fichier</th>
+            <th>Voir PDF</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for fichier_bilan in bilans %}
+            <tr>
+                <td>{{ fichier_bilan.idFichierBilan.getFichierBilan }}</td>
+                <td>
+                    <a href="{{ path('app_view_pdf', {'name': fichier_bilan.getNomFichierBilan()}) }}"
+                       target="_blank">
+                        Voir le PDF
+                    </a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="2">Aucun enregistrement trouvé</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

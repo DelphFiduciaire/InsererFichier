@@ -35,7 +35,7 @@ class FichierBilanController extends AbstractController
         $fichier = $entityManager->getRepository(FichierNomBilan::class)->findAll();
 
         return $this->render('fichier_bilan/index.html.twig', [
-            'fichier_bilans' => $fichierBilanRepository->findAll(),
+            'fichier_bilans' => $fichierBilanRepository->findBy(['status'=>1]),
             'user'=>$user->getUserIdentifier(),
             'clients' => $client,
             'fichiers' => $fichier
@@ -78,6 +78,32 @@ class FichierBilanController extends AbstractController
             'bilans' => $bilan,
             'clients'=> $client
         ]);
+    }
+    #[Route('/mesFichiersBilanSupprimer/{idClient}/{id}', name:'mesFichiersBilanSupprimer', methods:['GET'])]
+    public function indexFichierSupprimer(string $idClient,$id, FichierBilanRepository $fichierBilanRepository, AnneeRepository $anneeRepository, EntityManagerInterface $entityManager, InfoClientRepository $infoClientRepository): Response
+    {
+
+        $user = $this->getUser();
+        if ($user->getRoles()[0]=="ROLE_ADMIN")
+        {
+            $client = $infoClientRepository->find($id);
+            $bilan = $fichierBilanRepository->findBy([
+                'id_info_client'=>$idClient,
+                'id_annee'=>$id,
+            ]);
+            $annee = $anneeRepository->findOneBy([
+                'id'=>$id
+            ]);
+
+
+            return $this->render('fichier_bilan/listBilanParAnneeSupprimer.html.twig', [
+                'user' => $user->getUserIdentifier(),
+                'annee'=>$annee,
+                'bilans' => $bilan,
+                'clients'=> $client
+            ]);
+        }
+        return $this->redirectToRoute('app_info_client_index',[], Response::HTTP_SEE_OTHER);
     }
 
     #[Route('/fichierAnnee{id}', name: 'app_fichier_bilan_annee', methods: ['GET'])]

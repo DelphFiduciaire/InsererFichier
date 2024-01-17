@@ -22,23 +22,28 @@ class InfoClientController extends AbstractController
     {
         $user = $this->getUser();
         //si il est admin il peut voir le compte par défaut
-        if ($user->getRoles()[0]=='ROLE_ADMIN')
-        {
-            return $this->render('info_client/index.html.twig', [
-                'info_clients' => $infoClientRepository->findAll(),
-                'user'=>$user->getUserIdentifier()
-            ]);
-        }
-        //sinon c'est qu'il est comptable et qu'il n'a pas besoin de le voir
-        else
-        {
+
             return $this->render('info_client/index.html.twig', [
                 //méthode créer par moi même dans infoClientRepository pour virer le compte par defaut
                 'info_clients' => $infoClientRepository->findAllClient(),
                 'user'=>$user->getUserIdentifier()
             ]);
-        }
 
+
+    }
+    #[Route('/supprimer', name: 'app_info_client_index_supprimer', methods: ['GET'])]
+    public function indexSupprimer(InfoClientRepository $infoClientRepository): Response
+    {
+        $user = $this->getUser();
+        if($user->getRoles()[0] == "ROLE_ADMIN")
+        {
+            return $this->render('info_client/index_supprimer.html.twig', [
+                //méthode créer par moi même dans infoClientRepository pour virer le compte par defaut
+                'info_clients' => $infoClientRepository->findBy(['status'=>0]),
+                'user'=>$user->getUserIdentifier()
+            ]);
+        }
+        return $this->redirectToRoute('app_info_client_index',[], Response::HTTP_SEE_OTHER);
     }
 
     #[Route('/new', name: 'app_info_client_new', methods: ['GET', 'POST'])]
@@ -107,13 +112,10 @@ class InfoClientController extends AbstractController
 
             //permet de récupéré les fichiers de bilan d'un client et les changé sur le par défaut qui a l'id 2
             $fichierDemandeRepository = $entityManager->getRepository(FichierDemande::class);
-            $fichierDemande = new FichierDemande();
             $lesFichiers  = $fichierDemandeRepository->findBy(['id_info_client' => $infoClient->getId()]);
-            $idClienByDefault = $infoClientRepository->find(2);
             foreach ($lesFichiers as $unFichier)
             {
                 $fichierDemander = $unFichier;
-                $fichierDemander->setIdInfoClient($idClienByDefault);
                 $fichierDemander->setStatus(0);
                 $entityManager->persist($fichierDemander);
                 $entityManager->flush();
@@ -125,12 +127,12 @@ class InfoClientController extends AbstractController
             foreach ($lesFichiersBilan as $unFichier)
             {
                 $fichierBilan = $unFichier;
-                $fichierBilan->setIdInfoClient($idClienByDefault);
                 $entityManager->persist($fichierBilan);
                 $entityManager->flush();
             }
             //maintenant on peut le supprimé car il n'a plus de clés étrangères
-            $entityManager->remove($infoClient);
+            $infoClient->setStatus(0);
+            $entityManager->persist($infoClient);
             $entityManager->flush();
         }
 
@@ -140,30 +142,14 @@ class InfoClientController extends AbstractController
     #[Route('/mesColab', name:'mesColab', methods:['GET'])]
     public function index1(UserRepository $userRepository, InfoClientRepository $infoClientRepository, EntityManagerInterface $entityManager): Response
     {
-
         $user = $this->getUser();
-        //si il est admin il peut voir le compte par défaut
-        if ($user->getRoles()[0] == 'ROLE_ADMIN')
-        {
-            $clients = $entityManager->getRepository(InfoClient::class)->findBy([
-                'id_user' =>$user,
-            ]);
 
-            return $this->render('info_client/index.html.twig', [
-                'info_clients' => $clients,
-                'user'=>$user->getUserIdentifier(),
-            ]);
-        }
-        //sinon c'est qu'il est comptable et qu'il n'a pas besoin de le voir
-        else
-        {
             $user = $this->getUser();
             $userObject = $userRepository->findOneBy(['email'=>$user->getUserIdentifier()]);
             return $this->render('info_client/index.html.twig', [
                 //méthode créer par moi qui va chercher tous les client d'un user sans le par défaut
                 'info_clients' => $infoClientRepository->findClientByUser($userObject->getId()),
                 'user'=>$user->getUserIdentifier(),]);
-        }
 
 
     }

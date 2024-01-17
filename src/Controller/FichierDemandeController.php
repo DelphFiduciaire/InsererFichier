@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Controller;
+
 use App\Entity\Annee;
 use App\Entity\Fichier;
 use App\Entity\FichierBilan;
@@ -26,15 +27,13 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
 
 
-
 #[Route('/fichier/demande')]
 class FichierDemandeController extends AbstractController
 {
 
 
-
     #[Route('/liste', name: 'app_fichier_demande_index', methods: ['GET'])]
-    public function index(InfoClientRepository $infoClientRepository,FichierDemandeRepository $fichierDemandeRepository, EntityManagerInterface $entityManager): Response
+    public function index(InfoClientRepository $infoClientRepository, FichierDemandeRepository $fichierDemandeRepository, EntityManagerInterface $entityManager): Response
     {
 
         $user = $this->getUser();
@@ -43,7 +42,7 @@ class FichierDemandeController extends AbstractController
         $fichier = $entityManager->getRepository(Fichier::class)->findAll();
 //        dd($fichierDemandeRepository->findAll());
         return $this->render('fichier_demande/index.html.twig', [
-            'fichiers_demandes' => $fichierDemandeRepository->findAll(),
+            'fichiers_demandes' => $fichierDemandeRepository->findBy(['status' => 1]),
             'clients' => $client,
             'fichiers' => $fichier,
             'user' => $user->getUserIdentifier(),
@@ -52,50 +51,44 @@ class FichierDemandeController extends AbstractController
     }
 
 
-    #[Route('/mesFichiers/{id}', name:'mesFichiers', methods:['GET', 'POST'])]
-    public function indexFichier($id,FichierBilanRepository $fichierBilanRepository,FichierNomBilanRepository $fichierNomBilanRepository, Request $request, EntityManagerInterface $entityManager, InfoClientRepository $infoClientRepository): Response
+    #[Route('/mesFichiers/{id}', name: 'mesFichiers', methods: ['GET', 'POST'])]
+    public function indexFichier($id, FichierBilanRepository $fichierBilanRepository, FichierNomBilanRepository $fichierNomBilanRepository, Request $request, EntityManagerInterface $entityManager, InfoClientRepository $infoClientRepository): Response
     {
 
-            $client = $infoClientRepository->find($id);
+        $client = $infoClientRepository->find($id);
 //        $nomClient = $client->getNom();
 //        $prenomClient = $client->getPrenom();
-            $societeClient = $client->getNomSociete();
-            $user = $this->getUser();
-            $annee = $entityManager->getRepository(Annee::class)->findAll();
-            $bilan = $entityManager->getRepository(FichierNomBilan::class)->findAll();
+        $societeClient = $client->getNomSociete();
+        $user = $this->getUser();
+        $annee = $entityManager->getRepository(Annee::class)->findAll();
+        $bilan = $entityManager->getRepository(FichierNomBilan::class)->findAll();
 
-         //les admins peuvent voir tous les fichiers
-        if ($user->getRoles()[0]=="ROLE_ADMIN")
-        {
+        //les admins peuvent voir tous les fichiers
+        if ($user->getRoles()[0] == "ROLE_ADMIN") {
             $fichiers = $entityManager->getRepository(FichierDemande::class)->findBy([
                 'id_info_client' => $client,
             ]);
-        }
-        //vire tous ceux qui ne pas le status 1
-        else
-        {
+        } //vire tous ceux qui ne pas le status 1
+        else {
             $fichiers = $entityManager->getRepository(FichierDemande::class)->findBy([
                 'id_info_client' => $client,
                 'status' => 1
             ]);
         }
-        if ($user->getRoles()[0]=="ROLE_ADMIN")
-        {
+        if ($user->getRoles()[0] == "ROLE_ADMIN") {
             $fichiersBilans = $entityManager->getRepository(FichierBilan::class)->findBy([
                 'id_info_client' => $client,
             ]);
-        }
-        else
-        {
+        } else {
             $fichiersBilans = $entityManager->getRepository(FichierBilan::class)->findBy([
                 'id_info_client' => $client,
                 'status' => 1
             ]);
         }
 
-            $fichierBilan = new FichierBilan();
-            $form = $this->createForm(AddFichierBilanType::class, $fichierBilan);
-            $form->handleRequest($request);
+        $fichierBilan = new FichierBilan();
+        $form = $this->createForm(AddFichierBilanType::class, $fichierBilan);
+        $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $uploadedFile = $form->get('nom_fichier_bilan')->getData();
             $idClient = $id;
@@ -118,25 +111,90 @@ class FichierDemandeController extends AbstractController
             $entityManager->flush();
             $fichierBilanRepository->save($fichierBilan, true);
 
-            return $this->redirectToRoute('mesFichiers', ['id'=>$id], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('mesFichiers', ['id' => $id], Response::HTTP_SEE_OTHER);
         }
 
-            return $this->render('fichier_demande/unFichier.html.twig', [
+        return $this->render('fichier_demande/unFichier.html.twig', [
+            'fichier_demandes' => $fichiers,
+            'fichier_bilans' => $fichiersBilans,
+            'user' => $user->getUserIdentifier(),
+            'idClient' => $id,
+            'clients' => $client,
+            'societe' => $societeClient,
+            'bilans' => $bilan,
+            'annees' => $annee,
+            'form' => $form
+        ]);
+    }
+
+    #[Route('/mesFichiersSupprimer/{id}', name: 'mesFichiersSupprimer', methods: ['GET', 'POST'])]
+    public function indexFichierSupprimer($id, FichierBilanRepository $fichierBilanRepository, FichierNomBilanRepository $fichierNomBilanRepository, Request $request, EntityManagerInterface $entityManager, InfoClientRepository $infoClientRepository): Response
+    {
+        $user = $this->getUser();
+        if ($user->getRoles()[0] == "ROLE_ADMIN") {
+            $client = $infoClientRepository->find($id);
+            $societeClient = $client->getNomSociete();
+
+            $annee = $entityManager->getRepository(Annee::class)->findAll();
+            $bilan = $entityManager->getRepository(FichierNomBilan::class)->findAll();
+
+
+
+            $fichiers = $entityManager->getRepository(FichierDemande::class)->findBy([
+                'id_info_client' => $client,
+            ]);
+
+            $fichiersBilans = $entityManager->getRepository(FichierBilan::class)->findBy([
+                'id_info_client' => $client,
+            ]);
+
+
+            $fichierBilan = new FichierBilan();
+            $form = $this->createForm(AddFichierBilanType::class, $fichierBilan);
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $uploadedFile = $form->get('nom_fichier_bilan')->getData();
+                $idClient = $id;
+                $idClient = $infoClientRepository->find($idClient);
+
+                $idNomFichierBilan = $form->get('id_fichier_bilan')->getData()->getId();
+                $idNomFichierBilan = $fichierNomBilanRepository->find($idNomFichierBilan);
+                $nomOriginal = $form->get('nom_fichier_bilan')->getData()->getClientOriginalName();
+
+                $nomOriginal = $uploadedFile->getClientOriginalName();
+                $destinationDirectory = 'C:/Users/benja/projects/php/InsererFichier/public/fichier/';
+                $newFilename = $nomOriginal;
+                $uploadedFile->move($destinationDirectory, $newFilename);
+                $fichierBilan->setIdUser($user);
+                $fichierBilan->setNomFichierBilan($newFilename);
+                $fichierBilan->setIdInfoClient($idClient);
+                $fichierBilan->setIdFichierBilan($idNomFichierBilan);
+                $fichierBilan->setStatus(1);
+                $entityManager->persist($fichierBilan);
+                $entityManager->flush();
+                $fichierBilanRepository->save($fichierBilan, true);
+
+                return $this->redirectToRoute('mesFichiersSupprimer', ['id' => $id], Response::HTTP_SEE_OTHER);
+            }
+
+            return $this->render('fichier_demande/unFichierSupprimer.html.twig', [
                 'fichier_demandes' => $fichiers,
                 'fichier_bilans' => $fichiersBilans,
                 'user' => $user->getUserIdentifier(),
-                'idClient'=>$id,
+                'idClient' => $id,
                 'clients' => $client,
                 'societe' => $societeClient,
                 'bilans' => $bilan,
                 'annees' => $annee,
                 'form' => $form
             ]);
+        }
+        return $this->redirectToRoute('app_info_client_index',[], Response::HTTP_SEE_OTHER);
     }
 
 
     #[Route('/new', name: 'app_fichier_demande_new', methods: ['GET', 'POST'])]
-    public function new(EntityManagerInterface $entityManager ,Request $request, InfoClientRepository $infoClientRepository , FichierRepository $fichierRepository, FichierDemandeRepository $fichierDemandeRepository): Response
+    public function new(EntityManagerInterface $entityManager, Request $request, InfoClientRepository $infoClientRepository, FichierRepository $fichierRepository, FichierDemandeRepository $fichierDemandeRepository): Response
     {
         $user = $this->getUser();
         $fichierDemande = new FichierDemande();
@@ -150,7 +208,7 @@ class FichierDemandeController extends AbstractController
             $idClient = $infoClientRepository->find($idClient);
 
             //Il s'agit de l'id du fichier demander pour tout les clients
-            $idNomFichier= $form->get('id_fichier')->getData()->getId();
+            $idNomFichier = $form->get('id_fichier')->getData()->getId();
             $idNomFichier = $fichierRepository->find($idNomFichier);
             $nomOriginal = $form->get('nom_fichier_demande')->getData()->getClientOriginalName();
             // le chemin ou le fichier est inserer
@@ -169,15 +227,14 @@ class FichierDemandeController extends AbstractController
             $fichierDemandeRepository->save($fichierDemande, true);
             return $this->redirectToRoute('app_fichier_demande_index', [], Response::HTTP_SEE_OTHER);
 
-    }
+        }
 
         return $this->renderForm('fichier_demande/new.html.twig', [
             'nom_fichier_demande' => $fichierDemande,
             'form' => $form,
-            'user'=>$user->getUserIdentifier()
+            'user' => $user->getUserIdentifier()
         ]);
     }
-
 
 
     #[Route('/edit/{id}', name: 'app_fichier_demande_edit', methods: ['GET', 'POST'])]
@@ -197,7 +254,7 @@ class FichierDemandeController extends AbstractController
         return $this->renderForm('fichier_demande/edit.html.twig', [
             'fichier_demande' => $fichierDemande,
             'form' => $form,
-            'user'=>$user->getUserIdentifier()
+            'user' => $user->getUserIdentifier()
         ]);
     }
 
@@ -216,17 +273,12 @@ class FichierDemandeController extends AbstractController
     #[Route('/{id}', name: 'app_fichier_demande_delete', methods: ['POST'])]
     public function delete(Request $request, FichierDemande $fichierDemande, FichierDemandeRepository $fichierDemandeRepository): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$fichierDemande->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $fichierDemande->getId(), $request->request->get('_token'))) {
             $fichierDemandeRepository->save($fichierDemande->setStatus(0), true);
         }
 
         return $this->redirectToRoute('app_fichier_demande_index', [], Response::HTTP_SEE_OTHER);
     }
-
-
-
-
-
 
 
 }
