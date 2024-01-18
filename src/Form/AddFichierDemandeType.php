@@ -27,7 +27,6 @@ class AddFichierDemandeType extends AbstractType
                 ],
             ])
             ->add('verif')
-            ->add('id_user')
             ->add('id_fichier')
 
         ;
