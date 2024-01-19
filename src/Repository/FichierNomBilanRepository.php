@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\FichierBilan;
 use App\Entity\FichierNomBilan;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -32,7 +33,32 @@ class FichierNomBilanRepository extends ServiceEntityRepository
 
         return $resul;
     }
+    public function findFichiersBilansSansDemandeClient($clientId)
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        //sélectionne tous les id fichiers qui n'ont pas été utilisé par le user choisie
+        $sql = 'SELECT fichier_nom_bilan.id   FROM fichier_nom_bilan
+         WHERE fichier_nom_bilan.id NOT IN (SELECT fichier_bilan.id_fichier_bilan_id
+         FROM fichier_bilan
+         WHERE fichier_bilan.id_info_client_id = :clientId
+         AND status = 1)';
 
+        $resultSet = $conn->executeQuery($sql, ['clientId' => $clientId]);
+
+        //filsIds retourne une array d'array
+        $fileIds = $resultSet->fetchAllAssociative();
+
+        // Récupérer les objets Fichier correspondants
+        $fichiers = [];
+        //transforme la liste d'array de la requête pour la transformé en array d'objet
+        foreach ($fileIds as $fileId) {
+            $fichier = $this->getEntityManager()->getRepository(FichierNomBilan::class)->find($fileId['id']);
+            if ($fichier) {
+                $fichiers[] = $fichier;
+            }
+        }
+        return $fichiers;
+    }
 
 
 //    /**

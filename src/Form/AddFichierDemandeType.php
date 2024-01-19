@@ -2,8 +2,10 @@
 
 namespace App\Form;
 
+use App\Entity\Fichier;
 use App\Entity\FichierDemande;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -27,7 +29,11 @@ class AddFichierDemandeType extends AbstractType
                 ],
             ])
             ->add('verif')
-            ->add('id_fichier')
+            ->add('id_fichier',ChoiceType::class,[
+                'choices'=>$options['fichiers'],
+                //label obligatoire pour afficher le nom
+                'choice_label'=>'nom_fichier'
+            ])
 
         ;
     }
@@ -36,6 +42,7 @@ class AddFichierDemandeType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => FichierDemande::class,
+            'fichiers' => []
         ]);
     }
 }

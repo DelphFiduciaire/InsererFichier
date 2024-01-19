@@ -61,7 +61,32 @@ class FichierRepository extends ServiceEntityRepository
         $resul = $stmt->executeQuery()->fetchAllAssociative();
         return $resul;
     }
+    public function findFichiersSansDemandeClient($clientId)
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        //sélectionne tous les id fichiers qui n'ont pas été utilisé par le user choisie
+        $sql = 'SELECT fichier.id   FROM fichier
+         WHERE fichier.id NOT IN (SELECT fichier_demande.id_fichier_id
+         FROM fichier_demande
+         WHERE fichier_demande.id_info_client_id = :clientId
+         AND status = 1)';
 
+        $resultSet = $conn->executeQuery($sql, ['clientId' => $clientId]);
+
+        //filsIds retourne une array d'array
+        $fileIds = $resultSet->fetchAllAssociative();
+
+        // Récupérer les objets Fichier correspondants
+        $fichiers = [];
+        //transforme la liste d'array de la requête pour la transformé en array d'objet
+        foreach ($fileIds as $fileId) {
+            $fichier = $this->getEntityManager()->getRepository(Fichier::class)->find($fileId['id']);
+            if ($fichier) {
+                $fichiers[] = $fichier;
+            }
+        }
+        return $fichiers;
+    }
 //    /**
 //     * @return Fichier[] Returns an array of Fichier objects
 //     */

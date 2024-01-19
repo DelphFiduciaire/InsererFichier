@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -40,7 +41,11 @@ class AddFichierBilanType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('id_fichier_bilan')
+            ->add('id_fichier_bilan',ChoiceType::class,[
+                'choices'=>$options['fichiers'],
+                //label obligatoire pour afficher le nom
+                'choice_label'=>'fichier_bilan',
+            ])
             ->add('id_annee');
     }
 
@@ -48,6 +53,7 @@ class AddFichierBilanType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => FichierBilan::class,
+            'fichiers'=>[]
         ]);
     }
 }
