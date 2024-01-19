@@ -55,6 +55,7 @@ class InfoClientController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $infoClient->setStatus(1);
             $infoClientRepository->save($infoClient, true);
 
 //            $entityManager->persist($infoClient);
