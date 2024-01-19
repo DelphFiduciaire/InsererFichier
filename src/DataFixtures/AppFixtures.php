@@ -30,20 +30,7 @@ class AppFixtures extends Fixture
 
         $manager->persist($user);
         $manager->flush();
-        $infoClient = new InfoClient();
-        $infoClient->setPrenom('par defaut');
-        $infoClient->setNom('par defaut');
-        $infoClient->setAdresse('par defaut');
-        $infoClient->setNomSociete('par defaut');
-        $infoClient->setMailPro('pardefaut@email.com');
-        $infoClient->setVille('par defaut');
-        $infoClient->setIdUser($user);
-        $infoClient->setCp(2);
-        $infoClient->setNum(2);
-        $infoClient->setNumPro(2);
-        $infoClient->setSiret(2);
-        $manager->persist($infoClient);
-        $manager->flush();
+
 
     }
 }
