@@ -45,6 +45,8 @@ class AddFichierBilanType extends AbstractType
                 'choices'=>$options['fichiers'],
                 //label obligatoire pour afficher le nom
                 'choice_label'=>'fichier_bilan',
+                'expanded' => true, // Afficher comme une série de boutons radio
+                'multiple' => false, // Sélection unique
             ])
             ->add('id_annee');
     }

@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Fichier;
 use App\Entity\FichierDemande;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -29,13 +30,13 @@ class AddFichierDemandeType extends AbstractType
                 ],
             ])
             ->add('verif')
-            ->add('id_fichier',ChoiceType::class,[
-                'choices'=>$options['fichiers'],
-                //label obligatoire pour afficher le nom
-                'choice_label'=>'nom_fichier'
-            ])
-
-        ;
+            ->add('id_fichier', ChoiceType::class, [
+                'choices' => $options['fichiers'],
+                'choice_label' => 'nom_fichier',
+                'attr' => ['class' => 'form-control mt-2'],
+                'expanded' => true, // Afficher comme une série de boutons radio
+                'multiple' => false, // Sélection unique
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
