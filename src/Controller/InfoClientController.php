@@ -21,7 +21,6 @@ class InfoClientController extends AbstractController
     public function index(InfoClientRepository $infoClientRepository): Response
     {
         $user = $this->getUser();
-        //si il est admin il peut voir le compte par défaut
 
             return $this->render('info_client/index.html.twig', [
                 //méthode créer par moi même dans infoClientRepository pour virer le compte par defaut
@@ -143,7 +142,7 @@ class InfoClientController extends AbstractController
     #[Route('/mesColab', name:'mesColab', methods:['GET'])]
     public function index1(UserRepository $userRepository, InfoClientRepository $infoClientRepository, EntityManagerInterface $entityManager): Response
     {
-        $user = $this->getUser();
+
 
             $user = $this->getUser();
             $userObject = $userRepository->findOneBy(['email'=>$user->getUserIdentifier()]);

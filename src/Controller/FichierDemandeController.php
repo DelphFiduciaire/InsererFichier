@@ -51,6 +51,19 @@ class FichierDemandeController extends AbstractController
         ]);
 
     }
+    #[Route('/listeSupprimer', name: 'app_fichier_demande_supprimer', methods: ['GET'])]
+    public function index2(InfoClientRepository $infoClientRepository, FichierDemandeRepository $fichierDemandeRepository, EntityManagerInterface $entityManager): Response
+    {
+
+        $user = $this->getUser();
+
+        return $this->render('info_client/index_fichiers_supprimer.html.twig', [
+            //méthode créer par moi même dans infoClientRepository pour virer le compte par defaut
+            'info_clients' => $infoClientRepository->findAllClient(),
+            'user'=>$user->getUserIdentifier()
+        ]);
+
+    }
 
 
     #[Route('/mesFichiers/{id}', name: 'mesFichiers', methods: ['GET', 'POST'])]
@@ -75,28 +88,19 @@ class FichierDemandeController extends AbstractController
         $form = $this->createForm(AddFichierDemandeType::class, $fichierDemande,['fichiers'=>$fichierSansClient]);
         $form->handleRequest($request);
 
-        //les admins peuvent voir tous les fichiers
-        if ($user->getRoles()[0] == "ROLE_ADMIN") {
-            $fichiers = $entityManager->getRepository(FichierDemande::class)->findBy([
-                'id_info_client' => $client,
-            ]);
-        } //vire tous ceux qui ne pas le status 1
-        else {
+
+
+
             $fichiers = $entityManager->getRepository(FichierDemande::class)->findBy([
                 'id_info_client' => $client,
                 'status' => 1
             ]);
-        }
-        if ($user->getRoles()[0] == "ROLE_ADMIN") {
-            $fichiersBilans = $entityManager->getRepository(FichierBilan::class)->findBy([
-                'id_info_client' => $client,
-            ]);
-        } else {
+
             $fichiersBilans = $entityManager->getRepository(FichierBilan::class)->findBy([
                 'id_info_client' => $client,
                 'status' => 1
             ]);
-        }
+
 
         if ($form->isSubmitted() && $form->isValid()) {
             $uploadedFile = $form->get('nom_fichier_demande')->getData();
@@ -165,9 +169,11 @@ class FichierDemandeController extends AbstractController
             $bilan = $entityManager->getRepository(FichierNomBilan::class)->findAll();
             $fichiers = $entityManager->getRepository(FichierDemande::class)->findBy([
                 'id_info_client' => $client,
+                'status'=>0
             ]);
             $fichiersBilans = $entityManager->getRepository(FichierBilan::class)->findBy([
                 'id_info_client' => $client,
+                'status'=>0
             ]);
 
             return $this->render('fichier_demande/unFichierSupprimer.html.twig', [

@@ -53,9 +53,9 @@ class InfoClientRepository extends ServiceEntityRepository
     public function findClientByUser(int $idUser): array
     {
         return $this->createQueryBuilder('c')
-            ->andWhere('c.status != :id ')
+            ->andWhere('c.status != :status ')
             ->andWhere('c.id_user = :idUser')
-            ->setParameter('id',0)
+            ->setParameter('status',0)
             ->setParameter('idUser', $idUser)
             ->orderBy('c.id', 'ASC')
             ->getQuery()
