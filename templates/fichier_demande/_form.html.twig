@@ -4,21 +4,23 @@
 
     <div>
         <div class="form-group mb-4">
-            {{ form_label(form.id_info_client, 'Choisir un client', {'label_attr': {'class': 'text-right'}}) }}
-            {{ form_row(form.id_info_client, {'attr': {'class': 'form-control mt-2'}}) }} <br>
 
-            {{ form_label(form.id_fichier, 'Nom du fichier', {'label_attr': {'class': 'text-right'}}) }}
-            {{ form_row(form.id_fichier, {'attr': {'class': 'form-control mt-2'}}) }}
+            {{ form_row(form.id_info_client, {'attr': {'class': 'form-control mt-2','style': 'border: 1px solid;'}}) }} <br>
+
+
+            {{ form_row(form.id_fichier, {'attr': {'class': 'form-control mt-2','style': 'border: 1px solid;'}}) }}
 
 
 
             <br>
 
             <div class="form-group">
-                {{ form_label(form.nom_fichier_demande, 'Insérer un fichier', {'label_attr': {'class': 'text-right'}}) }}
-                {{ form_row(form.nom_fichier_demande, {'attr': {'class': 'form-control mt-2', 'type': 'file'}}) }}
+
+                {{ form_row(form.nom_fichier_demande, {'attr': {'class': 'form-control mt-2', 'type': 'file', 'style': 'border: 1px solid;'}}) }}
+
                 <br>
-                {{ form_row(form.verif) }}
+                {{ form_label(form.verif) }}
+                {{ form_widget(form.verif) }}
             </div>
 
 

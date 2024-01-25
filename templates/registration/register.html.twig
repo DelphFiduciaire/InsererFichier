@@ -17,7 +17,8 @@
                     {{ form_row(registrationForm.plainPassword, {'label': 'Mot de Passe', 'label_attr': {'class': 'text-right'},'attr': {'class': 'form-control mt-2'}}) }}
 
                     <br>
-                    {{ form_row(registrationForm.roles, {'label': 'Choisir un rôle','label_attr': {'class': 'text-right'}}) }}
+                    {{ form_label(registrationForm.roles) }}<br>
+                    {{ form_widget(registrationForm.roles) }}
                 </div>
             </div>
             <br>

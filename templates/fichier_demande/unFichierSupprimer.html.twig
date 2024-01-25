@@ -9,6 +9,7 @@
     <h1>Fichier de l'entreprise {{ societe }}</h1>
 
     <br><br><br>
+    <div class="p-5" style="float:left; width: 700px; border-radius: 10px;background-color: whitesmoke;">
     <h2>Liste des fichiers par bilans </h2> <br>
 {#        <label >Sélectionnez une année :</label>#}
     {% for annee in annees %}
@@ -16,8 +17,39 @@
         <a class="btn btn-dark"  href="{{ path('mesFichiersBilanSupprimer',{ 'idClient': idClient,'id': annee.id }) }}">Année {{ annee.anneeBilan }}</a>
 {#        {% endfor %}#}
     {% endfor %}
-    <br><br><br>
 
+    <br><br><br>
+        <h2>Liste des fichiers bilans </h2>
+
+        <table class="table">
+            <thead>
+            <tr class="table-dark">
+                <th>Nom_fichier</th>
+                <th>année</th>
+                <th>Voir PDF</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for fichier_bilan in fichier_bilans %}
+                <tr>
+                    <td>{{ fichier_bilan.idFichierBilan.getFichierBilan }}</td>
+                    <td>{{ fichier_bilan.getidannee }}</td>
+                    <td>
+                        <a href="{{ path('app_view_pdf', {'name': fichier_bilan.getNomFichierBilan()}) }}"
+                           target="_blank">
+                            Voir le PDF
+                        </a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="2">Aucun enregistrement trouvé</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="p-5" style="float: right;width: 750px;margin-top: 155px;border-radius: 10px; background-color: whitesmoke">
     <h2>Liste des fichiers </h2>
 
     <table class="table">
@@ -46,36 +78,5 @@
         {% endfor %}
         </tbody>
     </table>
-    <br><br><br>
-
-    <h2>Liste des fichiers bilans </h2>
-
-    <table class="table">
-        <thead>
-        <tr class="table-dark">
-            <th>Nom_fichier</th>
-            <th>année</th>
-            <th>Voir PDF</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for fichier_bilan in fichier_bilans %}
-            <tr>
-                <td>{{ fichier_bilan.idFichierBilan.getFichierBilan }}</td>
-                <td>{{ fichier_bilan.getidannee }}</td>
-                <td>
-                    <a href="{{ path('app_view_pdf', {'name': fichier_bilan.getNomFichierBilan()}) }}"
-                       target="_blank">
-                        Voir le PDF
-                    </a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="2">Aucun enregistrement trouvé</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
+    </div>
 {% endblock %}

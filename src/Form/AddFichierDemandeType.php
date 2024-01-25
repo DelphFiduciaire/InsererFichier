@@ -6,11 +6,13 @@ use App\Entity\Fichier;
 use App\Entity\FichierDemande;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class AddFichierDemandeType extends AbstractType
 {
@@ -29,7 +31,15 @@ class AddFichierDemandeType extends AbstractType
                     ])
                 ],
             ])
-            ->add('verif')
+            ->add('verif',CheckboxType::class, [
+        'label' => 'verification',
+        'required' => true,
+        'constraints' => [
+            new NotBlank([
+                'message' => 'Ce champ est obligatoire.',
+            ]),
+        ],
+    ])
             ->add('id_fichier', ChoiceType::class, [
                 'choices' => $options['fichiers'],
                 'choice_label' => 'nom_fichier',

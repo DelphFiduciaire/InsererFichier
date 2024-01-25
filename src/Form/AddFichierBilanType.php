@@ -33,7 +33,7 @@ class AddFichierBilanType extends AbstractType
                 ],
             ])
             ->add('verif_bilan', CheckboxType::class, [
-                'label' => 'Check',
+                'label' => 'verification',
                 'required' => true,
                 'constraints' => [
                     new NotBlank([

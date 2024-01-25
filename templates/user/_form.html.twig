@@ -1,4 +1,24 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
-{{ form_end(form) }}
+{% block body %}
+    <br>
+    {{ form_start(form) }}
+    <div class="content-form">
+        <div class="p-5" style="background-color: whitesmoke;">
+            <div class="row">
+                <div class="form-group mb-4 col-3">
+                    {{ form_row(form.email, {'label': 'Mail','label_attr': {'class': 'text-right'},'attr': {'class': 'form-control mt-2'}}) }}
+
+                    {{ form_row(form.plainPassword, {'label': 'Mot de Passe', 'label_attr': {'class': 'text-right'},'attr': {'class': 'form-control mt-2'}}) }}
+
+                    <br>
+                    {{ form_label(form.roles) }}<br>
+                    {{ form_widget(form.roles) }}
+                </div>
+            </div>
+            <br>
+            {#            {{ form_row(registrationForm.agreeTerms) }}#}
+            <button type="submit" class="btn btn-dark">Enregistrer</button>
+        </div>
+    </div>
+    <br><br>
+    {{ form_end(form) }}
+{% endblock %}

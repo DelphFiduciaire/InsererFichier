@@ -18,3 +18,41 @@ nav
     background-color: #1a1e21;
     color: #FFFFFF;
 }
+.custom-checkbox input[type="checkbox"] {
+    /* Hide the default checkbox */
+    display: none;
+}
+
+.custom-checkbox label {
+    /* Style for the checkbox container */
+    position: relative;
+    padding-left: 30px; /* Adjust this value based on your preference */
+    cursor: pointer;
+    display: inline-block;
+}
+
+.custom-checkbox label::before {
+    /* Style for the checkbox itself */
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 20px; /* Adjust this value based on your preference */
+    height: 20px; /* Adjust this value based on your preference */
+    border: 2px solid #2196F3; /* Adjust the border color */
+    background-color: #fff; /* Adjust the background color */
+    border-radius: 4px; /* Adjust the border-radius for rounded corners */
+}
+
+.custom-checkbox input[type="checkbox"]:checked + label::before {
+    /* Style for the checked state of the checkbox */
+    background-color: #2196F3; /* Adjust the background color for checked state */
+    border-color: #2196F3; /* Adjust the border color for checked state */
+}
+p
+{
+    background-color: blue;
+    color: blue;
+}
+
+
