@@ -36,7 +36,7 @@ class FichierDemandeType extends AbstractType
             ])
 
             ->add('verif', CheckboxType::class, [
-                'label' => 'Check',
+                'label' => 'verification',
                 'required' => true,
                 'constraints' => [
                     new NotBlank([
