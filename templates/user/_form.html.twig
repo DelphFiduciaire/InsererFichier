@@ -17,8 +17,8 @@
             <br>
             {#            {{ form_row(registrationForm.agreeTerms) }}#}
             <button type="submit" class="btn btn-dark">Enregistrer</button>
+            <a class="btn btn-dark" href="{{ path('app_user_index') }}">back to list</a>
         </div>
     </div>
-    <br><br>
     {{ form_end(form) }}
 {% endblock %}
