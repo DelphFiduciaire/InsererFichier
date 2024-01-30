@@ -1,37 +1,23 @@
-{{ form_start(form) }}
+{{ form_start(form, {'attr': {'class': 'p-5', 'style': 'max-width: 800px; background-color: whitesmoke;'}}) }}
 
-<div class="p-5" style="width: 800px; background-color: whitesmoke">
+<div class="form-group mb-4">
+    {{ form_row(form.id_info_client, {'attr': {'class': 'form-control mt-2', 'style': 'border: 1px solid;'}}) }} <br>
 
-    <div>
-        <div class="form-group mb-4">
+    {{ form_row(form.id_fichier, {'attr': {'class': 'form-control mt-2', 'style': 'border: 1px solid;'}}) }}
+</div>
 
-            {{ form_row(form.id_info_client, {'attr': {'class': 'form-control mt-2','style': 'border: 1px solid;'}}) }} <br>
+<div class="form-group">
+    {{ form_row(form.nom_fichier_demande, {'attr': {'class': 'form-control mt-2', 'type': 'file', 'style': 'border: 1px solid;'}}) }}
+</div>
 
+<div class="form-group">
+    {{ form_label(form.verif) }}
+    {{ form_widget(form.verif) }}
+</div>
 
-            {{ form_row(form.id_fichier, {'attr': {'class': 'form-control mt-2','style': 'border: 1px solid;'}}) }}
+<div class="mt-4">
+    <button class="btn btn-dark" type="submit">{{ button_label|default('Enregistrer') }}</button>
+    <a href="{{ path('app_fichier_demande_index') }}" class="btn btn-dark">Retour</a>
+</div>
 
-
-
-            <br>
-
-            <div class="form-group">
-
-                {{ form_row(form.nom_fichier_demande, {'attr': {'class': 'form-control mt-2', 'type': 'file', 'style': 'border: 1px solid;'}}) }}
-
-                <br>
-                {{ form_label(form.verif) }}
-                {{ form_widget(form.verif) }}
-            </div>
-
-
-            </div>
-            <br>
-            <button class="btn btn-dark" type="submit">{{ button_label|default('Enregistrer') }}</button>
-            <a href="{{ path('app_fichier_demande_index') }}" class="btn btn-dark">Retour </a>
-
-
-
-        </div>
-        <br><br>
-
-        {{ form_end(form) }}
+{{ form_end(form) }}

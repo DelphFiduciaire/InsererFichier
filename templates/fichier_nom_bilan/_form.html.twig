@@ -1,4 +1,6 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+{{ form_start(form, {'attr': {'class': 'p-5', 'style': 'max-width: 800px; background-color: whitesmoke;'}}) }}
+{{ form_label(form.fichier_bilan) }}<br>
+{{ form_widget(form.fichier_bilan, {'attr': {'class': 'form-control mt-2','style': 'border: 1px solid;'}}) }}<br>
+    <button class="btn btn-dark">{{ button_label|default('Save') }}</button>
+<a href="{{ path('app_fichier_nom_bilan_index')}}" class="btn btn-dark">back to list</a>
 {{ form_end(form) }}
