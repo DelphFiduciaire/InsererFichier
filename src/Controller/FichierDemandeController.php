@@ -120,7 +120,7 @@ class FichierDemandeController extends AbstractController
             $entityManager->persist($fichierDemande);
             $entityManager->flush();
             $fichierDemandeRepository->save($fichierDemande, true);
-            return $this->redirectToRoute('app_fichier_demande_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('mesFichiers', ['id' => $id], Response::HTTP_SEE_OTHER);
         }
 
         if ($formBilan->isSubmitted() && $formBilan->isValid()) {
