@@ -127,6 +127,7 @@ class InfoClientController extends AbstractController
             foreach ($lesFichiersBilan as $unFichier)
             {
                 $fichierBilan = $unFichier;
+                $fichierBilan->setStatus(0);
                 $entityManager->persist($fichierBilan);
                 $entityManager->flush();
             }
