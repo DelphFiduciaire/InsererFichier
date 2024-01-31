@@ -18,113 +18,115 @@
                            href="{{ path('mesFichiersBilan',{ 'idClient': idClient,'id': annee.id }) }}">Année {{ annee.anneeBilan }}</a>
                     {% endfor %}
                     <br><br><br>
+                    {{ form_start(form) }}
+                    <h2>Inserer les fichiers</h2>
 
-                    {{ form_start(formBilan) }}
-                    <h2>Inserer les fichiers bilans </h2>
-                    <div class="form-group mb-4">
-                        <label>Choisir un fichier</label>
-                        <div class="list-group" style="width: 300px; margin-left: -40px">
-                            <ol>
-                                {% for fichier in formBilan.id_fichier_bilan %}
-                                    <li class="list-group-item list-group-item-action"
-                                        style="text-align: center">{{ form_widget(fichier, {'attr': {'class': 'form-switch'}}) }}{{ form_label(fichier) }}</li>
-                                {% endfor %}
-                            </ol>
-                        </div>
-                        {{ form_row(formBilan.id_annee, {'attr': {'class': 'form-control mt-2'}}) }}
+                    <label>Choisir un fichier</label>
+                    <div class="list-group" style="width: 300px; margin-left: -40px">
+                        <ol>
+                            {% for fichier in form.id_fichier %}
+                                <li class="list-group-item list-group-item-action"
+                                    style=" text-align: center">{{ form_widget(fichier,{'attr':{'class': 'form-switch'  }}) }}{{ form_label(fichier) }}</li>
 
-                        <br>
-                        <div class="form-group">
-                            {{ form_row(formBilan.nom_fichier_bilan, {'attr': {'class': 'form-control mt-2', 'type': 'type'}}) }}
-                            <br>
-                            {{ form_label(formBilan.verif_bilan) }}
-                            {{ form_widget(formBilan.verif_bilan) }}
-                        </div>
-                        <br>
-                        <button class="btn btn-dark" type="submit">{{ button_label|default('Enregistrer') }}</button>
-                        <a href="{{ path('app_fichier_bilan_index') }}" class="btn btn-dark">Retour </a>
+                            {% endfor %}
+                        </ol>
                     </div>
-                    {{ form_end(formBilan) }}
+                    {{ form_row(form.nom_fichier_demande, {'attr': {'class': 'form-control mt-2', 'type': 'file'}}) }}
+                    <br>
+                    {{ form_label(form.verif) }}
+                    {{ form_widget(form.verif) }}
+                    <br><br>
+                    <button class="btn btn-dark" type="submit">{{ button_label|default('Enregistrer') }}</button>
+                    <a href="{{ path('app_fichier_demande_index') }}" class="btn btn-dark">Retour </a>
+                    {{ form_end(form) }}
+
                 </div>
-
-                <h2>Liste des fichiers Bilans </h2>
-                <table class="table">
-                    <thead>
-                    <tr class="table-dark">
-                        <th>Nom_fichier</th>
-                        <th>année</th>
-                        <th>Voir PDF</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for fichier_bilan in fichier_bilans %}
-                        <tr>
-                            <td>{{ fichier_bilan.idFichierBilan.getFichierBilan }}</td>
-                            <td>{{ fichier_bilan.getidannee }}</td>
-                            <td>
-                                <a href="{{ path('app_view_pdf', {'name': fichier_bilan.getNomFichierBilan()}) }}"
-                                   target="_blank">
-                                    Voir le PDF
-                                </a>
-                                {{ include('fichier_bilan/_delete_form.html.twig') }}
-                            </td>
+                <div style="margin-top: 110px">
+                    <h2>fichiers dossier permanent a inséré </h2>
+                    <table class="table">
+                        <thead>
+                        <tr class="table-dark">
+                            <th>Nom_fichier</th>
+                            <th>Voir PDF</th>
                         </tr>
-                    {% else %}
-                        <tr>
-                            <td colspan="2">Aucun enregistrement trouvé</td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-
+                        </thead>
+                        <tbody>
+                        {% for fichier_demande in fichier_demandes %}
+                            <tr>
+                                <td>{{ fichier_demande.idFichier.nomFichier }}</td>
+                                <td>
+                                    <a href="{{ path('app_view_pdf', {'name': fichier_demande.getNomFichierDemande()}) }}"
+                                       target="_blank">
+                                        Voir le PDF
+                                    </a>
+                                    {{ include('fichier_demande/_delete_form.html.twig') }}
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="2">Aucun enregistrement trouvé</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
             <div class="col-md-6">
                 <div class="p-5" style="border-radius: 10px; background-color: whitesmoke;">
                     <div class="form-group mb-4" style="margin-top: 155px">
-                        {{ form_start(form) }}
-                        <h2>Inserer les fichiers</h2>
+                        {{ form_start(formBilan) }}
+                        <h2>fichier bilan a inséré</h2>
+                        <div class="form-group mb-4">
+                            <label>Choisir un fichier</label>
+                            <div class="list-group" style="width: 300px; margin-left: -40px">
+                                <ol>
+                                    {% for fichier in formBilan.id_fichier_bilan %}
+                                        <li class="list-group-item list-group-item-action"
+                                            style="text-align: center">{{ form_widget(fichier, {'attr': {'class': 'form-switch'}}) }}{{ form_label(fichier) }}</li>
+                                    {% endfor %}
+                                </ol>
+                            </div>
+                            {{ form_row(formBilan.id_annee, {'attr': {'class': 'form-control mt-2'}}) }}
 
-                        <label>Choisir un fichier</label>
-                        <div class="list-group" style="width: 300px; margin-left: -40px">
-                            <ol>
-                                {% for fichier in form.id_fichier %}
-                                    <li class="list-group-item list-group-item-action"
-                                        style=" text-align: center">{{ form_widget(fichier,{'attr':{'class': 'form-switch'  }}) }}{{ form_label(fichier) }}</li>
-
-                                {% endfor %}
-                            </ol>
+                            <br>
+                            <div class="form-group">
+                                {{ form_row(formBilan.nom_fichier_bilan, {'attr': {'class': 'form-control mt-2', 'type': 'type'}}) }}
+                                <br>
+                                {{ form_label(formBilan.verif_bilan) }}
+                                {{ form_widget(formBilan.verif_bilan) }}
+                            </div>
+                            <br>
+                            <button class="btn btn-dark"
+                                    type="submit">{{ button_label|default('Enregistrer') }}</button>
+                            <a href="{{ path('app_fichier_bilan_index') }}" class="btn btn-dark">Retour </a>
                         </div>
-                        {{ form_row(form.nom_fichier_demande, {'attr': {'class': 'form-control mt-2', 'type': 'file'}}) }}
-                        <br>
-                        {{ form_label(form.verif) }}
-                        {{ form_widget(form.verif) }}
-                        <br><br>
-                        <button class="btn btn-dark" type="submit">{{ button_label|default('Enregistrer') }}</button>
-                        <a href="{{ path('app_fichier_demande_index') }}" class="btn btn-dark">Retour </a>
+                        {{ form_end(formBilan) }}
                     </div>
-                    {{ form_end(form) }}
+
 
                     <br><br><br>
-                    <div style="margin-top: 95px">
-                        <h2>Liste des fichiers </h2>
+                    <div style="margin-top: -55px">
+                        <h2>Liste des fichiers Bilans </h2>
                         <table class="table">
                             <thead>
                             <tr class="table-dark">
                                 <th>Nom_fichier</th>
+                                <th>année</th>
                                 <th>Voir PDF</th>
                             </tr>
                             </thead>
                             <tbody>
-                            {% for fichier_demande in fichier_demandes %}
+                            {% for fichier_bilan in fichier_bilans %}
                                 <tr>
-                                    <td>{{ fichier_demande.idFichier.nomFichier }}</td>
+                                    <td>{{ fichier_bilan.idFichierBilan.getFichierBilan }}</td>
+                                    <td>{{ fichier_bilan.getidannee }}</td>
                                     <td>
-                                        <a href="{{ path('app_view_pdf', {'name': fichier_demande.getNomFichierDemande()}) }}"
+                                        <a href="{{ path('app_view_pdf', {'name': fichier_bilan.getNomFichierBilan()}) }}"
                                            target="_blank">
                                             Voir le PDF
                                         </a>
-                                        {{ include('fichier_demande/_delete_form.html.twig') }}
+                                        {{ include('fichier_bilan/_delete_form.html.twig') }}
                                     </td>
                                 </tr>
                             {% else %}
