@@ -22,12 +22,13 @@ class AddFichierDemandeType extends AbstractType
             ->add('nom_fichier_demande',FileType::class, [
                 'constraints' => [
                     new File([
-                        'maxSize' => '1024k',
+                        'maxSize' => '4000k',
                         'mimeTypes' => [
                             'application/pdf',
                             'application/x-pdf',
+                            'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
                         ],
-                        'mimeTypesMessage' => 'Merci de mettre un fichier PDF',
+                        'mimeTypesMessage' => 'Merci de mettre un fichier PDF ou Word',
                     ])
                 ],
             ])

@@ -27,6 +27,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 
 #[Route('/fichier/demande')]
@@ -51,6 +52,7 @@ class FichierDemandeController extends AbstractController
         ]);
 
     }
+    #[IsGranted('ROLE_ADMIN', statusCode: 404, message: 'Access Denied.')]
     #[Route('/listeSupprimer', name: 'app_fichier_demande_supprimer', methods: ['GET'])]
     public function index2(InfoClientRepository $infoClientRepository, FichierDemandeRepository $fichierDemandeRepository, EntityManagerInterface $entityManager): Response
     {
@@ -144,6 +146,8 @@ class FichierDemandeController extends AbstractController
         }
 
         return $this->render('fichier_demande/unFichier.html.twig', [
+            'fichier_demandes_sansClient'=>$fichierSansClient,
+            'fichier_bilan_sansClient'=>$fichierNomBilanSansClient,
             'fichier_demandes' => $fichiers,
             'fichier_bilans' => $fichiersBilans,
             'user' => $user->getUserIdentifier(),
@@ -156,7 +160,7 @@ class FichierDemandeController extends AbstractController
             'form'=>$form,
         ]);
     }
-
+    #[IsGranted('ROLE_ADMIN', statusCode: 404, message: 'Access Denied.')]
     #[Route('/mesFichiersSupprimer/{id}', name: 'mesFichiersSupprimer', methods: ['GET', 'POST'])]
     public function indexFichierSupprimer($id, FichierBilanRepository $fichierBilanRepository, FichierNomBilanRepository $fichierNomBilanRepository, Request $request, EntityManagerInterface $entityManager, InfoClientRepository $infoClientRepository): Response
     {
